@@ -1,0 +1,3 @@
+@if ($string)
+    {!! $string !!}
+@endif
