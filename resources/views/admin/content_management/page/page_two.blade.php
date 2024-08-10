@@ -6,6 +6,13 @@
        left:100%;
        transition: all .5s;
     }
+ 
+    .powderblue-bg {
+      background-color: rgb(95, 208, 223);
+    }
+    .name44{
+      background-color:aqua;
+    }
 </style>
 
     <div class="d-flex flex-column flex-column-fluid">

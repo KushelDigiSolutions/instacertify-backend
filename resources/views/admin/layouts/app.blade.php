@@ -46,11 +46,14 @@
 
                     <div id="kt_app_footer" class="app-footer">
                         <div
-                            class="app-container container-fluid d-flex justify-content-center flex-column flex-md-row flex-center flex-md-stack py-3">
+                            
+                        {{-- Copyright and it's Date --}}
+                        class="app-container container-fluid d-flex justify-content-center flex-column flex-md-row flex-center flex-md-stack py-3">
                             <div class="text-dark order-2 order-md-1">
                                 <span class="text-muted fw-semibold me-1">Copyright - &copy; {{date('Y')}} </span>
-                                <a href="javascript:void(0);" class="text-gray-800 cursor-default">MadFish Solutions</a>
+                                <a href="javascript:void(0);" class="text-gray-800 cursor-default"><b>InstaCertify<b></a>
                             </div>
+
                         </div>
                     </div>
                 </div>

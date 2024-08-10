@@ -20,7 +20,7 @@
                     <path d="M22 30H26V28H22V30ZM15 18V20H33V18H15ZM18 25H30V23H18V25Z" fill="#3F4254" />
                 </svg>
                 @can('user-create')
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-design">
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-sm fw-bold text-white" style="background-color: rgb(236, 105, 31);">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" />

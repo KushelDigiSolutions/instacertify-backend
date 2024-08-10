@@ -103,7 +103,7 @@
 								<div class="d-grid mb-10">
 									<button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
 										<!--begin::Indicator label-->
-										<span class="indicator-label">Log into FairchildFUN</span>
+										<span class="indicator-label">Login</span>
 										<!--end::Indicator label-->
 										<!--begin::Indicator progress-->
 										<span class="indicator-progress">Please wait...

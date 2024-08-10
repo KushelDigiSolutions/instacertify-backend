@@ -1,6 +1,6 @@
-<table class="table align-middle table-row-dashed fs-6 gy-5">
-    <thead>
-        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+<table class="table align-middle  fs-6 gy-5">
+    <thead style="background-color: rgb(6, 81, 117); color: white;">
+        <tr class="text-start fw-bold fs-7 text-uppercase gs-0">
             <th>Name</th>
             <th>Created By</th>
             <th>Creation Date</th>
@@ -10,12 +10,13 @@
             @endcanany
         </tr>
     </thead>
+    
     <tbody>
         @foreach ($headers as $key => $header)
-            <tr>
+            <tr class="bg-light @if($key % 2 == 0) table-row-striped @endif">
                 <td>{{ $header->title }}</td>
                 <td>{{ App\Models\Admin\Admin::where('id', $header->added_by)->first()->name }}</td>
-                <td>{{ $header->created_at }}</td>
+                <td>{{ $header->created_at->format('d M Y') }}</td>
                 <td>
                     @if ($header->is_published == '1')
                         <a href="{{ route('admin.headers.show', $header->id) }}?status=0">
@@ -27,29 +28,6 @@
                         </a>
                     @endif
                 </td>
-                {{-- <td>
-                    <div class="d-flex flex-shrink-0">
-                        <a href="{{route('admin.headers.edit',$header->id)}}" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
-                            <i class="ki-duotone ki-notepad-edit fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
-                        </a>
-                        <form id="delete-form" action="{{route('admin.headers.destroy',$header->id)}}" method="POST" onsubmit="return confirm('Are you want delete this event Header!');">
-                            @method('DELETE')
-                            @csrf
-                            <button href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
-                                <i class="ki-duotone ki-trash fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                    <span class="path4"></span>
-                                    <span class="path5"></span>
-                                </i>
-                            </button>
-                        </form>
-                    </div>
-                </td> --}}
                 @canany(['header-edit','header-delete'])
                 <td class="text-center">
                     <div class="dropdown">

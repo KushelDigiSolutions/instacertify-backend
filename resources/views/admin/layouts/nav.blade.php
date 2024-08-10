@@ -34,9 +34,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="menu-item px-5">
-                            <a class="menu-link px-5" href="{{ route('admin.logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Sign Out') }}</a>
+                        <div class="menu-item px-5 text-center">
+                           
+                            <a class="btn btn-sm fw-bold text-white" style="background-color: rgb(236, 105, 31);" href="{{ route('admin.logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __('Sign Out') }}
+                            </a>
+
                             <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>

@@ -38,9 +38,11 @@
                     </ul>
                 </div>
 
-                <button id="secta" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_new_target">+ Create New Page</button>
+                <button id="secta" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" style="background-color:rgb(236,105,31)"
+                                        data-bs-target="#kt_modal_new_target">+ Create New Pagsse</button>
 
+
+         
             </div>
         </div>
         <div class="app-content flex-column-fluid">
@@ -290,7 +292,7 @@
                                 <div class="card-body card-body4 card-si">
 
                                     <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-                                        <thead>
+                                        <thead style="background-color: rgb(6, 81, 117); color: white;">
                                             <tr class="fw-semibold fs-6 text-muted">
 
                                                 <th>Name</th>

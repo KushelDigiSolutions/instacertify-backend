@@ -1,5 +1,5 @@
-<table class="table align-middle table-row-dashed fs-6 gy-5">
-    <thead>
+<table class="table align-middle fs-6 gy-5">
+    <thead style="background-color: rgb(6, 81, 117); color: white;">
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th>Name</th>
             <th>Created By</th>

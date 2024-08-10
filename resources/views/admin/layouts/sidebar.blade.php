@@ -20,56 +20,58 @@
         <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper hover-scroll-overlay-y my-5"
             data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto"
             data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer"
-            data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-states="true">
+            data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px"
+            data-kt-scroll-save-states="true">
             <div class="menu menu-column menu-rounded menu-sub-indention" id="#kt_app_sidebar_menu" data-kt-menu="true"
                 data-kt-menu-expand="false">
 
                 <div data-kt-menu-trigger="click0" class="menu-item pro-hover here show menu-accordion">
                     <a href="{{ route('admin.dashboard') }}">
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-element-11 fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-element-11 fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Dashboard</span>
                         </span>
-                        <span class="menu-title">Dashboard</span>
-                    </span>
                     </a>
                 </div>
                 @canany(['header-list', 'header-create', 'header-edit', 'header-delete', 'footer-list', 'footer-create',
                     'footer-edit', 'footer-delete', 'navigation-list', 'navigation-create', 'navigation-edit',
                     'navigation-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
-                        'admin.headers.index',
-                        'admin.headers.create',
-                        'admin.headers.edit',
-                        'admin.footers.index',
-                        'admin.footers.create',
-                        'admin.footers.edit',
-                        'admin.navigations.index',
-                        'admin.navigations.create',
-                        'admin.navigations.edit',
-                        'admin.pages.index',
-                        'admin.pages.create',
-                        'admin.pages.edit',
-                    ])) hover show @endif">
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
+                                'admin.headers.index',
+                                'admin.headers.create',
+                                'admin.headers.edit',
+                                'admin.footers.index',
+                                'admin.footers.create',
+                                'admin.footers.edit',
+                                'admin.navigations.index',
+                                'admin.navigations.create',
+                                'admin.navigations.edit',
+                                'admin.pages.index',
+                                'admin.pages.create',
+                                'admin.pages.edit',
+                            ])) hover show @endif">
 
                         <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
-                        'admin.headers.index',
-                        'admin.headers.create',
-                        'admin.headers.edit',
-                        'admin.footers.index',
-                        'admin.footers.create',
-                        'admin.footers.edit',
-                        'admin.navigations.index',
-                        'admin.navigations.create',
-                        'admin.navigations.edit',
-                        'admin.pages.index',
-                        'admin.pages.create',
-                        'admin.pages.edit',
+                                'admin.headers.index',
+                                'admin.headers.create',
+                                'admin.headers.edit',
+                                'admin.footers.index',
+                                'admin.footers.create',
+                                'admin.footers.edit',
+                                'admin.navigations.index',
+                                'admin.navigations.create',
+                                'admin.navigations.edit',
+                                'admin.pages.index',
+                                'admin.pages.create',
+                                'admin.pages.edit',
                             ])) is-active @endif">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-calendar fs-2">
@@ -109,7 +111,8 @@
                             <div class="menu-sub menu-sub-accordion">
                                 <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
                                         'admin.navigations.index',
-                                        'admin.navigations.create' , 'admin.navigations.edit',
+                                        'admin.navigations.create',
+                                        'admin.navigations.edit',
                                     ])) is-active @endif">
                                     <a class="menu-link" href="{{ route('admin.navigations.index') }}">
                                         <span class="menu-bullet">
@@ -121,19 +124,16 @@
                             </div>
                         @endcanany
                         @canany(['pages-list', 'pages-create', 'pages-edit', 'pages-delete'])
-                        <div class="menu-sub menu-sub-accordion">
-                            <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                'admin.pages.index',
-                                'admin.pages.create' , 'admin.pages.edit',
-                            ])) is-active @endif">
-                                <a class="menu-link" href="{{ route('admin.pages.index') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">Pages</span>
-                                </a>
+                            <div class="menu-sub menu-sub-accordion">
+                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.pages.index', 'admin.pages.create', 'admin.pages.edit'])) is-active @endif">
+                                    <a class="menu-link" href="{{ route('admin.pages.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Pages</span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
                         @endcanany
                     </div>
                 @endcanany
@@ -141,16 +141,17 @@
 
                 @canany(['event-categories-list', 'event-categories-create', 'event-categories-edit',
                     'event-categories-delete', 'event-list', 'event-create', 'event-edit', 'event-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
-                        'admin.events.index',
-                        'admin.events.create',
-                        'admin.events.edit',
-                        'admin.events.show',
-                        'admin.event-categories.index',
-                        'admin.event-categories.create',
-                        'admin.event-categories.edit',
-                        'admin.event-categories.show',
-                    ])) {{ 'hover show' }} @endif">
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
+                                'admin.events.index',
+                                'admin.events.create',
+                                'admin.events.edit',
+                                'admin.events.show',
+                                'admin.event-categories.index',
+                                'admin.event-categories.create',
+                                'admin.event-categories.edit',
+                                'admin.event-categories.show',
+                            ])) {{ 'hover show' }} @endif">
                         <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
                                 'admin.events.index',
                                 'admin.events.create',
@@ -174,12 +175,13 @@
                         @canany(['event-categories-list', 'event-categories-create', 'event-categories-edit',
                             'event-categories-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.event-categories.index',
-                                        'admin.event-categories.create',
-                                        'admin.event-categories.edit',
-                                        'admin.event-categories.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.event-categories.index',
+                                            'admin.event-categories.create',
+                                            'admin.event-categories.edit',
+                                            'admin.event-categories.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.event-categories.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -212,17 +214,8 @@
 
                 @canany(['vclasses-categories-list', 'vclasses-categories-create', 'vclasses-categories-edit',
                     'vclasses-categories-delete', 'vclasses-list', 'vclasses-create', 'vclasses-edit', 'vclasses-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
-                        'admin.vclasses.index',
-                        'admin.vclasses.create',
-                        'admin.vclasses.edit',
-                        'admin.vclasses.show',
-                        'admin.vclasses-categories.index',
-                        'admin.vclasses-categories.create',
-                        'admin.vclasses-categories.edit',
-                        'admin.vclasses-categories.show',
-                    ])) {{ 'hover show' }} @endif">
-                        <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
                                 'admin.vclasses.index',
                                 'admin.vclasses.create',
                                 'admin.vclasses.edit',
@@ -231,7 +224,8 @@
                                 'admin.vclasses-categories.create',
                                 'admin.vclasses-categories.edit',
                                 'admin.vclasses-categories.show',
-                            ])) {{ 'is-active' }} @endif ">
+                            ])) {{ 'hover show' }} @endif">
+                        {{-- <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), ['admin.vclasses.index', 'admin.vclasses.create', 'admin.vclasses.edit', 'admin.vclasses.show', 'admin.vclasses-categories.index', 'admin.vclasses-categories.create', 'admin.vclasses-categories.edit', 'admin.vclasses-categories.show'])) {{ 'is-active' }} @endif ">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-calendar fs-2">
                                     <span class="path1"></span>
@@ -241,17 +235,18 @@
                             </span>
                             <span class="menu-title">Manage Classes</span>
                             <span class="menu-arrow"></span>
-                        </span>
-						
+                        </span> --}}
+
                         @canany(['vclasses-categories-list', 'vclasses-categories-create', 'vclasses-categories-edit',
                             'vclasses-categories-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.vclasses-categories.index',
-                                        'admin.vclasses-categories.create',
-                                        'admin.vclasses-categories.edit',
-                                        'admin.vclasses-categories.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.vclasses-categories.index',
+                                            'admin.vclasses-categories.create',
+                                            'admin.vclasses-categories.edit',
+                                            'admin.vclasses-categories.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.vclasses-categories.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -280,7 +275,7 @@
                             </div>
                         </div>
                     @endcanany
-                @endcanany                            
+                @endcanany
 
 
 
@@ -288,29 +283,8 @@
 
                 @canany(['lodging-categories-list', 'lodging-categories-create', 'lodging-categories-edit',
                     'lodging-categories-delete', 'lodging-list', 'lodging-create', 'lodging-edit', 'lodging-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
-                        'admin.lodging.index',
-                        'admin.lodging.create',
-                        'admin.lodging.edit',
-                        'admin.lodging.show',
-                        'admin.lodging-categories.index',
-                        'admin.lodging-categories.create',
-                        'admin.lodging-categories.edit',
-                        'admin.lodging-categories.show',
-                        'admin.amenities.index',
-                        'admin.amenities.create',
-                        'admin.amenities.edit',
-                        'admin.amenities.show',
-                        'admin.states.index',
-                        'admin.states.create',
-                        'admin.states.edit',
-                        'admin.states.show',
-                        'admin.features.index',
-                        'admin.features.create',
-                        'admin.features.edit',
-                        'admin.features.show',
-                    ])) {{ 'hover show' }} @endif">
-                        <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
                                 'admin.lodging.index',
                                 'admin.lodging.create',
                                 'admin.lodging.edit',
@@ -331,7 +305,8 @@
                                 'admin.features.create',
                                 'admin.features.edit',
                                 'admin.features.show',
-                            ])) {{ 'is-active' }} @endif ">
+                            ])) {{ 'hover show' }} @endif">
+                        {{-- <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), ['admin.lodging.index', 'admin.lodging.create', 'admin.lodging.edit', 'admin.lodging.show', 'admin.lodging-categories.index', 'admin.lodging-categories.create', 'admin.lodging-categories.edit', 'admin.lodging-categories.show', 'admin.amenities.index', 'admin.amenities.create', 'admin.amenities.edit', 'admin.amenities.show', 'admin.states.index', 'admin.states.create', 'admin.states.edit', 'admin.states.show', 'admin.features.index', 'admin.features.create', 'admin.features.edit', 'admin.features.show'])) {{ 'is-active' }} @endif ">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-calendar fs-2">
                                     <span class="path1"></span>
@@ -341,17 +316,18 @@
                             </span>
                             <span class="menu-title">Manage Location Rentals</span>
                             <span class="menu-arrow"></span>
-                        </span>
-						
+                        </span> --}}
+
                         @canany(['lodging-categories-list', 'lodging-categories-create', 'lodging-categories-edit',
                             'lodging-categories-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.lodging-categories.index',
-                                        'admin.lodging-categories.create',
-                                        'admin.lodging-categories.edit',
-                                        'admin.lodging-categories.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.lodging-categories.index',
+                                            'admin.lodging-categories.create',
+                                            'admin.lodging-categories.edit',
+                                            'admin.lodging-categories.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.lodging-categories.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -361,15 +337,15 @@
                                 </div>
                             </div>
                         @endcanany
-                        @canany(['amenities-list', 'amenities-create', 'amenities-edit',
-                            'amenities-delete'])
+                        @canany(['amenities-list', 'amenities-create', 'amenities-edit', 'amenities-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.amenities.index',
-                                        'admin.amenities.create',
-                                        'admin.amenities.edit',
-                                        'admin.amenities.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.amenities.index',
+                                            'admin.amenities.create',
+                                            'admin.amenities.edit',
+                                            'admin.amenities.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.amenities.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -379,15 +355,15 @@
                                 </div>
                             </div>
                         @endcanany
-                        @canany(['states-list', 'states-create', 'states-edit',
-                            'states-delete'])
+                        @canany(['states-list', 'states-create', 'states-edit', 'states-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.states.index',
-                                        'admin.states.create',
-                                        'admin.states.edit',
-                                        'admin.states.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.states.index',
+                                            'admin.states.create',
+                                            'admin.states.edit',
+                                            'admin.states.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.states.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -397,15 +373,15 @@
                                 </div>
                             </div>
                         @endcanany
-                        @canany(['features-list', 'features-create', 'features-edit',
-                            'features-delete'])
+                        @canany(['features-list', 'features-create', 'features-edit', 'features-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.features.index',
-                                        'admin.features.create',
-                                        'admin.features.edit',
-                                        'admin.features.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.features.index',
+                                            'admin.features.create',
+                                            'admin.features.edit',
+                                            'admin.features.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.features.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -438,27 +414,21 @@
 
 
                 @canany(['equipment-categories-list', 'equipment-categories-create', 'equipment-categories-edit',
-                    'equipment-categories-delete', 'equipment-list', 'equipment-create', 'equipment-edit', 'equipment-delete'])
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
-                        'admin.equipment.index',
-                        'admin.equipment.create',
-                        'admin.equipment.edit',
-                        'admin.equipment.show',
-                        'admin.equipment-categories.index',
-                        'admin.equipment-categories.create',
-                        'admin.equipment-categories.edit',
-                        'admin.equipment-categories.show',
-                    ])) {{ 'hover show' }} @endif">
-                        <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
-                                'admin.equipment.index',
-                                'admin.equipment.create',
-                                'admin.equipment.edit',
-                                'admin.equipment.show',
-                                'admin.equipment-categories.index',
-                                'admin.equipment-categories.create',
-                                'admin.equipment-categories.edit',
-                                'admin.equipment-categories.show',
-                            ])) {{ 'is-active' }} @endif ">
+                    'equipment-categories-delete', 'equipment-list', 'equipment-create', 'equipment-edit',
+                    'equipment-delete'])
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion 
+                    @if (in_array(Route::currentRouteName(), [
+                            'admin.equipment.index',
+                            'admin.equipment.create',
+                            'admin.equipment.edit',
+                            'admin.equipment.show',
+                            'admin.equipment-categories.index',
+                            'admin.equipment-categories.create',
+                            'admin.equipment-categories.edit',
+                            'admin.equipment-categories.show',
+                        ])) {{ 'hover show' }} @endif">
+                        {{-- <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), ['admin.equipment.index', 'admin.equipment.create', 'admin.equipment.edit', 'admin.equipment.show', 'admin.equipment-categories.index', 'admin.equipment-categories.create', 'admin.equipment-categories.edit', 'admin.equipment-categories.show'])) {{ 'is-active' }} @endif ">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-calendar fs-2">
                                     <span class="path1"></span>
@@ -468,17 +438,18 @@
                             </span>
                             <span class="menu-title">Manage Equipment Rentals</span>
                             <span class="menu-arrow"></span>
-                        </span>
-						
+                        </span> --}}
+
                         @canany(['equipment-categories-list', 'equipment-categories-create', 'equipment-categories-edit',
                             'equipment-categories-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.equipment-categories.index',
-                                        'admin.equipment-categories.create',
-                                        'admin.equipment-categories.edit',
-                                        'admin.equipment-categories.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.equipment-categories.index',
+                                            'admin.equipment-categories.create',
+                                            'admin.equipment-categories.edit',
+                                            'admin.equipment-categories.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.equipment-categories.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -488,15 +459,16 @@
                                 </div>
                             </div>
                         @endcanany
-						 @canany(['equipment-amenities-list', 'equipment-amenities-create', 'equipment-amenities-edit',
+                        @canany(['equipment-amenities-list', 'equipment-amenities-create', 'equipment-amenities-edit',
                             'equipment-amenities-delete'])
                             <div class="menu-sub menu-sub-accordion ">
-                                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                        'admin.equipment-amenities.index',
-                                        'admin.equipment-amenities.create',
-                                        'admin.equipment-amenities.edit',
-                                        'admin.equipment-amenities.show',
-                                    ])) {{ 'is-active' }} @endif ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.equipment-amenities.index',
+                                            'admin.equipment-amenities.create',
+                                            'admin.equipment-amenities.edit',
+                                            'admin.equipment-amenities.show',
+                                        ])) {{ 'is-active' }} @endif ">
                                     <a class="menu-link" href="{{ route('admin.equipment-amenities.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
@@ -545,7 +517,47 @@
                         </a>
                     </div>
                 @endcanany
-        <?php /*        @canany(['staff-list', 'staff-create', 'staff-edit', 'staff-status-change', 'staff-delete'])
+
+
+                @canany(['user-list', 'user-create', 'user-edit', 'user-status-change', 'user-delete'])
+                    <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif">
+                        <a class="menu-link" href="{{ route('admin.users.index') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-user fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                    <span class="path5"></span>
+                                    <span class="path6"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Lead Management</span>
+                        </a>
+                    </div>
+                @endcanany
+
+
+                @canany(['user-list', 'user-create', 'user-edit', 'user-status-change', 'user-delete'])
+                    <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif">
+                        <a class="menu-link" href="{{ route('admin.users.index') }}">
+                            <span class="menu-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                                <span class="path6"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">E-Commerce Management</span>
+                        </a>
+                    </div>
+                @endcanany
+
+
+                <?php /*        @canany(['staff-list', 'staff-create', 'staff-edit', 'staff-status-change', 'staff-delete'])
                     <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'])) {{ 'is-active' }} @endif">
                         <a class="menu-link" href="{{ route('admin.staff.index') }}">
                             <span class="menu-icon">
@@ -579,26 +591,27 @@
                         </a>
                     </div>
                 @endcanany
-				*/ ?>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-                
-                
+				*/
+                ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 {{-- <div class="menu-item pro-hover">
                     <a class="menu-link" href="#">
                         <span class="menu-icon">
