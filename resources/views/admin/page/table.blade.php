@@ -3,7 +3,7 @@
 
     <td>{{ $item->title }}</td>
     <td>{{ $item->custom_url }}</td>
-    <td>{{ App\Models\Admin\Admin::where('id', $item->created_by)->first()->name }}</td>
+    <td>{{ App\Models\Admin\Admin::where('id', $item->created_by)->first()->name ?? null }}</td>
     <td>{{ $item->created_at }}</td>
     @canany(['pages-edit', 'pages-delete'])
     @can('pages-edit')

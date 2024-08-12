@@ -292,20 +292,20 @@
                                 <div class="card-body card-body4 card-si">
 
                                     <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-                                        <thead style="background-color: rgb(6, 81, 117); color: white;">
-                                            <tr class="fw-semibold fs-6 text-muted">
+                                        <thead style="background-color: rgb(6, 81, 117); color: white; border-bottom: 2px solid #004761;">
+                                            {{-- <tr class="fw-semibold fs-6 text-muted"> --}}
+                                             <tr class="text-start fw-bold fs-7 text-uppercase gs-0" style="letter-spacing: 0.05em;">
 
-                                                <th>Name</th>
-                                                <th>URL</th>
-                                                <th>Author</th>
-                                                <th>Last Updated</th>
+                                               <th style="padding: 12px 20px;">Name</th>
+                                                <th style="padding:12px 20px;">URL</th>
+                                                <th style="padding:12px 20px;">Author</th>
+                                                <th style="padding:12px 20px;">Last Updated</th>
                                                 @canany(['pages-edit', 'pages-delete'])
-                                                <th>Status</th>
-												<th>Homepage</th>
-                                                <th>Action</th>
+                                                <th style="padding: 12px 20px;">Status</th>
+												<th style="padding:12px 20px;">Homepage</th>
+                                                <th style="padding:12px 20px;">Action</th>
                                                 @endcanany
-                                            </tr>
-                                        </thead>
+                                            </tr> 
                                         <tbody>
                                             @include('admin.page.table')
                                         </tbody>

@@ -1,6 +1,6 @@
 <table class="table align-middle fs-6 gy-5">
  
-        <thead style="background-color: rgb(6, 81, 117); color: white;">
+    {{-- <thead style="background-color: rgb(6, 81, 117); color: white;">
             <th>Name</th>
             <th>Created By</th>
             <th>Creation Date</th>
@@ -9,7 +9,22 @@
                 <th>Actions</th>
             @endcanany
         </tr>
+    </thead> --}}
+
+    <thead style="background-color: rgb(6, 81, 117); color: white; border-bottom: 2px solid #004761;">
+        <tr class="text-start fw-bold fs-7 text-uppercase gs-0" style="letter-spacing: 0.05em;">
+            <th style="padding: 12px 20px;">Name</th>
+            <th style="padding: 12px 20px;">Created By</th>
+            <th style="padding: 12px 20px;">Creation Date</th>
+            <th style="padding: 12px 20px;">Status</th>
+            @canany(['footer-edit', 'footer-delete'])
+                <th style="padding: 12px 20px;">Actions</th>
+            @endcanany
+        </tr>
     </thead>
+
+
+
     <tbody>
         @foreach ($footers as $key => $footer)
             <tr>

@@ -53222,3 +53222,7 @@ form#kt_sign_in_form img {
     margin: 0 auto;
     margin-bottom: 30px;
 }
+
+.save-btn.btn{
+margin-top: 25px;
+}

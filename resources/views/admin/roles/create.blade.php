@@ -77,7 +77,12 @@
                                             @endforeach
                                         </div>
                                         <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn brn-save btn-outline-success">Save</button>
+                                            <button type="submit" class="btn btn-sm fw-bold text-white save-btn" style="background-color:rgb(236, 105,31)">Save</button>
+
+                    {{--
+                                            class="btn btn-sm fw-bold text-white" style="background-color: rgb(236, 105, 31);"
+                                            <a href="{{ route('admin.roles.create') }}"  class="btn btn-sm fw-bold text-white" style="background-color: rgb(236, 105, 31);">Add New Role</a>
+                   --}}
                                         </div>
                                     </form>
                                 </div>

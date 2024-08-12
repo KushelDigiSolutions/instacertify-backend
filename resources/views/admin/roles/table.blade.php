@@ -1,4 +1,4 @@
-<table class="table align-middle table-row-dashed fs-6 gy-5">
+{{-- <table class="table align-middle table-row-dashed fs-6 gy-5">
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class=" min-w-125px pe-2">SN.</th>
@@ -7,7 +7,19 @@
                 <th class="text-center min-w-70px">Actions</th>
             @endcanany
         </tr>
-    </thead>
+    </thead> --}}
+
+    <table class="table table-responsive align-middle fs-6 gy-5">
+        <thead style="background-color: rgb(6, 81, 117); color: white; border-bottom: 2px solid #004761;">
+            <tr class="text-start fw-bold fs-7 text-uppercase gs-0" style="letter-spacing: 0.05em;">
+                <th style="padding: 12px 20px;">SN.</th>
+                <th style="padding: 12px 20px;">Name</th>
+                @canany(['role-edit', 'role-delete'])
+                    <th style="padding: 12px 20px;">Actions</th>
+                @endcanany
+            </tr>
+        </thead>
+
     <tbody>
         @forelse ($list as $key=> $data)
             <tr>
