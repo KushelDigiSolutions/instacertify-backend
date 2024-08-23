@@ -25,6 +25,10 @@
     <link href="{{ asset('backend/admin/css/asit.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/admin/css/pages.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/admin/css/summernote-bs4.min.css') }}">
+    <script src="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.min.css"></script>
+
+   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.bootstrap5.css">
+    
 </head>
 
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
@@ -78,6 +82,15 @@
         $(function() {
             // Summernote
             $('#summernote').summernote()
+        })
+    </script>
+    <script src="https://cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+   
+   <script>
+            
+        $(document).ready(function(){
+            $('#myDataTable').DataTable();
         })
     </script>
 </body>

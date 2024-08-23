@@ -21,7 +21,7 @@
 			<div class="d-flex flex-column flex-lg-row flex-column-fluid bg-login">
 
 				<!--begin::Aside-->
-				<div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1 " style="background-image:url('https://admin.fairchildfun.com/air_force_img.png'); background-repeat: no-repeat; background-size:cover;">
+				<div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1 " style="background-image:url(https://instaback.kusheldigi.com/backend/admin/media/Ankithomepage/Insta%20Certify%20desktop.jpg);  background-repeat: no-repeat; background-size:cover;">
 					<!--begin::Content-->
 					<div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
 						<!--begin::Logo-->

@@ -1,3 +1,30 @@
+
+<style>
+    .menu-item {
+        position: relative;
+    }
+    .submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        background: white;
+        padding: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .menu-item:hover .submenu {
+        display: block;
+    }
+    .submenu-item {
+        padding: 5px 10px;
+        color: #333;
+        text-decoration: none;
+    }
+    .submenu-item:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="225px"
     data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
@@ -557,7 +584,7 @@
                 
                 @canany(['user-list', 'user-create', 'user-edit', 'user-status-change', 'user-delete'])
                     <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif">
-                        <a class="menu-link" href="{{ route('admin.users.index') }}">
+                        {{-- <a class="menu-link" href="{{ route('admin.users.index') }}"> --}}
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-user fs-2">
                                     <span class="path1"></span>
@@ -574,26 +601,76 @@
                 @endcanany
 
 
-                @canany(['user-list', 'user-create', 'user-edit', 'user-status-change', 'user-delete'])
-                    <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif">
-                        <a class="menu-link" href="{{ route('admin.users.index') }}">
-                            <span class="menu-icon">
-                                <i class="ki-duotone ki-user fs-2">
-                                {{-- <i class="far fa-user">   --}}
+                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif dropdown">
+                    <a class="menu-link dropdown-toggle" href="{{ route('customers.index') }}" id="ecommerceManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{-- <a class="menu-link dropdown-toggle" href="{{ route('customers.index') }}"> --}}  
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-user fs-2">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
                                 <span class="path3"></span>
                                 <span class="path4"></span>
                                 <span class="path5"></span>
                                 <span class="path6"></span>
-                                </i>
-                            </span>
-                            <span class="menu-title">E-Commerce Management</span>
-                        </a>
-                    </div>
-                @endcanany
-                    
+                            </i>
+                        </span>
+                        <span class="menu-title">E-Commerce Management</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="ecommerceDropDown">
+                        <li><a class="dropdown-item" href="{{route('customers.index')}}">Customer</a></li>
+                        <li><a class="dropdown-item" href="">Review</a></li>
+                        <li><a class="dropdown-item" href="">Groups</a></li>
+                    </ul>
+    
+                </div>
 
+
+                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif dropdown">
+                    {{-- <a class="menu-link dropdown-toggle" href="{{ route('products.index') }}" id="ecommerceManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> --}}
+                        <a class="menu-link dropdown-toggle" href="{{ route('products.index') }}">
+                           
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-user fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                                <span class="path6"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Products</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="ecommerceDropDown">
+                        <li><a class="dropdown-item" href="{{ route('products.index') }}">Customer</a></li>
+                    </ul>
+    
+                </div>
+                
+                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif dropdown">
+                    {{-- <a class="menu-link dropdown-toggle" href="{{ route('products.index') }}" id="ecommerceManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> --}}
+                        <a class="menu-link dropdown-toggle" href="{{ route('categories.index') }}">
+                           
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-user fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                                <span class="path6"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Categories</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="ecommerceDropDown">
+                        <li><a class="dropdown-item" href="{{ route('categories.index') }}">Customer</a></li>
+                    </ul>
+                </div>
+
+
+        
+                
 
                 <?php /*        @canany(['staff-list', 'staff-create', 'staff-edit', 'staff-status-change', 'staff-delete'])
                     <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'])) {{ 'is-active' }} @endif">

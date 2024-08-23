@@ -27,10 +27,10 @@
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5">
-                                        {{ Auth::guard('admin')->user()->name }}
+                                        {{ Auth::guard('admin')->user()->name ??null  }}
                                     </div>
                                     <a href="#"
-                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::guard('admin')->user()->email }}</a>
+                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::guard('admin')->user()->email ?? null}}</a>
                                 </div>
                             </div>
                         </div>
