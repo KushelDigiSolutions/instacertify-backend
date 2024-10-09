@@ -17,7 +17,7 @@ class EventController extends Controller
             $query->whereRaw("CONCAT(end_date, ' ', end_time) >= ?", [$currentDateTime])
                     ->orWhere(function($subQuery) use ($currentDateTime) {
                         $subQuery->where('single_day', '1')
-                        ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]);
+                        /* ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]) */;
                     });
             })->where('is_delete',"0")->where('is_active',"1")->orderBy('date', 'desc')->get();
         return response()->json(['events' => $events]);
@@ -30,7 +30,7 @@ class EventController extends Controller
             $query->where('end_date', '>=', $currentDateTime)
                     ->orWhere(function($subQuery) use ($currentDateTime) {
                         $subQuery->where('single_day', '1')
-                        ->whereRaw("CONCAT(date, ' ', end_time) > ?", [$currentDateTime]);
+                        /* ->whereRaw("CONCAT(date, ' ', end_time) > ?", [$currentDateTime]) */;
                     });
             })->orderBy('date', 'desc')->get();
         
@@ -116,7 +116,7 @@ class EventController extends Controller
                 $query->whereRaw("CONCAT(end_date, ' ', end_time) >= ?", [$currentDateTime])
                         ->orWhere(function($subQuery) use ($currentDateTime) {
                             $subQuery->where('single_day', '1')
-                            ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]);
+                            /* ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]) */;
                         });
                 })->whereJsonContains('category_ids', '' . $category->id)->where('is_delete',"0")->where('is_active',"1")->count();
            
@@ -143,7 +143,7 @@ class EventController extends Controller
                         $query->whereRaw("CONCAT(end_date, ' ', end_time) >= ?", [$currentDateTime])
                                 ->orWhere(function($subQuery) use ($currentDateTime) {
                                     $subQuery->where('single_day', '1')
-                                    ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]);
+                                    /* ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]) */;
                                 });
                         })->whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('date', $request->filter)->limit($request->limit)->get();
                     
@@ -152,7 +152,7 @@ class EventController extends Controller
                         $query->whereRaw("CONCAT(end_date, ' ', end_time) >= ?", [$currentDateTime])
                                 ->orWhere(function($subQuery) use ($currentDateTime) {
                                     $subQuery->where('single_day', '1')
-                                    ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]);
+                                    /* ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]) */;
                                 });
                         })->whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('date', $request->filter)->get();
                     
@@ -162,7 +162,7 @@ class EventController extends Controller
                 $query->whereRaw("CONCAT(end_date, ' ', end_time) >= ?", [$currentDateTime])
                         ->orWhere(function($subQuery) use ($currentDateTime) {
                             $subQuery->where('single_day', '1')
-                            ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]);
+                            /* ->whereRaw("CONCAT(date, ' ', end_time) >= ?", [$currentDateTime]) */;
                         });
                 })->whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('date', "desc")->get();
       

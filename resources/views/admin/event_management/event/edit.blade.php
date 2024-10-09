@@ -278,7 +278,7 @@
                                                     <div class="col-md-12 mb-10 single_day">
                                                         <label class="required form-label">Date</label>
                                                         <input type="date" name="date" class="form-control mb-2"
-                                                            value="{{ $event->date }}" min="{{ date('Y-m-d') }}">
+                                                            value="{{ $event->date }}" min="">
                                                         <!-- <div class="text-muted fs-7">Select Event Date.</div> -->
                                                     </div>
 
@@ -289,7 +289,7 @@
                                                             <input type="date" name="start_date"
                                                                 class="form-control mb-2"
                                                                 value="{{ $event->start_date }}"
-                                                                min="{{ date('Y-m-d') }}">
+                                                                min="">
                                                             <!-- <div class="text-muted fs-7">Select Event Date.</div> -->
                                                         </div>
                                                         <div class="col-md-6 mb-10 multiple_day d-none">

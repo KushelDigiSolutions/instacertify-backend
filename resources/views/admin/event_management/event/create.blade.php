@@ -242,7 +242,7 @@
 
                                                             <input name="date" type="date"
                                                                 class="form-control form-control11"
-                                                                min="{{ date('Y-m-d') }}"
+                                                                min=""
                                                                />
 
                                                     </div>
@@ -254,7 +254,7 @@
 
                                                                 <input name="start_date" type="date"
                                                                     class="form-control form-control11"
-                                                                    min="{{ date('Y-m-d') }}"
+                                                                    min=""
                                                                    />
 
                                                         </div>
