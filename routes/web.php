@@ -44,16 +44,16 @@ Route::get('/admin/event/makeDel/{id}', [EventController::class, 'makeDel'])->na
 
 Route::resource('/admin/customers', CustomerController::class);
 
-Route::controller(ProductController::class)->group(function(){
+/* Route::controller(ProductController::class)->group(function(){
     Route::get('/admin/products','index')->name('products.index');
     Route::get('/products/create','create')->name('products.create');
     Route::post('/products','store')->name('products.store');
     Route::get('/products/{product}/edit','edit')->name('products.edit');
     Route::put('/products/{product}','update')->name('products.update');
     Route::delete('admin/products/{product}','destroy')->name('products.destroy');    
+}); */
 });
-});
-Route::resource('/admin/categories', CategoryController::class);
+/* Route::resource('/admin/categories', CategoryController::class); */
 // End Swapin
 // Route::resource('/admin/customers', CustomerController::class);
 

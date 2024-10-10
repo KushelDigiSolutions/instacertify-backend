@@ -584,7 +584,7 @@
                 
                 @canany(['user-list', 'user-create', 'user-edit', 'user-status-change', 'user-delete'])
                     <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif">
-                        {{-- <a class="menu-link" href="{{ route('admin.users.index') }}"> --}}
+                        <a class="menu-link" href="{{ route('admin.users.index') }}"> 
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-user fs-2">
                                     <span class="path1"></span>
@@ -601,260 +601,52 @@
                 @endcanany
 
 
-                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif dropdown">
-                    <a class="menu-link dropdown-toggle" href="{{ route('customers.index') }}" id="ecommerceManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{-- <a class="menu-link dropdown-toggle" href="{{ route('customers.index') }}"> --}}  
+               
+                <!-- eCommerce Management -->
+                <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+                    <span class="menu-link">
                         <span class="menu-icon">
                             <i class="ki-duotone ki-user fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">E-Commerce Management</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="ecommerceDropDown">
-                        <li><a class="dropdown-item" href="{{route('customers.index')}}">Customer</a></li>
-                        <li><a class="dropdown-item" href="">Review</a></li>
-                        <li><a class="dropdown-item" href="">Groups</a></li>
-                    </ul>
-    
-                </div>
-
-
-                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif dropdown">
-                    {{-- <a class="menu-link dropdown-toggle" href="{{ route('products.index') }}" id="ecommerceManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> --}}
-                        <a class="menu-link dropdown-toggle" href="{{ route('products.index') }}">
-                           
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-user fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Products</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="ecommerceDropDown">
-                        <li><a class="dropdown-item" href="{{ route('products.index') }}">Customer</a></li>
-                    </ul>
-    
-                </div>
-                
-                <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit'])) {{ 'is-active' }} @endif dropdown">
-                    {{-- <a class="menu-link dropdown-toggle" href="{{ route('products.index') }}" id="ecommerceManagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> --}}
-                        <a class="menu-link dropdown-toggle" href="{{ route('categories.index') }}">
-                           
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-user fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Categories</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="ecommerceDropDown">
-                        <li><a class="dropdown-item" href="{{ route('categories.index') }}">Customer</a></li>
-                    </ul>
-                </div>
-
-
-        
-                
-
-                <?php /*        @canany(['staff-list', 'staff-create', 'staff-edit', 'staff-status-change', 'staff-delete'])
-                    <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'])) {{ 'is-active' }} @endif">
-                        <a class="menu-link" href="{{ route('admin.staff.index') }}">
-                            <span class="menu-icon">
-                                <i class="ki-duotone ki-user fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
                                     <span class="path4"></span>
                                     <span class="path5"></span>
                                     <span class="path6"></span>
-                                </i>
-                            </span>
-                            <span class="menu-title">Staff Management</span>
-                        </a>
-                    </div>
-                @endcanany
-                @canany(['role-list', 'role-create', 'role-edit', 'role-delete'])
-                    <div class="menu-item pro-hover @if (in_array(Route::currentRouteName(), ['admin.roles.index', 'admin.roles.create', 'admin.roles.edit'])) {{ 'is-active' }} @endif">
-                        <a class="menu-link" href="{{ route('admin.roles.index') }}">
-                            <span class="menu-icon">
-                                <i class="ki-duotone ki-user fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                    <span class="path4"></span>
-                                    <span class="path5"></span>
-                                    <span class="path6"></span>
-                                </i>
-                            </span>
-                            <span class="menu-title">Role Management</span>
-                        </a>
-                    </div>
-                @endcanany
-				*/
-                ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {{-- <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-shop fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
                             </i>
                         </span>
-                        <span class="menu-title">Manage Shops</span>
-                    </a>
-                </div>
+                        <span class="menu-title">eCommerce Management</span>
+                        <span class="menu-arrow"></span>
+                    </span>
 
-
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-map fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Equipment Rentals</span>
-                    </a>
-                </div>
-
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-chart fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Location Rentals</span>
-                    </a>
-                </div>
-
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-basket fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Products</span>
-                    </a>
-                </div>
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-call fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Classes</span>
-                    </a>
-                </div>
-                <div class="menu-item pt-5">
-                    <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase fs-7">Setting</span>
+                    <div class="menu-sub menu-sub-accordion ">
+                         <div class="menu-item pro-hover">
+                            <a class="menu-link" href="{{ route('admin.products.index') }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Products</span>
+                            </a>
+                        </div>
+                        <div class="menu-item pro-hover">
+                            <a class="menu-link" href="{{ route('admin.categories.index') }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Categories</span>
+                            </a>
+                        </div> 
+                        <div class="menu-item">
+                            <a class="menu-link" href="{{ route('admin.brands.index') }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Brands</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a class="menu-link" href="{{ route('admin.orders.index') }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Orders</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-abstract-13 fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Reports</span>
-                    </a>
-                </div>
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-chart-simple fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">Sales Summary</span>
-                    </a>
-                </div>
-                <div class="menu-item pro-hover">
-                    <a class="menu-link" href="#">
-                        <span class="menu-icon">
-                            <i class="ki-duotone ki-setting fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                                <span class="path3"></span>
-                                <span class="path4"></span>
-                                <span class="path5"></span>
-                                <span class="path6"></span>
-                            </i>
-                        </span>
-                        <span class="menu-title">System Setting</span>
-                    </a>
-                </div> --}}
-
+                <!-- End eCommerce Management -->
             </div>
         </div>
     </div>

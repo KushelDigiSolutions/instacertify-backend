@@ -23,6 +23,15 @@ use App\Http\Controllers\Admin\LodgingRentalAminitiesController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\EquipmentRentalCategoryController;
+use App\Http\Controllers\Admin\Ecommerce\{
+    ProductController,
+    CategoryController,
+    OrderController,
+    CustomerController,
+    BrandController,
+    ReportController
+};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +56,7 @@ Route::post('login', [LoginController::class, 'login'])->name('admin.login.submi
 
 Route::group(['middleware'=>'auth:admin','as'=>'admin.'],function () {
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     //User
     // Route::get('users-index',[UserController::class,'index'])->name('users.index');
@@ -136,8 +145,27 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('page-home/{id}/{stauts}',[PageController::class,'statusHome'])->name('pages.status.home');
         Route::post('page-duplicate',[PageController::class, 'pageDuplicate'])->name('pages.page.duplicate');
 
-    Route::post('logout/', [LoginController::class, 'logout'])->name('logout');
+        Route::post('logout/', [LoginController::class, 'logout'])->name('logout');
+
+         // Products
+        Route::resource('products', ProductController::class); // Using resource for standard REST routes
+
+        // Categories
+        Route::resource('categories', CategoryController::class); // Using resource for standard REST routes
+
+        // Brands
+        Route::resource('brands', BrandController::class); // Using resource for standard REST routes
+
+        // Orders
+        Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+        // Reports
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+
 });
+
 // Added facades route by swapin
 use Illuminate\Support\Facades\Route;
 // End edit by swapin

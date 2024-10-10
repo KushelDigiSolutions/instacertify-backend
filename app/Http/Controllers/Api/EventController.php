@@ -127,7 +127,7 @@ class EventController extends Controller
             
         }
         $dataArray['category_all'] = $categories;
-        
+       // dd($dataArray);
         $id = EventCategory::where('slug', $slug)->first();
         $dataArray['event'] = [];
         $currentDateTime = date('Y-m-d H:i:s');
