@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Ecommerce;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -23,28 +24,39 @@ class CategoryController extends Controller
      // Store a newly created category
      public function store(Request $request)
      {
-         // Validate the incoming request data
-         $request->validate([
-             'name' => 'required|string|max:255|unique:categories,name',
-             'slug' => 'required|string|max:255|unique:categories,slug',
-             'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-             'is_active' => 'required|boolean',
-         ]);
- 
-         // Create the category
-         $category = new Category();
-         $category->name = $request->name;
-         $category->slug = Str::slug($request->slug);
-         $category->is_active = $request->is_active;
- 
-         // Handle image upload
-         if ($request->hasFile('image')) {
-             $category->icon = $request->file('image')->store('ecommerce/categories', 'public');
-         }
- 
-         $category->save();
- 
-         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
+        // Validate the incoming request
+        $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name', // Ensure the name is unique in the brands table
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validate image
+        ]);
+    
+        // Handle the image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension(); // Create a unique image name
+            $imagePath = public_path('ecommerce/categories'); // Define the image path
+    
+            $image->move($imagePath, $imageName); // Move the image to the desired directory
+        }
+    
+        // Create slug from the brand name
+        $slug = Str::slug($request->name); // Generate slug from the name
+    
+        // Ensure the slug is unique in the brands table
+        $counter = 1;
+        while (Category::where('slug', $slug)->exists()) {
+            $slug = Str::slug($request->name) . '-' . $counter; // Append counter if slug exists
+            $counter++;
+        }
+    
+        // Create the brand
+        Category::create([
+            'name' => $request->name,
+            'slug' => $slug,
+            'icon' => $imageName, // Store the image name in the database
+        ]);
+    
+        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
      }
 
     public function show($id)

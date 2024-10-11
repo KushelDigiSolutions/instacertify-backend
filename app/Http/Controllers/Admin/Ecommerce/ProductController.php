@@ -191,6 +191,6 @@ class ProductController extends Controller
         // Delete the product
         $product->delete();
 
-        return redirect()->route('admin.ecommerce.products.index')->with('success', 'Product deleted successfully');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
     }
 }
