@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EventCategoryController;
 use App\Http\Controllers\Api\VclassController;
 use App\Http\Controllers\Api\LodgingRentalController;
 use App\Http\Controllers\Api\EquipmentRentalController;
+use App\Http\Controllers\Api\EcommerceApiController;
 
 
 /*
@@ -79,6 +80,14 @@ Route::middleware(['cors'])->group(function () {
 	Route::post('update-equipment-booking',[EquipmentRentalController::class,'updateEquipmentBooking']);
 	Route::post('calculate-equipment',[LodgingRentalController::class,'calculateLodging']);
 	Route::post('create-equipment-booking',[LodgingRentalController::class,'createLodgingBooking']);
+
+	Route::get('products', [EcommerceApiController::class, 'getAllProducts']);
+	Route::get('categories', [EcommerceApiController::class, 'getAllCategories']);
+	Route::get('products/slug/{slug}', [EcommerceApiController::class, 'getProductBySlug']);
+	Route::post('ratings', [EcommerceApiController::class, 'createNewRating']);
+	Route::put('ratings/{id}', [EcommerceApiController::class, 'updateRating']);
+	Route::delete('ratings/{id}', [EcommerceApiController::class, 'deleteRating']);
+	Route::get('/products/category/{slug}', [EcommerceApiController::class, 'getAllProductsByCategorySlug']);
 	
 });
 
