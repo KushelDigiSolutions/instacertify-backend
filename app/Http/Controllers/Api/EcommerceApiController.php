@@ -25,18 +25,21 @@ class EcommerceApiController extends Controller
     {
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', 0);
+         // Get all categories
+         $categories = Category::all(['id', 'name','slug']);
         $firstCategoryId = 1;  // Assuming the first category ID is always 1
 
         $products = Product::where('category_id', $firstCategoryId)
             ->where('status', 'active')
             ->limit($limit)
             ->offset($offset)
-            ->get([ 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+            ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
 
         // Format the product images and data
         $products = $products->map(function ($product) {
             return [
-                'name' => $product->name,
+                'name' => $product->product_name,
+                'slug' => $product->slug,
                 'rating_count' => $product->rating_count,
                 'rating_number' => $product->rating_number,
                 'price' => $product->price,
@@ -45,8 +48,7 @@ class EcommerceApiController extends Controller
             ];
         });
 
-        // Get all categories
-        $categories = Category::all(['id', 'name']);
+       
 
         return response()->json([
             'products' => $products,
@@ -54,6 +56,45 @@ class EcommerceApiController extends Controller
         ]);
     }
 
+     /**
+     * Get all products by category slug with pagination.
+     */
+    public function getAllProductsByCategorySlug(Request $request, $slug)
+    {
+        $limit = $request->input('limit', 20);
+        $offset = $request->input('offset', 0);
+
+        // Find the category by slug
+        $category = Category::where('slug', $slug)->first();
+
+        if (!$category) {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
+
+        // Retrieve products for the found category
+        $products = Product::where('category_id', $category->id)
+            ->where('status', 'active')
+            ->limit($limit)
+            ->offset($offset)
+            ->get(['name', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+
+        // Format the product images and data
+        $products = $products->map(function ($product) {
+            $images = json_decode($product->images);
+            $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
+
+            return [
+                'name' => $product->name,
+                'rating_count' => $product->rating_count,
+                'rating_number' => $product->rating_number,
+                'price' => $product->price,
+                'sale_price' => $product->sale_price,
+                'image' => $imagePath,
+            ];
+        });
+
+        return response()->json(['products' => $products]);
+    }
     /**
      * Get all categories.
      */
@@ -73,14 +114,14 @@ class EcommerceApiController extends Controller
         // Format the images
         $product->images = array_map(function ($image) {
             return $this->baseUrl . '/ecommerce/products/' . $image;
-        }, json_decode($product->images));
+        }, $product->images);
 
         // Get the reviews for the product
         $reviews = Review::where('product_id', $product->id)->with('user')->get();
         $reviews->each(function ($review) {
             $review->images = array_map(function ($image) {
                 return $this->baseUrl . '/ecommerce/reviews/' . $image;
-            }, json_decode($review->images));
+            }, $review->images);
         });
 
         return response()->json([

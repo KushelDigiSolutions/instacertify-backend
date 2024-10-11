@@ -82,12 +82,12 @@ Route::middleware(['cors'])->group(function () {
 	Route::post('create-equipment-booking',[LodgingRentalController::class,'createLodgingBooking']);
 
 	Route::get('products', [EcommerceApiController::class, 'getAllProducts']);
+	Route::get('products/category/{slug}', [EcommerceApiController::class, 'getAllProductsByCategorySlug']);
 	Route::get('categories', [EcommerceApiController::class, 'getAllCategories']);
-	Route::get('products/slug/{slug}', [EcommerceApiController::class, 'getProductBySlug']);
+	Route::get('products/{slug}', [EcommerceApiController::class, 'getProductBySlug']);
 	Route::post('ratings', [EcommerceApiController::class, 'createNewRating']);
 	Route::put('ratings/{id}', [EcommerceApiController::class, 'updateRating']);
 	Route::delete('ratings/{id}', [EcommerceApiController::class, 'deleteRating']);
-	Route::get('/products/category/{slug}', [EcommerceApiController::class, 'getAllProductsByCategorySlug']);
 	
 });
 
