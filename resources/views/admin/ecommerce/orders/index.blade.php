@@ -5,7 +5,7 @@
             <div class="app-container container-xxl d-flex flex-stack">
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                       Product List
+                       Order List
                     </h1>
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <li class="breadcrumb-item text-muted">
@@ -15,13 +15,13 @@
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
                         <li class="breadcrumb-item text-muted">
-                           Product List
+                           Order List
                         </li>
                     </ul>
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    @can('products-create')
-                        <a href="{{ route('admin.ecommerce.products.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Product</a>
+                    @can('orders-create')
+                        <a href="{{ route('admin.ecommerce.orders.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Order</a>
                     @endcan
                 </div>
             </div>
@@ -47,7 +47,7 @@
                             </div>
                         </form>
                         <div id="table">
-                            @include('admin.ecommerce.products.table')  {{-- Update this line to point to your products table --}}
+                            @include('admin.ecommerce.orders.table')  {{-- Update this line to point to your orders table --}}
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
         function fillter() {
             $.ajax({
                 type: 'GET',
-                url: "{{ route('admin.products.index') }}",  {{-- Update the route to products index --}}
+                url: "{{ route('admin.orders.index') }}",  {{-- Update the route to orders index --}}
                 data: $('#search_form').serialize(),
                 success: function(data) {
                     $('#table').html(data)

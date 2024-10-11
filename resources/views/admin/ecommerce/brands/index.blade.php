@@ -21,7 +21,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     @can('brands-create')
-                        <a href="{{ route('admin.ecommerce.brands.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Brand</a>
+                        <a href="{{ route('admin.brands.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Brand</a>
                     @endcan
                 </div>
             </div>
@@ -37,7 +37,7 @@
                                 <div class="col-md-4">
                                     <div class="d-flex align-items-center position-relative mt-10 mb-10">
                                         <input type="text" class="form-control form-control-solid w-250px ps-13"
-                                            name="search_key" placeholder="Search Brands" onkeyup="fillter()">
+                                            name="search_key" placeholder="Search" onkeyup="fillter()">
                                         <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
                                             <span class="path1"></span>
                                             <span class="path2"></span>

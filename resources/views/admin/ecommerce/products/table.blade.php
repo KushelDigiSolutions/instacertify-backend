@@ -5,36 +5,36 @@
             <th class="min-w-125px">Image</th>
             <th class="min-w-125px">Name</th>
             <th class="min-w-125px">Status</th>
-            @canany(['brands-edit', 'brands-delete'])
+            @canany(['products-edit', 'products-delete'])
                 <th class="text-center min-w-70px">Actions</th>
             @endcanany
         </tr>
     </thead>
     <tbody>
-        @foreach ($brands as $key => $brand)
+        @foreach ($products as $key => $product)
             <tr>
-                <td>{{ $key + 1 + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
+                <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
                 <td>
                     <div class="d-flex align-items-center">
                         <div class="symbol symbol-45px me-5">
-                            <img src="{{ asset('backend/admin/images/vclass_management/brands/'.$brand->image) }}"
+                            <img src="{{ asset('backend/admin/images/vclass_management/products/'.$product->image) }}"
                                 style="width: 120px;height: 90px;object-fit: cover;">
                         </div>
                     </div>
                 </td>
-                <td>{{ $brand->name }}</td>
+                <td>{{ $product->name }}</td>
                 <td>
-                    @if ($brand->is_active == '1')
-                        <a href="{{ route('admin.brands.show', $brand->id) }}?status=0">
+                    @if ($product->is_active == '1')
+                        <a href="{{ route('admin.products.show', $product->id) }}?status=0">
                             <div class="badge badge-light-success">Active</div>
                         </a>
                     @else
-                        <a href="{{ route('admin.brands.show', $brand->id) }}?status=1">
+                        <a href="{{ route('admin.products.show', $product->id) }}?status=1">
                             <div class="badge badge-light-danger">Deactive</div>
                         </a>
                     @endif
                 </td>
-                @canany(['brands-edit', 'brands-delete'])
+                @canany(['products-edit', 'products-delete'])
                     <td class="text-center">
                         <div class="dropdown">
                             <svg id="self_car_{{ $key }}" class="dropdown-toggle outline-none cursor-pointer"
@@ -50,8 +50,8 @@
                             <div class="dropdown-more-details menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4 mt-10 new-dp1 dropdown-menu"
                                 id="sey_{{ $key }}" aria-labelledby="self_car_{{ $key }}">
                                 <div class="menu-item px-3">
-                                    @can('vclasses-brands-edit')
-                                        <a href="{{ route('admin.vclasses-brands.edit', $brand->id) }}"
+                                    @can('vclasses-products-edit')
+                                        <a href="{{ route('admin.vclasses-products.edit', $product->id) }}"
                                             class="menu-link px-3">
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -62,8 +62,8 @@
                                             Edit
                                         </a>
                                     @endcan
-                                    @can('brands-delete')
-                                        <a class="menu-link px-3" onclick="confirmDelete({{ $brand->id }})">
+                                    @can('products-delete')
+                                        <a class="menu-link px-3" onclick="confirmDelete({{ $product->id }})">
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -72,8 +72,8 @@
                                             </svg>
                                             Delete
                                         </a>
-                                        <form action="{{ route('admin.vclasses-brands.destroy', $brand->id) }}"
-                                            id="delete_form_{{ $brand->id }}" method="POST">
+                                        <form action="{{ route('admin.vclasses-products.destroy', $product->id) }}"
+                                            id="delete_form_{{ $product->id }}" method="POST">
                                             @method('DELETE')
                                             @csrf
                                         </form>

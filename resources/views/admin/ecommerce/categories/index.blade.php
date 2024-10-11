@@ -5,7 +5,7 @@
             <div class="app-container container-xxl d-flex flex-stack">
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                       Brand List
+                       Category List
                     </h1>
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <li class="breadcrumb-item text-muted">
@@ -15,13 +15,13 @@
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
                         <li class="breadcrumb-item text-muted">
-                           Brand List
+                           Category List
                         </li>
                     </ul>
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                    @can('brands-create')
-                        <a href="{{ route('admin.ecommerce.brands.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Brand</a>
+                    @can('categories-create')
+                        <a href="{{ route('admin.ecommerce.categories.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Category</a>
                     @endcan
                 </div>
             </div>
@@ -37,7 +37,7 @@
                                 <div class="col-md-4">
                                     <div class="d-flex align-items-center position-relative mt-10 mb-10">
                                         <input type="text" class="form-control form-control-solid w-250px ps-13"
-                                            name="search_key" placeholder="Search Brands" onkeyup="fillter()">
+                                            name="search_key" placeholder="Search" onkeyup="fillter()">
                                         <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -47,7 +47,7 @@
                             </div>
                         </form>
                         <div id="table">
-                            @include('admin.ecommerce.brands.table')  {{-- Update this line to point to your brands table --}}
+                            @include('admin.ecommerce.categories.table')  {{-- Update this line to point to your categories table --}}
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
         function fillter() {
             $.ajax({
                 type: 'GET',
-                url: "{{ route('admin.brands.index') }}",  {{-- Update the route to brands index --}}
+                url: "{{ route('admin.categories.index') }}",  {{-- Update the route to categories index --}}
                 data: $('#search_form').serialize(),
                 success: function(data) {
                     $('#table').html(data)
