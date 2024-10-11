@@ -34,6 +34,18 @@
                 <div class="card-body pt-0" id="page-section-body">
                     <form id="create_product_form" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+
                         <div class="mb-3">
                             <label for="category_id" class="form-label">Category</label>
                             <select name="category_id" id="category_id" class="form-control">

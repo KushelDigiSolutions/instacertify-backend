@@ -35,6 +35,17 @@
                             @csrf
                             @method('PUT') <!-- Use PUT method for updates -->
 
+
+                            @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
                             <div class="mb-4">
                                 <label for="category_id" class="form-label">Category</label>
                                 <select name="category_id" id="category_id" class="form-control">
@@ -64,7 +75,7 @@
                                     <div class="mt-2">
                                         <h5>Current Images:</h5>
                                         @foreach($product->images as $image)
-                                            <img src="{{ asset('storage/' . $image) }}" alt="Product Image" class="img-thumbnail" style="max-width: 100px;">
+                                            <img src="{{ asset('ecommerce/products/' . $image) }}" alt="Product Image" class="img-thumbnail" style="max-width: 100px;">
                                         @endforeach
                                     </div>
                                 @endif
