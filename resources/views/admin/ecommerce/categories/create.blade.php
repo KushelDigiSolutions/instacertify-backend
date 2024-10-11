@@ -15,7 +15,7 @@
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
                         <li class="breadcrumb-item text-muted">
-                            <a href="{{ route('admin.vclasses-categories.index') }}"
+                            <a href="{{ route('admin.categories.index') }}"
                                 class="text-muted text-hover-primary">Class Category List</a>
                         </li>
                         <li class="breadcrumb-item">
@@ -30,7 +30,7 @@
         </div>
         <div class="app-content flex-column-fluid">
             <div class="app-container container-xxl">
-                <form action="{{ route('admin.vclasses-categories.store') }}" class="form d-flex flex-column flex-lg-row"
+                <form action="{{ route('admin.categories.store') }}" class="form d-flex flex-column flex-lg-row"
                     enctype="multipart/form-data" method="POST">
                     @csrf
                     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -116,15 +116,7 @@
                                                 <div class="fs-7" style="color:red">A category name is required and
                                                     recommended to be unique.</div>
                                             </div>
-                                            <div class="mb-10 fv-row">
-                                                <label class="form-label">Seo Title</label>
-                                                <input type="text" name="seo_title" class="form-control mb-2"
-                                                    placeholder="Seo Title...">
-                                            </div>
-                                            <div>
-                                                <label class="form-label">Seo Description</label>
-                                                <textarea name="seo_description" class="form-control" placeholder="Seo Description..."></textarea>
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </div>

@@ -1,24 +1,40 @@
 @extends('admin.layouts.app')
+
 @section('content')
     <div class="d-flex flex-column flex-column-fluid">
         <div class="app-toolbar py-3 py-lg-6">
             <div class="app-container container-xxl d-flex flex-stack">
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                        @isset($page_title)
-                            {{ $page_title }}
-                        @endisset
+                        Edit Category
                     </h1>
+                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                        <li class="breadcrumb-item text-muted">
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted text-hover-primary">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                        </li>
+                        <li class="breadcrumb-item text-muted">
+                            <a href="{{ route('admin.categories.index') }}"
+                                class="text-muted text-hover-primary">Category List</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                        </li>
+                        <li class="breadcrumb-item text-muted">
+                            Edit Category
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    
         <div class="app-content flex-column-fluid">
             <div class="app-container container-xxl">
-                <form action="{{ route('admin.vclasses-categories.update', $vclass_category->id) }}"
-                    class="form d-flex flex-column flex-lg-row" enctype="multipart/form-data" method="POST">
-                    @method('PUT')
+                <form action="{{ route('admin.categories.update', $category->id) }}" class="form d-flex flex-column flex-lg-row"
+                    enctype="multipart/form-data" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
                         <div class="card card-flush py-4">
                             <div class="card-header">
@@ -31,16 +47,11 @@
                                     .image-input-placeholder {
                                         background-image: url({{ asset('backend/admin/images/blank-image.svg') }});
                                     }
-
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url({{ asset('backend/admin/images/blank-image-dark.svg') }});
-                                    }
                                 </style>
                                 <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                                     data-kt-image-input="true">
                                     <div class="image-input-wrapper w-150px h-150px"
-                                        style="background-image: url({{ asset('backend/admin/images/vclass_management/categories/' . $vclass_category->image) }})">
-                                    </div>
+                                        style="background-image: url({{ asset('ecommerce/categories/' . $category->icon) }})"></div>
                                     <label
                                         class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                         data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change image">
@@ -48,7 +59,7 @@
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
-                                        <input type="file" name="image" accept=".png, .jpg, .jpeg">
+                                        <input type="file" name="image" accept=".png, .jpg, .jpeg" />
                                         <input type="hidden" name="image_remove" />
                                     </label>
                                     <span
@@ -78,17 +89,14 @@
                                     <h2>Status</h2>
                                 </div>
                                 <div class="card-toolbar">
-                                    <div
-                                        class="rounded-circle @if ($vclass_category->is_active == '1') bg-success @else bg-danger @endif w-15px h-15px">
-                                    </div>
+                                    <div class="rounded-circle bg-success w-15px h-15px"></div>
                                 </div>
                             </div>
                             <div class="card-body pt-0">
                                 <select class="form-select mb-2" name="is_active" data-control="select2"
                                     data-hide-search="true" data-placeholder="Select an option">
-                                    <option value="1" @if ($vclass_category->is_active == '1') selected @endif>Active</option>
-                                    <option value="0" @if ($vclass_category->is_active == '0') selected @endif>Deactive
-                                    </option>
+                                    <option value="1" {{ $category->is_active ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ !$category->is_active ? 'selected' : '' }}>Deactive</option>
                                 </select>
                                 <div class="text-muted fs-7">Set the category status.</div>
                             </div>
@@ -103,19 +111,16 @@
                                             <div class="mb-10 fv-row">
                                                 <label class="required form-label">Category Name</label>
                                                 <input type="text" name="name" class="form-control mb-2"
-                                                    placeholder="Category Name..." value="{{ $vclass_category->name }}"
-                                                    required>
+                                                    placeholder="Category Name..." value="{{ $category->name }}" required>
                                                 <div class="fs-7" style="color:red">A category name is required and
                                                     recommended to be unique.</div>
                                             </div>
                                             <div class="mb-10 fv-row">
-                                                <label class="form-label">Seo Title</label>
-                                                <input type="text" name="seo_title" class="form-control mb-2"
-                                                    placeholder="Seo Title..." value="{{ $vclass_category->seo_title }}">
-                                            </div>
-                                            <div>
-                                                <label class="form-label">Seo Description</label>
-                                                <textarea name="seo_description" class="form-control" placeholder="Seo Description...">{{ $vclass_category->seo_description }}</textarea>
+                                                <label class="required form-label">Slug</label>
+                                                <input type="text" name="slug" class="form-control mb-2"
+                                                    placeholder="Category Slug..." value="{{ $category->slug }}" required>
+                                                <div class="fs-7" style="color:red">A category slug is required and
+                                                    should be unique.</div>
                                             </div>
                                         </div>
                                     </div>
