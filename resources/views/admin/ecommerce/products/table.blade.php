@@ -13,7 +13,7 @@
     <tbody>
         @foreach ($products as $key => $product)
             <tr>
-                <td>{{ $key + 1 + ($products->currentPage() - 1) * $products->perPage() }}</td>
+                <td>{{$product->id}}}</td>
                 <td>
                     <div class="d-flex align-items-center">
                         <div class="symbol symbol-45px me-5">

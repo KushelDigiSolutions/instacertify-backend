@@ -5,7 +5,7 @@
             <div class="app-container container-xxl d-flex flex-stack">
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                       Add Class Category
+                       Add Class Brand
                     </h1>
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <li class="breadcrumb-item text-muted">
@@ -15,14 +15,14 @@
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
                         <li class="breadcrumb-item text-muted">
-                            <a href="{{ route('admin.vclasses-categories.index') }}"
-                                class="text-muted text-hover-primary">Class Category List</a>
+                            <a href="{{ route('admin.brands.index') }}"
+                                class="text-muted text-hover-primary">Class Brand List</a>
                         </li>
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
                         <li class="breadcrumb-item text-muted">
-                            Add Class Category
+                            Add Class Brand
                         </li>
                     </ul>
                 </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="app-content flex-column-fluid">
             <div class="app-container container-xxl">
-                <form action="{{ route('admin.vclasses-categories.store') }}" class="form d-flex flex-column flex-lg-row"
+                <form action="{{ route('admin.brands.store') }}" class="form d-flex flex-column flex-lg-row"
                     enctype="multipart/form-data" method="POST">
                     @csrf
                     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -80,7 +80,7 @@
                                         </i>
                                     </span>
                                 </div>
-                                <div class="text-muted fs-7">Set the category image. Only *.png, *.jpg and *.jpeg image
+                                <div class="text-muted fs-7">Set the brand image. Only *.png, *.jpg and *.jpeg image
                                     files are accepted</div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                     <option value="1">Active</option>
                                     <option value="0">Deactive</option>
                                 </select>
-                                <div class="text-muted fs-7">Set the category status.</div>
+                                <div class="text-muted fs-7">Set the brand status.</div>
                             </div>
                         </div>
                     </div>
@@ -110,21 +110,13 @@
                                     <div class="card card-flush py-4">
                                         <div class="card-body pt-0">
                                             <div class="mb-10 fv-row">
-                                                <label class="required form-label">Category Name</label>
+                                                <label class="required form-label">Brand Name</label>
                                                 <input type="text" name="name" class="form-control mb-2"
-                                                    placeholder="Category Name..." required>
-                                                <div class="fs-7" style="color:red">A category name is required and
+                                                    placeholder="Brand Name..." required>
+                                                <div class="fs-7" style="color:red">A brand name is required and
                                                     recommended to be unique.</div>
                                             </div>
-                                            <div class="mb-10 fv-row">
-                                                <label class="form-label">Seo Title</label>
-                                                <input type="text" name="seo_title" class="form-control mb-2"
-                                                    placeholder="Seo Title...">
-                                            </div>
-                                            <div>
-                                                <label class="form-label">Seo Description</label>
-                                                <textarea name="seo_description" class="form-control" placeholder="Seo Description..."></textarea>
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </div>

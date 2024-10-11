@@ -1,10 +1,11 @@
 <table class="table align-middle table-row-dashed fs-6 gy-5">
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-            <th class="w-10px pe-2">SN.</th>
-            <th class="min-w-125px">Image</th>
-            <th class="min-w-125px">Name</th>
-            <th class="min-w-125px">Status</th>
+            <th>ID.</th>
+            <th style="width:0">Image</th>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Status</th>
             @canany(['categories-edit', 'categories-delete'])
                 <th class="text-center min-w-70px">Actions</th>
             @endcanany
@@ -13,16 +14,18 @@
     <tbody>
         @foreach ($categories as $key => $category)
             <tr>
-                <td>{{ $key + 1 + ($categories->currentPage() - 1) * $categories->perPage() }}</td>
+        <td>{{$category->id}}</td>
                 <td>
                     <div class="d-flex align-items-center">
                         <div class="symbol symbol-45px me-5">
-                            <img src="{{ asset('backend/admin/images/vclass_management/categories/'.$category->image) }}"
-                                style="width: 120px;height: 90px;object-fit: cover;">
+                        <img src="{{ asset('ecommerce/categories/'.$category->icon) }}"
+     style="width: 120px; height: 90px; object-fit: cover;">
+
                         </div>
                     </div>
                 </td>
                 <td>{{ $category->name }}</td>
+                <td>{{ $category->slug }}</td>
                 <td>
                     @if ($category->is_active == '1')
                         <a href="{{ route('admin.categories.show', $category->id) }}?status=0">
@@ -50,8 +53,8 @@
                             <div class="dropdown-more-details menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4 mt-10 new-dp1 dropdown-menu"
                                 id="sey_{{ $key }}" aria-labelledby="self_car_{{ $key }}">
                                 <div class="menu-item px-3">
-                                    @can('vclasses-categories-edit')
-                                        <a href="{{ route('admin.vclasses-categories.edit', $category->id) }}"
+                                    @can('categories-edit')
+                                        <a href="{{ route('admin.categories.edit', $category->id) }}"
                                             class="menu-link px-3">
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +75,7 @@
                                             </svg>
                                             Delete
                                         </a>
-                                        <form action="{{ route('admin.vclasses-categories.destroy', $category->id) }}"
+                                        <form action="{{ route('admin.categories.destroy', $category->id) }}"
                                             id="delete_form_{{ $category->id }}" method="POST">
                                             @method('DELETE')
                                             @csrf

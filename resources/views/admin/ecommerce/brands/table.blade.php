@@ -18,8 +18,9 @@
                 <td>
                     <div class="d-flex align-items-center">
                         <div class="symbol symbol-45px me-5">
-                            <img src="{{ asset('backend/admin/images/vclass_management/brands/'.$brand->image) }}"
-                                style="width: 120px;height: 90px;object-fit: cover;">
+                        <img src="{{ asset('ecommerce/brands/'.$brand->icon) }}"
+     style="width: 120px; height: 90px; object-fit: cover;">
+
                         </div>
                     </div>
                 </td>
