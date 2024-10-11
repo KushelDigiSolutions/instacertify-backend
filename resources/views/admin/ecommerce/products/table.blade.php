@@ -6,8 +6,8 @@
             <th class="min-w-125px">SKU</th>
             <th class="min-w-125px">Name</th>
             <th class="min-w-125px">Price</th>
-            <th class="min-w-125px">QTY</th>
             <th class="min-w-125px">Sale Price</th>
+            <th class="min-w-125px">QTY</th>
             <th class="min-w-125px">Status</th>
             @canany(['products-edit', 'products-delete'])
                 <th class="text-center min-w-70px">Actions</th>
