@@ -21,7 +21,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     @can('products-create')
-                        <a href="{{ route('admin.ecommerce.products.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Product</a>
+                        <a href="{{ route('admin.products.create') }}" class="btn btn-sm fw-bold btn-primary">Create New Product</a>
                     @endcan
                 </div>
             </div>

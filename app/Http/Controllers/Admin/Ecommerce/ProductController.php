@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Ecommerce;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,7 +25,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.ecommerce.products.create');
+        $categories = Category::all(); // Fetch categories from the database
+        return view('admin.ecommerce.products.create', compact('categories'));
     }
 
     /**
@@ -32,54 +34,59 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request
+        // Validate the incoming request
         $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'product_name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:products,slug',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',  // Image validation
-            'shipment_time' => 'required|integer',
+            'slug' => 'required|string|unique:products,slug|max:255',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'shipment_time' => 'nullable|integer|min:1',
             'sku_name' => 'required|string|max:255',
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable|integer|min:0',
             'price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
             'additional_tax' => 'nullable|numeric',
-            'return_days' => 'required|integer',
-            'status' => 'required|boolean',
-            'category_id' => 'required|integer|exists:categories,id',
+            'return_days' => 'nullable|integer|min:0',
+            'product_detail' => 'nullable|string',
+            'product_specification' => 'nullable|string',
+            'tags' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
         ]);
-
-        // Handle image upload
-        $images = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('ecommerce/products', 'public');
-                $images[] = $path;  // Save each image path in an array
-            }
-        }
 
         // Create the product
-        Product::create([
-            'product_name' => $request->product_name,
-            'slug' => $request->slug,
-            'images' => json_encode($images),  // Store images as JSON
-            'shipment_time' => $request->shipment_time,
-            'sku_name' => $request->sku_name,
-            'quantity' => $request->quantity,
-            'rating_count' => 0,  // Initialize rating count and number
-            'rating_number' => 0,
-            'price' => $request->price,
-            'sale_price' => $request->sale_price,
-            'additional_tax' => $request->additional_tax,
-            'return_days' => $request->return_days,
-            'product_detail' => $request->product_detail,
-            'product_specification' => $request->product_specification ? json_encode($request->product_specification) : null,
-            'tags' => $request->tags ? json_encode($request->tags) : null,
-            'status' => $request->status,
-            'category_id' => $request->category_id,
-        ]);
+        $product = new Product();
+        $product->category_id = $request->category_id;
+        $product->product_name = $request->product_name;
+        $product->slug = Str::slug($request->slug); // Ensure slug is formatted
+        $product->shipment_time = $request->shipment_time;
+        $product->sku_name = $request->sku_name;
+        $product->quantity = $request->quantity;
+        $product->price = $request->price;
+        $product->sale_price = $request->sale_price;
+        $product->additional_tax = $request->additional_tax;
+        $product->return_days = $request->return_days;
+        $product->product_detail = $request->product_detail;
+        $product->product_specification = $request->product_specification;
+        $product->tags = $request->tags;
+        $product->status = $request->status;
 
-        return redirect()->route('admin.ecommerce.products.index')->with('success', 'Product created successfully');
+        // Handle image upload
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $image) {
+                // Store the image in the specified directory
+                $path = $image->store('ecommerce/products', 'public'); 
+                // Extract the image name and add it to the array
+                $images[] = basename($path); 
+            }
+            $product->images = json_encode($images); // Store as JSON
+        }
+
+        $product->save(); // Save the product
+
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
+
 
     /**
      * Display the specified product.
@@ -96,7 +103,8 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('admin.ecommerce.products.edit', compact('product'));
+        $categories = Category::all(); // Fetch categories from the database
+        return view('admin.ecommerce.products.edit', compact('product','categories'));
     }
 
     /**
@@ -104,54 +112,64 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate the request
+        // Validate the incoming request
         $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'product_name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:products,slug,' . $id,
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',  // Image validation
-            'shipment_time' => 'required|integer',
+            'slug' => 'required|string|max:255|unique:products,slug,' . $id,
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'shipment_time' => 'nullable|integer|min:1',
             'sku_name' => 'required|string|max:255',
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable|integer|min:0',
             'price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
             'additional_tax' => 'nullable|numeric',
-            'return_days' => 'required|integer',
-            'status' => 'required|boolean',
-            'category_id' => 'required|integer|exists:categories,id',
+            'return_days' => 'nullable|integer|min:0',
+            'product_detail' => 'nullable|string',
+            'product_specification' => 'nullable|string',
+            'tags' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
         ]);
 
+        // Find the product by ID
         $product = Product::findOrFail($id);
+        $product->category_id = $request->category_id;
+        $product->product_name = $request->product_name;
+        $product->slug = Str::slug($request->slug); // Ensure slug is formatted
+        $product->shipment_time = $request->shipment_time;
+        $product->sku_name = $request->sku_name;
+        $product->quantity = $request->quantity;
+        $product->price = $request->price;
+        $product->sale_price = $request->sale_price;
+        $product->additional_tax = $request->additional_tax;
+        $product->return_days = $request->return_days;
+        $product->product_detail = $request->product_detail;
+        $product->product_specification = $request->product_specification;
+        $product->tags = $request->tags;
+        $product->status = $request->status;
 
         // Handle image upload
-        $images = json_decode($product->images, true) ?? [];
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('ecommerce/products', 'public');
-                $images[] = $path;  // Append new images to the array
+            // Decode existing images
+            $existingImages = json_decode($product->images, true) ?? [];
+            
+            // Handle the new images
+            foreach ($request->file('images') as $image) {
+                // Store the new image in the specified directory
+                $path = $image->store('ecommerce/products', 'public'); 
+                // Extract the image name and add it to the existing images array
+                $existingImages[] = basename($path);
             }
+
+            // Store the updated image list
+            $product->images = json_encode($existingImages);
         }
 
-        // Update the product
-        $product->update([
-            'product_name' => $request->product_name,
-            'slug' => $request->slug,
-            'images' => json_encode($images),  // Update images JSON
-            'shipment_time' => $request->shipment_time,
-            'sku_name' => $request->sku_name,
-            'quantity' => $request->quantity,
-            'price' => $request->price,
-            'sale_price' => $request->sale_price,
-            'additional_tax' => $request->additional_tax,
-            'return_days' => $request->return_days,
-            'product_detail' => $request->product_detail,
-            'product_specification' => $request->product_specification ? json_encode($request->product_specification) : $product->product_specification,
-            'tags' => $request->tags ? json_encode($request->tags) : $product->tags,
-            'status' => $request->status,
-            'category_id' => $request->category_id,
-        ]);
+        $product->save(); // Save the updated product
 
-        return redirect()->route('admin.ecommerce.products.index')->with('success', 'Product updated successfully');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
+
 
     /**
      * Remove the specified product from the database.

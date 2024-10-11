@@ -1,135 +1,148 @@
 @extends('admin.layouts.app')
+
 @section('content')
     <div class="d-flex flex-column flex-column-fluid">
-        <div class="app-toolbar py-3 py-lg-6">
-            <div class="app-container container-xxl d-flex flex-stack">
-                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                        @isset($page_title)
-                            {{ $page_title }}
-                        @endisset
-                    </h1>
+
+        <!--begin::Toolbar-->
+        <div class="custom-app-toolbar">
+            <div class="left">
+                <p>Products</p>
+                <ul>
+                    <li>
+                        <a href="{{ route('admin.products.index') }}">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Edit Product</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <a href="{{ route('admin.products.index') }}" class="btn btn-sm fw-bold btn-primary">
+                    <i class="ki-duotone ki-arrow-left fs-1"></i>
+                    Back to Products List
+                </a>
+            </div>
+        </div>
+        <!--end::Toolbar-->
+
+        <div class="app-content flex-column-fluid">
+            <div class="app-container container-xxl">
+                @include('admin.layouts.alert_message')
+
+                <div class="card">
+                    <div class="card-body pt-0" id="page-section-body">
+                        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT') <!-- Use PUT method for updates -->
+
+                            <div class="mb-4">
+                                <label for="category_id" class="form-label">Category</label>
+                                <select name="category_id" id="category_id" class="form-control">
+                                    <option value="">Select Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Product Name</label>
+                                <input type="text" name="product_name" id="product_name" class="form-control" value="{{ $product->product_name }}" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="slug" class="form-label">Slug</label>
+                                <input type="text" name="slug" id="slug" class="form-control" value="{{ $product->slug }}" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="images" class="form-label">Images (Upload New Images)</label>
+                                <input type="file" name="images[]" id="images" class="form-control" multiple>
+                                @if($product->images)
+                                    <div class="mt-2">
+                                        <h5>Current Images:</h5>
+                                        @foreach($product->images as $image)
+                                            <img src="{{ asset('storage/' . $image) }}" alt="Product Image" class="img-thumbnail" style="max-width: 100px;">
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="shipment_time" class="form-label">Shipment Time (days)</label>
+                                <input type="number" name="shipment_time" id="shipment_time" class="form-control" value="{{ $product->shipment_time }}" min="1">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="sku_name" class="form-label">SKU Name</label>
+                                <input type="text" name="sku_name" id="sku_name" class="form-control" value="{{ $product->sku_name }}" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="quantity" class="form-label">Quantity</label>
+                                <input type="number" name="quantity" id="quantity" class="form-control" value="{{ $product->quantity }}" min="0">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="text" name="price" id="price" class="form-control" value="{{ $product->price }}" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="sale_price" class="form-label">Sale Price (Optional)</label>
+                                <input type="text" name="sale_price" id="sale_price" class="form-control" value="{{ $product->sale_price }}">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="additional_tax" class="form-label">Additional Tax (%)</label>
+                                <input type="text" name="additional_tax" id="additional_tax" class="form-control" value="{{ $product->additional_tax }}">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="return_days" class="form-label">Return Days</label>
+                                <input type="number" name="return_days" id="return_days" class="form-control" value="{{ $product->return_days }}" min="0">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="product_detail" class="form-label">Product Detail</label>
+                                <textarea name="product_detail" id="product_detail" class="form-control" rows="4">{{ $product->product_detail }}</textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="product_specification" class="form-label">Product Specification</label>
+                                <textarea name="product_specification" id="product_specification" class="form-control" rows="4">{{ $product->product_specification }}</textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="tags" class="form-label">Tags (comma separated)</label>
+                                <input type="text" name="tags" id="tags" class="form-control" value="{{ $product->tags }}">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="status" class="form-label">Status</label>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Active</option>
+                                    <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <button type="submit" class="btn btn-sm fw-bold btn-primary">Update Product</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    
-        <div class="app-content flex-column-fluid">
-            <div class="app-container container-xxl">
-                <form action="{{ route('admin.vclasses-categories.update', $vclass_category->id) }}"
-                    class="form d-flex flex-column flex-lg-row" enctype="multipart/form-data" method="POST">
-                    @method('PUT')
-                    @csrf
-                    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-                        <div class="card card-flush py-4">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h2>Image</h2>
-                                </div>
-                            </div>
-                            <div class="card-body text-center pt-0">
-                                <style>
-                                    .image-input-placeholder {
-                                        background-image: url({{ asset('backend/admin/images/blank-image.svg') }});
-                                    }
-
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url({{ asset('backend/admin/images/blank-image-dark.svg') }});
-                                    }
-                                </style>
-                                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
-                                    data-kt-image-input="true">
-                                    <div class="image-input-wrapper w-150px h-150px"
-                                        style="background-image: url({{ asset('backend/admin/images/vclass_management/categories/' . $vclass_category->image) }})">
-                                    </div>
-                                    <label
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change image">
-                                        <i class="ki-duotone ki-pencil fs-7">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        <input type="file" name="image" accept=".png, .jpg, .jpeg">
-                                        <input type="hidden" name="image_remove" />
-                                    </label>
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel image">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove image">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                </div>
-                                <div class="text-muted fs-7">Set the category image. Only *.png, *.jpg and *.jpeg image
-                                    files are accepted</div>
-                            </div>
-                        </div>
-                        <div class="card card-flush py-4">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h2>Status</h2>
-                                </div>
-                                <div class="card-toolbar">
-                                    <div
-                                        class="rounded-circle @if ($vclass_category->is_active == '1') bg-success @else bg-danger @endif w-15px h-15px">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body pt-0">
-                                <select class="form-select mb-2" name="is_active" data-control="select2"
-                                    data-hide-search="true" data-placeholder="Select an option">
-                                    <option value="1" @if ($vclass_category->is_active == '1') selected @endif>Active</option>
-                                    <option value="0" @if ($vclass_category->is_active == '0') selected @endif>Deactive
-                                    </option>
-                                </select>
-                                <div class="text-muted fs-7">Set the category status.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active">
-                                <div class="d-flex flex-column gap-7 gap-lg-10">
-                                    <div class="card card-flush py-4">
-                                        <div class="card-body pt-0">
-                                            <div class="mb-10 fv-row">
-                                                <label class="required form-label">Category Name</label>
-                                                <input type="text" name="name" class="form-control mb-2"
-                                                    placeholder="Category Name..." value="{{ $vclass_category->name }}"
-                                                    required>
-                                                <div class="fs-7" style="color:red">A category name is required and
-                                                    recommended to be unique.</div>
-                                            </div>
-                                            <div class="mb-10 fv-row">
-                                                <label class="form-label">Seo Title</label>
-                                                <input type="text" name="seo_title" class="form-control mb-2"
-                                                    placeholder="Seo Title..." value="{{ $vclass_category->seo_title }}">
-                                            </div>
-                                            <div>
-                                                <label class="form-label">Seo Description</label>
-                                                <textarea name="seo_description" class="form-control" placeholder="Seo Description...">{{ $vclass_category->seo_description }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="indicator-label">Update</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
+
+    @section('scripts')
+        <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('product_detail');
+            CKEDITOR.replace('product_specification');
+        </script>
+    @endsection
 @endsection

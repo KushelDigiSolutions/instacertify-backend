@@ -50,8 +50,8 @@
                             <div class="dropdown-more-details menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4 mt-10 new-dp1 dropdown-menu"
                                 id="sey_{{ $key }}" aria-labelledby="self_car_{{ $key }}">
                                 <div class="menu-item px-3">
-                                    @can('vclasses-products-edit')
-                                        <a href="{{ route('admin.vclasses-products.edit', $product->id) }}"
+                                    @can('products-edit')
+                                        <a href="{{ route('admin.products.edit', $product->id) }}"
                                             class="menu-link px-3">
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +72,7 @@
                                             </svg>
                                             Delete
                                         </a>
-                                        <form action="{{ route('admin.vclasses-products.destroy', $product->id) }}"
+                                        <form action="{{ route('admin.products.destroy', $product->id) }}"
                                             id="delete_form_{{ $product->id }}" method="POST">
                                             @method('DELETE')
                                             @csrf
