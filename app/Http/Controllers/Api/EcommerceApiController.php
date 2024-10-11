@@ -76,15 +76,16 @@ class EcommerceApiController extends Controller
             ->where('status', 'active')
             ->limit($limit)
             ->offset($offset)
-            ->get(['name', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+            ->get(['product_name', 'slug','rating_count', 'rating_number', 'price', 'sale_price', 'images']);
 
         // Format the product images and data
         $products = $products->map(function ($product) {
-            $images = json_decode($product->images);
+            $images = $product->images;
             $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
 
             return [
-                'name' => $product->name,
+                'name' => $product->product_name,
+                'slug' => $product->slug,
                 'rating_count' => $product->rating_count,
                 'rating_number' => $product->rating_number,
                 'price' => $product->price,
