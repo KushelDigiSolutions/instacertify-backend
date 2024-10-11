@@ -88,7 +88,9 @@ Route::middleware(['cors'])->group(function () {
 	Route::post('ratings', [EcommerceApiController::class, 'createNewRating']);
 	Route::put('ratings/{id}', [EcommerceApiController::class, 'updateRating']);
 	Route::delete('ratings/{id}', [EcommerceApiController::class, 'deleteRating']);
-	
+	Route::get('/products/search', [EcommerceApiController::class, 'searchProducts']);
+	Route::get('/products/{id}/related', [EcommerceApiController::class, 'getRelatedProducts']);
+
 });
 
 Route::get('pages',[EventController::class,'getPageBySlug']);

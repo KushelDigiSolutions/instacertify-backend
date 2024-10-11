@@ -225,4 +225,86 @@ class EcommerceApiController extends Controller
 
         return response()->json(['message' => 'Rating deleted successfully.']);
     }
+
+     /**
+     * Search products by name, slug, or category.
+     */
+    public function searchProducts(Request $request)
+    {
+        $query = $request->input('query', '');
+        $limit = $request->input('limit', 20);
+        $offset = $request->input('offset', 0);
+
+        // Fetch products based on the search query
+        $products = Product::where('status', 'active')
+            ->where(function ($q) use ($query) {
+                $q->where('product_name', 'LIKE', "%{$query}%")
+                  ->orWhere('slug', 'LIKE', "%{$query}%")
+                  ->orWhereHas('category', function ($queryBuilder) use ($query) {
+                      $queryBuilder->where('product_name', 'LIKE', "%{$query}%");
+                  });
+            })
+            ->limit($limit)
+            ->offset($offset)
+            ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+
+        // Format the product images and data
+        $products = $products->map(function ($product) {
+            $images = $product->images;
+            $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
+
+            return [
+                'name' => $product->product_name,
+                'slug' => $product->slug,
+                'rating_count' => $product->rating_count,
+                'rating_number' => $product->rating_number,
+                'price' => $product->price,
+                'sale_price' => $product->sale_price,
+                'image' => $imagePath,
+            ];
+        });
+
+        return response()->json(['products' => $products]);
+    }
+
+    /**
+     * Get related products based on tags, name similarity, or category.
+     */
+    public function getRelatedProducts($productId)
+    {
+        $product = Product::find($productId);
+        
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        // Find related products using tags, category, or name similarity
+        $relatedProducts = Product::where('id', '!=', $productId)
+            ->where('status', 'active')
+            ->where(function ($query) use ($product) {
+                $query->where('category_id', $product->category_id)
+                      ->orWhere('tags', 'LIKE', "%{$product->tags}%")
+                      ->orWhere('product_name', 'LIKE', "%{$product->name}%");
+            })
+            ->limit(5) // Limit to 5 related products
+            ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+
+        // Format the product images and data
+        $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
+            $images = $relatedProduct->images;
+            $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
+
+            return [
+                'name' => $relatedProduct->product_name,
+                'slug' => $relatedProduct->slug,
+                'rating_count' => $relatedProduct->rating_count,
+                'rating_number' => $relatedProduct->rating_number,
+                'price' => $relatedProduct->price,
+                'sale_price' => $relatedProduct->sale_price,
+                'image' => $imagePath,
+            ];
+        });
+
+        return response()->json(['related_products' => $relatedProducts]);
+    }
 }
