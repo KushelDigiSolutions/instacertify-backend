@@ -3,7 +3,11 @@
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class="w-10px pe-2">SN.</th>
             <th class="min-w-125px">Image</th>
+            <th class="min-w-125px">SKU</th>
             <th class="min-w-125px">Name</th>
+            <th class="min-w-125px">Price</th>
+            <th class="min-w-125px">QTY</th>
+            <th class="min-w-125px">Sale Price</th>
             <th class="min-w-125px">Status</th>
             @canany(['products-edit', 'products-delete'])
                 <th class="text-center min-w-70px">Actions</th>
@@ -22,7 +26,11 @@
                         </div>
                     </div>
                 </td>
-                <td>{{ $product->name }}</td>
+                <td>{{ $product->sku_name }}</td>
+                <td>{{ $product->product_name }}</td>
+                <td>₹{{ $product->price }}</td>
+                <td>₹{{ $product->sale_price }}</td>
+                <td>{{ $product->quantity }}</td>
                 <td>
                     @if ($product->is_active == '1')
                         <a href="{{ route('admin.products.show', $product->id) }}?status=0">
