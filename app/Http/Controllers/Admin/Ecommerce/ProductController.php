@@ -189,7 +189,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         // Delete the images from the storage
-        $images = json_decode($product->images, true);
+        $images = $product->images;
         if ($images) {
             foreach ($images as $image) {
                 Storage::disk('public')->delete($image);  // Delete each image file
