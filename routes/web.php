@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\VclassController;
 use Webkul\Shop\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\LodgingRentalController;
+use App\Http\Controllers\Api\EcommerceApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ Route::post('/admin/event/toggle-active/{id}', [EventController::class, 'toggleA
 Route::post('/admin/lodging/toggle-active/{id}', [LodgingRentalController::class, 'toggleActive'])->name('admin.lodging.toggleActive');
 //Route::get('/duplicate-event/{id}', [EventController::class, 'duplicateEvent'])->name('duplicateEvent');
 Route::get('/admin/event/makeDel/{id}', [EventController::class, 'makeDel'])->name('admin.event.makeDel');
+Route::get('/search', [EcommerceApiController::class, 'searchProducts']);
 
 Route::resource('/admin/customers', CustomerController::class);
 
