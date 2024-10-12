@@ -307,4 +307,130 @@ class EcommerceApiController extends Controller
 
         return response()->json(['related_products' => $relatedProducts]);
     }
+
+     /**
+     * Add product to cart.
+     */
+    public function productAddToCart(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity', 1);
+
+        if (Auth::check()) {
+            // User is logged in, store in the database
+            $userId = Auth::id();
+
+            // Check if the product already exists in the cart
+            $cartItem = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
+
+            if ($cartItem) {
+                // Update quantity if already in cart
+                $cartItem->quantity += $quantity;
+                $cartItem->save();
+            } else {
+                // Add new cart item
+                CartItem::create([
+                    'user_id' => $userId,
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                ]);
+            }
+
+            return response()->json(['message' => 'Product added to cart']);
+        } else {
+            // Store in session for non-logged-in users
+            $cart = Session::get('cart', []);
+            if (isset($cart[$productId])) {
+                $cart[$productId]['quantity'] += $quantity;
+            } else {
+                $product = Product::find($productId);
+                if (!$product) {
+                    return response()->json(['error' => 'Product not found'], 404);
+                }
+                $cart[$productId] = [
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image' => $this->baseUrl . '/ecommerce/products/' . json_decode($product->images)[0]
+                ];
+            }
+            Session::put('cart', $cart);
+
+            return response()->json(['message' => 'Product added to cart']);
+        }
+    }
+
+    /**
+     * Remove product from cart.
+     */
+    public function productRemoveFromCart(Request $request)
+    {
+        $productId = $request->input('product_id');
+
+        if (Auth::check()) {
+            // User is logged in, remove from database
+            $userId = Auth::id();
+            CartItem::where('user_id', $userId)->where('product_id', $productId)->delete();
+
+            return response()->json(['message' => 'Product removed from cart']);
+        } else {
+            // Remove from session for non-logged-in users
+            $cart = Session::get('cart', []);
+            if (isset($cart[$productId])) {
+                unset($cart[$productId]);
+                Session::put('cart', $cart);
+            }
+
+            return response()->json(['message' => 'Product removed from cart']);
+        }
+    }
+
+    /**
+     * Get the user's cart.
+     */
+    public function getUserCart()
+    {
+        if (Auth::check()) {
+            // User is logged in, fetch from the database
+            $userId = Auth::id();
+            $cartItems = CartItem::where('user_id', $userId)->with('product')->get();
+
+            $cart = $cartItems->map(function ($cartItem) {
+                return [
+                    'product_id' => $cartItem->product_id,
+                    'name' => $cartItem->product->name,
+                    'price' => $cartItem->product->price,
+                    'quantity' => $cartItem->quantity,
+                    'image' => $this->baseUrl . '/ecommerce/products/' . json_decode($cartItem->product->images)[0]
+                ];
+            });
+
+            return response()->json(['cart' => $cart]);
+        } else {
+            // Fetch from session for non-logged-in users
+            $cart = Session::get('cart', []);
+
+            return response()->json(['cart' => $cart]);
+        }
+    }
+
+    /**
+     * Clear the user's cart.
+     */
+    public function clearCart()
+    {
+        if (Auth::check()) {
+            // Clear the cart for logged-in users in the database
+            $userId = Auth::id();
+            CartItem::where('user_id', $userId)->delete();
+
+            return response()->json(['message' => 'Cart cleared']);
+        } else {
+            // Clear the session for non-logged-in users
+            Session::forget('cart');
+
+            return response()->json(['message' => 'Cart cleared']);
+        }
+    }
 }

@@ -89,6 +89,12 @@ Route::middleware(['cors'])->group(function () {
 	Route::put('ratings/{id}', [EcommerceApiController::class, 'updateRating']);
 	Route::delete('ratings/{id}', [EcommerceApiController::class, 'deleteRating']);
 	Route::get('/products/{id}/related', [EcommerceApiController::class, 'getRelatedProducts']);
+
+	Route::post('/cart/add', [EcommerceApiController::class, 'productAddToCart']);
+	Route::post('/cart/remove', [EcommerceApiController::class, 'productRemoveFromCart']);
+	Route::get('/cart', [EcommerceApiController::class, 'getUserCart']);
+	Route::post('/cart/clear', [EcommerceApiController::class, 'clearCart']);
+
 	
 });
 
