@@ -25,16 +25,23 @@ class EcommerceApiController extends Controller
     {
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', 0);
+        $all = $request->input('all', 0);
          // Get all categories
          $categories = Category::all(['id', 'name','slug']);
         $firstCategoryId = 1;  // Assuming the first category ID is always 1
 
-        $products = Product::where('category_id', $firstCategoryId)
-            ->where('status', 'active')
-            ->limit($limit)
-            ->offset($offset)
-            ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
-
+        if($all){
+            $products = Product::where('status', 'active')
+                ->limit($limit)
+                ->offset($offset)
+                ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+        }else{
+            $products = Product::where('category_id', $firstCategoryId)
+                ->where('status', 'active')
+                ->limit($limit)
+                ->offset($offset)
+                ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+        }
         // Format the product images and data
         $products = $products->map(function ($product) {
             return [
