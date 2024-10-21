@@ -3,10 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\EventCategoryController;
+use App\Http\Controllers\Api\NewsCategoryController;
 use App\Http\Controllers\Api\VclassController;
 use App\Http\Controllers\Api\LodgingRentalController;
 use App\Http\Controllers\Api\EquipmentRentalController;
@@ -46,6 +48,11 @@ Route::middleware(['cors'])->group(function () {
 	Route::get('get-event',[EventController::class,'getEvent']);
 	Route::get('get-event-by-category/{slug}',[EventController::class,'getEventByCategory'])->name('event-category');
 	Route::get('get-event-details/{slug}',[EventController::class,'getEventBySlug'])->name('event-details');
+
+	Route::get('get-news-category',[EventCategoryController::class,'getNewsCategory']);
+	Route::get('get-news',[EventController::class,'getNews']);
+	Route::get('get-news-by-category/{slug}',[EventController::class,'getNewsByCategory'])->name('news-category');
+	Route::get('get-news-details/{slug}',[EventController::class,'getNewsBySlug'])->name('news-details');
 	
 	Route::get('get-vclasses-category',[VclassController::class,'getVclassCategory']);
 	

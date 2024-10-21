@@ -240,6 +240,87 @@
                     @endcanany
                 @endcanany
 
+
+
+
+                @canany(['news-categories-list', 'news-categories-create', 'news-categories-edit',
+                    'news-categories-delete', 'news-list', 'news-create', 'news-edit', 'news-delete'])
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
+                                'admin.news.index',
+                                'admin.news.create',
+                                'admin.news.edit',
+                                'admin.news.show',
+                                'admin.news-categories.index',
+                                'admin.news-categories.create',
+                                'admin.news-categories.edit',
+                                'admin.news-categories.show',
+                            ])) {{ 'hover show' }} @endif">
+                        <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
+                                'admin.news.index',
+                                'admin.news.create',
+                                'admin.news.edit',
+                                'admin.news.show',
+                                'admin.news-categories.index',
+                                'admin.news-categories.create',
+                                'admin.news-categories.edit',
+                                'admin.news-categories.show',
+                            ])) {{ 'is-active' }} @endif ">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-calendar fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Manage News</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        @canany(['news-categories-list', 'news-categories-create', 'news-categories-edit',
+                            'news-categories-delete'])
+                            <div class="menu-sub menu-sub-accordion ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.news-categories.index',
+                                            'admin.news-categories.create',
+                                            'admin.news-categories.edit',
+                                            'admin.news-categories.show',
+                                        ])) {{ 'is-active' }} @endif ">
+                                    <a class="menu-link" href="{{ route('admin.news-categories.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Categories</span>
+                                    </a>
+                                </div>
+                            </div>
+                        @endcanany
+                        @canany(['news-list', 'news-create', 'news-edit', 'news-delete'])
+                            <div class="menu-sub menu-sub-accordion">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.news.index',
+                                            'admin.news.create',
+                                            'admin.news.edit',
+                                            'admin.news.show',
+                                        ])) {{ 'is-active' }} @endif ">
+                                    <a class="menu-link" href="{{ route('admin.news.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">News</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endcanany
+                @endcanany
+
+
+
+
+
+
                 @canany(['vclasses-categories-list', 'vclasses-categories-create', 'vclasses-categories-edit',
                     'vclasses-categories-delete', 'vclasses-list', 'vclasses-create', 'vclasses-edit', 'vclasses-delete'])
                     <div data-kt-menu-trigger="click"
