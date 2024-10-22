@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Admin\Page;
 use App\Models\Admin\News;
 use Illuminate\Http\Request;
-use App\Models\Admin\EventCategory;
+use App\Models\Admin\NewsCategory;
 use App\Http\Controllers\Controller;
 
-class EventController extends Controller
+class NewsController extends Controller
 {
-    public function getEvent()
+    public function getNews()
     {
         $currentDateTime = date('Y-m-d H:i:s');
 	
@@ -18,7 +18,7 @@ class EventController extends Controller
         return response()->json(['news' => $news]);
     }
 
-    public function getEventApp()
+    public function getNewsApp()
     {
         $currentDateTime = date('Y-m-d H:i:s');
 		
@@ -42,9 +42,9 @@ class EventController extends Controller
 
     }
 
-    public function getEventBySlug($slug)
+    public function getNewsBySlug($slug)
     {
-        $news = News::where('slug', $slug)->with(['eventType'])->first();
+        $news = News::where('slug', $slug)->with(['NewsType'])->first();
 		
         $dataArray['news'] = [];
         if ($news) {
@@ -57,7 +57,7 @@ class EventController extends Controller
             $dataArray['news']['is_active'] = $news->is_active;
             $dataArray['news']['created_at'] = $news->created_at;
             $dataArray['news']['slug'] = $news->slug;
-            $dataArray['news']['type'] = $news->eventType;
+            $dataArray['news']['type'] = $news->NewsType;
             $images = json_encode($news->images);
 
             foreach (json_decode($images) as $yy => $image) {
@@ -71,9 +71,9 @@ class EventController extends Controller
         return $dataArray;
     }
 
-    public function getEventByCategory(Request $request, $slug)
+    public function getNewsByCategory(Request $request, $slug)
     {
-        $categories = EventCategory::select('id', 'name', 'slug', 'image', 'seo_title', 'seo_description')->where('is_active', '1')->where('is_delete', '0')->get();
+        $categories = NewsCategory::select('id', 'name', 'slug', 'image', 'seo_title', 'seo_description')->where('is_active', '1')->where('is_delete', '0')->get();
         $currentDateTime = date('Y-m-d H:i:s');
        
         foreach ($categories as $category) {
@@ -85,7 +85,7 @@ class EventController extends Controller
         }
         $dataArray['category_all'] = $categories;
        // dd($dataArray);
-        $id = EventCategory::where('slug', $slug)->first();
+        $id = NewsCategory::where('slug', $slug)->first();
         $dataArray['news'] = [];
         $currentDateTime = date('Y-m-d H:i:s');
         $categoryId = $id->id;
