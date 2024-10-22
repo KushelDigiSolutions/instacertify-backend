@@ -44,7 +44,7 @@ class NewsController extends Controller
 
     public function getNewsBySlug($slug)
     {
-        $news = News::where('slug', $slug)->with(['NewsType'])->first();
+        $news = News::where('slug', $slug)->first();
 		
         $dataArray['news'] = [];
         if ($news) {
