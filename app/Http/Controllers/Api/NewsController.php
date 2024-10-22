@@ -14,7 +14,7 @@ class NewsController extends Controller
     {
         $currentDateTime = date('Y-m-d H:i:s');
 	
-            $news = News::where('is_delete',"0")->where('is_active',"1")->orderBy('date', 'desc')->get();
+            $news = News::where('is_delete',"0")->where('is_active',"1")->orderBy('created_at', 'desc')->get();
         return response()->json(['news' => $news]);
     }
 
@@ -22,7 +22,7 @@ class NewsController extends Controller
     {
         $currentDateTime = date('Y-m-d H:i:s');
 		
-        $news = News::where('is_delete',"0")->where('is_active',"1")->orderBy('date', 'desc')->get();
+        $news = News::where('is_delete',"0")->where('is_active',"1")->orderBy('created_at', 'desc')->get();
         
         $dataArray['news'] = [];
 
@@ -101,12 +101,12 @@ class NewsController extends Controller
             if ($request->filter) {
                 if($request->limit){
                    
-                    $news = News::whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('date', $request->filter)->limit($request->limit)->get();
+                    $news = News::whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('created_at', $request->filter)->limit($request->limit)->get();
                 }else{
-                        $news = News::whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('date', $request->filter)->get();
+                        $news = News::whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('created_at', $request->filter)->get();
                 }
         } else {
-                $news = News::whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('date', "desc")->get();
+                $news = News::whereJsonContains('category_ids', '' . $categoryId)->where('is_delete',"0")->where('is_active',"1")->orderBy('created_at', "desc")->get();
         }
 
             if ($news) {

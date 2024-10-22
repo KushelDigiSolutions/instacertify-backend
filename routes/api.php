@@ -49,7 +49,7 @@ Route::middleware(['cors'])->group(function () {
 	Route::get('get-event-by-category/{slug}',[EventController::class,'getEventByCategory'])->name('event-category');
 	Route::get('get-event-details/{slug}',[EventController::class,'getEventBySlug'])->name('event-details');
 
-	Route::get('get-news-category',[NewsController::class,'getNewsCategory']);
+	Route::get('get-news-category',[NewsCategoryController::class,'getNewsCategory']);
 	Route::get('get-news',[NewsController::class,'getNews']);
 	Route::get('get-news-by-category/{slug}',[NewsController::class,'getNewsByCategory'])->name('news-category');
 	Route::get('get-news-details/{slug}',[NewsController::class,'getNewsBySlug'])->name('news-details');
