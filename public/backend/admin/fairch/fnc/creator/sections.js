@@ -1710,7 +1710,7 @@ web.Sections.add("demo/gold", {
 
 
 
-web.SectionsGroup['CUSTOM SECTIONS'] =[ "bootstrap4/embed-events", "bootstrap4/afb-heading", "bootstrap4/3col-card","fitness/sovid-section", "bootstrap4/gocontact"];
+web.SectionsGroup['CUSTOM SECTIONS'] =[ "bootstrap4/embed-events","bootstrap4/embed-ecommerce", "bootstrap4/afb-heading", "bootstrap4/3col-card","fitness/sovid-section", "bootstrap4/gocontact"];
 
 
 //Events Code start - 28-08-2023
@@ -2098,7 +2098,233 @@ web.Sections.add("bootstrap4/embed-events", {
   ]
 });
 
+//Ecommer Code End - 26-10-2024
 
+
+web.Sections.add("bootstrap4/embed-ecommerce", {
+  name: "Ecommerce",
+  attributes: ["data-component-events"],
+dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
+  image: "../backend/admin/media/snippets-events.png",
+  html: `<section data-component-events>
+  <div class="container">
+  <div class="render_events" data-category-slug="null" data-filter="null" data-limit="null">
+  <div class="render-event-list active-cursor---">
+  <div class="spinner-border spinner-border-sm" style="color: #3595f6;height: 100px;margin: 50px auto;position: relative;width: 100px;">
+  <span class="visually-hidden">Loading...</span>
+  </div>
+  </div>
+  <div class="event-scripts"></div></div></div>
+  <style>.pb-event-action a,.render-event-list 
+  .pb-event-desc,.render-event-list 
+  .pb-event-info{font-size:16px;font-style:normal;font-weight:400;line-height:normal}
+  .render-event-list.active-cursor *{pointer-events:none!important}
+  .render-event-list{width:100%;display:flex;flex-wrap:wrap;gap:20px;padding:20px 0;justify-content:flex-start}
+  .render-event-list .pb-event{width:calc(33.33% - 14px);border-radius:12px;overflow:hidden;border:1px solid #eff8ff;background-color:#fff}
+  .render-event-list .pb-event:hover{box-shadow:0 0 15px #d3d3d3;transition:.4s;border-color:#3595f6}
+  .render-event-list .pb-event-img-container{width:100%;position:relative}
+  .render-event-list .pb-event .pb-event-badge{position:absolute;top:20px;left:20px;padding:8px 20px;border-radius:4px;background:#3595f6;color:#fff;font-size:15px;font-style:normal;font-weight:500;line-height:normal}
+  .render-event-list .pb-event-img-container a{display:block;height:277px}.render-event-list 
+  .pb-event-img-container img{width:100%;height:100%;object-fit:cover}.render-event-list 
+  .pb-event-body{padding:20px;display:flex;flex-direction:column;gap:15px}.render-event-list 
+  .pb-event-body h4{color:#231f20;font-size:24px;font-style:normal;font-weight:600;line-height:normal;text-transform:uppercase;margin:0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+  .render-event-list .pb-event-body h4 a{color:#231f20;text-decoration:none}
+  .render-event-list .pb-event-icon-content{width:100%;display:flex;gap:10px;align-items:center}
+  .render-event-list .pb-event-icon{display:inline-flex;width:32px;height:32px;padding:6px;justify-content:center;align-items:center;border-radius:4px;background:#eff8ff}
+  .render-event-list .pb-event-info{color:#231f20}.render-event-list 
+  .pb-event-desc{overflow: hidden;color:#231f20;margin:0;height:73px;word-break: break-word;}
+  .pb-event-action{display:flex;padding:0;justify-content:center;align-items:flex-start;gap:10px;background:#eff8ff}
+  .pb-event-action a{color:#3595f6;text-decoration:none;display:block;padding:20px;width:100%;text-align:center}
+  .pb-event-action a:hover{color:#fff;background:#333}.pb-event-action a:hover svg path{fill:#fff}
+  @media only screen and (max-width:991px){.render-event-list .pb-event{width:calc(50% - 10px)}
+  .render-event-list .pb-event-body h4{font-size:18px}.render-event-list 
+  .pb-event-img-container a{height:200px}}
+  @media only screen and (max-width:479px){.render-event-list 
+    .pb-event{width:100%}.render-event-list 
+    .pb-event-desc{height:auto}.pb-event-action a{padding:15px}}
+  </style></section>`,
+  init: async function (node) {
+      const event_lists = jQuery(".render_events", node);
+    const init_status = event_lists.attr('init-data')
+    let default_category = event_lists.attr('data-category-slug');
+    let default_filter = event_lists.attr('data-filter');
+    let default_limit = event_lists.attr('data-limit');
+
+    //catgeory dropdown
+    const category_reuslt = await getCategory();
+    if(category_reuslt.category_all.length > 0){
+        let category_option = ``;
+        category_reuslt.category_all.map((ls,i)=>{
+            let selected = "";
+            if(default_category == 0){ default_category = ls.slug; selected = "selected"};
+            category_option += `<option value="${ls.slug}" ${selected}>${ls.name}</option>`;
+            selected = "";
+        });
+        $('[name="drp_category_lists"]').html(category_option)
+    }
+
+    let category_slug = $(".component-properties select[name=drp_category_lists]");
+    let event_filter = $(".component-properties select[name=drp_event_filter]");
+    let event_limit = $(".component-properties select[name=drp_event_limit]");
+
+    if(typeof init_status != "undefined"){
+        //catgeory dropdown
+        const initCall = async () => {
+            const event_reuslt = await getEvents(default_category, default_filter, default_limit);
+            const params_node = {
+                element : event_lists,
+                events: event_reuslt,
+                category_slug :default_category,
+                filter : default_filter,
+                limit: default_limit
+            };
+            renderEventsHtml(params_node);
+            category_slug.val(default_category)
+            event_filter.val(default_filter)
+            event_limit.val(default_limit)
+        }
+        initCall();
+        event_lists.attr('init-data',true)
+    }else{
+
+        //default
+        if(category_slug.val() != null){
+            default_category = category_slug.val();
+        }
+        if(event_filter.val() == null){
+            default_filter = "desc";
+            event_filter.val(default_filter)
+        }
+        if(event_limit.val() == null){
+            default_limit = "6";
+            event_limit.val(default_limit);
+        }
+
+        //catgeory dropdown
+        const initCall = async () => {
+            const event_reuslt = await getEvents(default_category, default_filter, default_limit);
+            const params_node = {
+                element : event_lists,
+                events: event_reuslt,
+                category_slug :default_category,
+                filter : default_filter,
+                limit: default_limit
+            };
+            renderEventsHtml(params_node);
+            category_slug.val(default_category)
+            event_filter.val(default_filter)
+            event_limit.val(default_limit)
+        }
+        initCall();
+        event_lists.attr('init-data',true)
+    }
+  },
+  onChange:  function (node, property, value) {},
+  properties: [
+    {
+        name: "Filter Events",
+        key: "drp_event_filter",
+        inputtype: SelectInput,
+        data: {
+            options: [
+                {
+                    text: "Newest",
+                    value: "desc",
+                },
+                {
+                    text: "Oldest",
+                    value: "asc",
+                }
+            ],
+        },
+        onChange: function (node, value, input, component) {
+            const category_slug = $(".component-properties select[name=drp_category_lists]").val();
+            const event_limit = $(".component-properties select[name=drp_event_limit]").val();
+            const event_lists = jQuery(".render_events", node);
+            const initCall = async () => {
+                const event_reuslt = await getEvents(category_slug, value, event_limit);
+                const params_node = {
+                    element : event_lists,
+                    events: event_reuslt,
+                    category_slug :category_slug,
+                    filter : value,
+                    limit: event_limit
+                };
+                renderEventsHtml(params_node);
+            }
+            initCall();
+            return node; 
+        },
+    },
+    {
+        name: "Category",
+        key: "drp_category_lists",
+        inputtype: SelectInput,
+        data: { options: [] },
+        onChange: async function (node, value, input, component) {
+            const event_filter = $(".component-properties select[name=drp_event_filter]").val();
+            const event_limit = $(".component-properties select[name=drp_event_limit]").val();
+            const event_lists = jQuery(".render_events", node);
+            const initCall = async () => {
+                const event_reuslt = await getEvents(value, event_filter, event_limit);
+                const params_node = {
+                    element : event_lists,
+                    events: event_reuslt,
+                    category_slug :value,
+                    filter : event_filter,
+                    limit: event_limit
+                };
+                renderEventsHtml(params_node);
+            }
+            initCall();
+            return node;   
+        },
+    },
+    {
+        name: "Show events",
+        key: "drp_event_limit",
+        inputtype: SelectInput,
+        data: {
+            options: [
+                {
+                    text: "6",
+                    value: "6",
+                },
+                {
+                    text: "12",
+                    value: "12",
+                },
+                {
+                    text: "18",
+                    value: "18",
+                },
+                {
+                    text: "24",
+                    value: "24",
+                }
+            ],
+        },
+        onChange: function (node, value, input, component) {
+            const category_slug = $(".component-properties select[name=drp_category_lists]").val();
+            const event_filter = $(".component-properties select[name=drp_event_filter]").val();
+            const event_lists = jQuery(".render_events", node);
+            const initCall = async () => {
+                const event_reuslt = await getEvents(category_slug, event_filter, value);
+                const params_node = {
+                    element : event_lists,
+                    events: event_reuslt,
+                    category_slug :category_slug,
+                    filter : event_filter,
+                    limit: value
+                };
+                renderEventsHtml(params_node);
+            }
+            initCall();
+            return node;
+        },
+    },
+]
+});
 
 
 web.Sections.add("bootstrap4/afb-heading", {

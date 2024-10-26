@@ -16,10 +16,10 @@
                         <a href="{{ route('admin.dashboard') }}">Home</a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.events.index') }}">Event List</a>
+                        <a href="{{ route('admin.news.index') }}">News List</a>
                     </li>
                     <li>
-                        <a href="#">Show Event</a>
+                        <a href="#">Show News</a>
                     </li>
                 </ul>
             </div>
@@ -39,24 +39,24 @@
 
                             <div class="col-md-4">
 
-                                <ul class="event-gallery-main" id="event-gallery-main">
-                                    @foreach ($event->images as $key => $item)
-                                        <li><img class="event-image"
-                                                src="{{ asset('backend/admin/images/event_management/events/' . $event->images[$key]) }}"
-                                                alt="{{ $event->title }}"></li>
+                                <ul class="news-gallery-main" id="news-gallery-main">
+                                    @foreach ($news->images as $key => $item)
+                                        <li><img class="news-image"
+                                                src="{{ asset('backend/admin/images/news_management/news/' . $news->images[$key]) }}"
+                                                alt="{{ $news->title }}"></li>
                                     @endforeach
                                 </ul>
 
-                                <div class="event-gallery-parent">
-                                    <ul class="event-gallery mt-5" id="event-gallery">
-                                        @foreach ($event->images as $key => $item)
-                                            <li><img class="event-image-gallery"
-                                                    src="{{ asset('backend/admin/images/event_management/events/' . $event->images[$key]) }}"
-                                                    alt="{{ $event->title }}"></li>
+                                <div class="news-gallery-parent">
+                                    <ul class="news-gallery mt-5" id="news-gallery">
+                                        @foreach ($news->images as $key => $item)
+                                            <li><img class="news-image-gallery"
+                                                    src="{{ asset('backend/admin/images/news_management/news/' . $news->images[$key]) }}"
+                                                    alt="{{ $news->title }}"></li>
                                         @endforeach
                                     </ul>
                                     <div class="slick-arrow-custom">
-                                        <button class="js-event-prev-arrow slick-arrow">
+                                        <button class="js-news-prev-arrow slick-arrow">
                                             <svg width="9" height="14" viewBox="0 0 9 14" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -64,7 +64,7 @@
                                                     fill="white" />
                                             </svg>
                                         </button>
-                                        <button class="js-event-next-arrow slick-arrow">
+                                        <button class="js-news-next-arrow slick-arrow">
                                             <svg width="9" height="14" viewBox="0 0 9 14" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -78,8 +78,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="event-content">
-                                    <h3 class="evt-title">{{ $event->title }}</h3>
+                                <div class="news-content">
+                                    <h3 class="evt-title">{{ $news->title }}</h3>
                                     <span class="evt-location">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -87,81 +87,13 @@
                                                 d="M21.5 5H16.5V13.18C16.19 13.07 15.85 13 15.5 13C13.84 13 12.5 14.34 12.5 16C12.5 17.66 13.84 19 15.5 19C17.16 19 18.5 17.66 18.5 16V7H21.5V5ZM14.5 5H2.5V7H14.5V5ZM14.5 9H2.5V11H14.5V9ZM10.5 13H2.5V15H10.5V13Z"
                                                 fill="#3595F6"></path>
                                         </svg>
-                                        {{ $event->location }}
                                     </span>
-                                    <p class="evt-short-description">{{ $event->short_description }}</p>
+                                    <p class="evt-short-description">{{ $news->description }}</p>
                                 </div>
                             </div>
 
-                            <div class="col-md-2">
-                                <div
-                                    class="col-lg-12 d-flex flex-column align-items-end justify-content-between align-content-between">
-                                    <div><button id="butn" class="btn btn-primary">Sell Ticket</button></div>
-                                </div>
-                            </div>
+                          
 
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 event-time-card-hr">
-                                <hr />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="event-time-card">
-                                    <div class="evt-icon">
-                                        <img src="{{ asset('backend/admin/images/dollar.png') }}">
-                                    </div>
-                                    <div class="evt-content">
-                                        <h6>Ticket Price</h6>
-                                        <p>${{ $event->ticket_price }}.00</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="event-time-card">
-                                    <div class="evt-icon">
-                                        <img src="{{ asset('backend/admin/images/chalender.png') }}">
-                                    </div>
-                                    <div class="evt-content">
-                                        <h6>Date</h6>
-                                        @if ($event->single_day == '1')
-                                            <p>{{ $event->date }}</p>
-                                        @else
-                                            <p>{{ $event->start_date }}</p>
-                                            <p>{{ $event->end_date }}</p>
-                                        @endif
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="event-time-card">
-                                    <div class="evt-icon">
-                                        <img src="{{ asset('backend/admin/images/clock.png') }}">
-                                    </div>
-                                    <div class="evt-content">
-                                        <h6>Time</h6>
-                                        <p>{{ $event->start_time }} - {{ $event->end_time }}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="event-time-card">
-                                    <div class="evt-icon">
-                                        <img src="{{ asset('backend/admin/images/location.png') }}">
-                                    </div>
-                                    <div class="evt-content">
-                                        <h6>Location</h6>
-                                        <p>{{ $event->location }}</p>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
 
@@ -179,39 +111,39 @@
 @endsection
 
 <style>
-    .event-gallery-main,
-    .event-gallery {
+    .news-gallery-main,
+    .news-gallery {
         width: 100%;
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
-    .event-gallery-main .slick-slide,
-    .event-gallery .slick-slide {
+    .news-gallery-main .slick-slide,
+    .news-gallery .slick-slide {
         height: auto !important;
         padding: 0 5px;
     }
 
-    .event-image {
+    .news-image {
         width: 100%;
         height: 300px;
         border-radius: 6px;
         object-fit: cover;
     }
 
-    .event-image-gallery {
+    .news-image-gallery {
         width: 100%;
         height: 60px;
         border-radius: 6px;
         object-fit: contain;
     }
 
-    .event-content {
+    .news-content {
         width: 100%;
     }
 
-    .event-content .evt-title {
+    .news-content .evt-title {
         width: 100%;
         font-family: 'Inter';
         font-style: normal;
@@ -221,7 +153,7 @@
         color: #323268;
     }
 
-    .event-content .evt-location {
+    .news-content .evt-location {
         width: 100%;
         font-family: 'Inter';
         font-style: normal;
@@ -233,7 +165,7 @@
         margin: 15px 0;
     }
 
-    .event-content .evt-short-description {
+    .news-content .evt-short-description {
         width: 100%;
         font-family: 'Inter';
         font-style: normal;
@@ -243,17 +175,17 @@
         color: #5E6278;
     }
 
-    .event-time-card-hr {
+    .news-time-card-hr {
         width: 100%;
     }
 
-    .event-time-card-hr hr {
+    .news-time-card-hr hr {
         margin-top: 50px !important;
         padding-top: 30px;
         border-color: #9c9ea1;
     }
 
-    .event-time-card {
+    .news-time-card {
         width: 100%;
         background: #F9F9F9;
         border: 1px solid #E1E3EA;
@@ -264,11 +196,11 @@
         gap: 15px;
     }
 
-    .event-time-card .evt-content {
+    .news-time-card .evt-content {
         width: 100%;
     }
 
-    .event-time-card .evt-content h6 {
+    .news-time-card .evt-content h6 {
         width: 100%;
         font-family: 'Inter';
         font-style: normal;
@@ -279,7 +211,7 @@
         margin: 0 0 5px 0;
     }
 
-    .event-time-card .evt-content p {
+    .news-time-card .evt-content p {
         width: 100%;
         font-family: 'Inter';
         font-style: normal;
@@ -290,22 +222,22 @@
         margin: 0;
     }
 
-    .event-gallery-parent {
+    .news-gallery-parent {
         position: relative;
     }
 
-    .event-gallery-parent .slick-arrow {
+    .news-gallery-parent .slick-arrow {
         border: none;
         background: none;
         position: absolute;
         top: 40%;
     }
 
-    .event-gallery-parent .js-event-prev-arrow {
+    .news-gallery-parent .js-news-prev-arrow {
         left: 10px;
     }
 
-    .event-gallery-parent .js-event-next-arrow {
+    .news-gallery-parent .js-news-next-arrow {
         right: 10px;
     }
 </style>
@@ -318,17 +250,17 @@
 <script>
     var $jq = jQuery.noConflict();
     setTimeout(() => {
-        $jq("#event-gallery-main").slick({
+        $jq("#news-gallery-main").slick({
             autoplay: true,
             arrows: false,
-            asNavFor: "#event-gallery"
+            asNavFor: "#news-gallery"
         });
-        $jq("#event-gallery").slick({
+        $jq("#news-gallery").slick({
             mobileFirst: true,
             slidesToShow: 3,
-            asNavFor: "#event-gallery-main",
-            prevArrow: ".js-event-prev-arrow",
-            nextArrow: ".js-event-next-arrow",
+            asNavFor: "#news-gallery-main",
+            prevArrow: ".js-news-prev-arrow",
+            nextArrow: ".js-news-next-arrow",
             responsive: [{
                 "breakpoint": 1600,
                 "settings": {

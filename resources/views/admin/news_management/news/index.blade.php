@@ -5,7 +5,7 @@
 		<!--begin::Toolbar-->
             <div class="custom-app-toolbar">
                 <div class="left">
-                    <p>Newss</p>
+                    <p>News</p>
                     <ul>
                         <li>
                             <a href="#">Home</a>
