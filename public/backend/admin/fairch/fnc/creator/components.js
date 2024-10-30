@@ -3398,6 +3398,193 @@ web.Components.extend("_base", "widgets/embed-events", {
   ]
 });
 
+web.Components.extend("_base", "widgets/embed-ecommerce", {
+    name: "eCommerce",
+    attributes: ["data-component-ecommerce"],
+    image: "icons/ecommerce.svg",
+    dragHtml: '<img src="' +web.baseUrl +'icons/ecommerce.svg" width="100" height="100">',
+    html: `<div data-component-ecommerce><div class="container"><div class="render_ecommerce" data-category-slug="null" data-filter="null" data-limit="null"><div class="render-ecommerce-list active-cursor"></div><div class="ecommerce-scripts"></div></div></div></div><style>.pb-ecommerce-action a,.render-ecommerce-list .pb-ecommerce-desc,.render-ecommerce-list .pb-ecommerce-info{font-size:16px;font-style:normal;font-weight:400;line-height:normal}.render-ecommerce-list.active-cursor *{pointer-events:none!important}.render-ecommerce-list{width:100%;display:flex;flex-wrap:wrap;gap:20px;padding:20px 0;justify-content:center}.render-ecommerce-list .pb-ecommerce{width:calc(33.33% - 14px);border-radius:12px;overflow:hidden;border:1px solid #eff8ff;background-color:#fff}.render-ecommerce-list .pb-ecommerce:hover{box-shadow:0 0 15px #d3d3d3;transition:.4s;border-color:#3595f6}.render-ecommerce-list .pb-ecommerce-img-container{width:100%;position:relative}.render-ecommerce-list .pb-ecommerce .pb-ecommerce-badge{position:absolute;top:20px;left:20px;padding:8px 20px;border-radius:4px;background:#3595f6;color:#fff;font-size:15px;font-style:normal;font-weight:500;line-height:normal}.render-ecommerce-list .pb-ecommerce-img-container a{display:block;height:277px}.render-ecommerce-list .pb-ecommerce-img-container img{width:100%;height:100%;object-fit:cover}.render-ecommerce-list .pb-ecommerce-body{padding:20px;display:flex;flex-direction:column;gap:15px}.render-ecommerce-list .pb-ecommerce-body h4{color:#231f20;font-size:24px;font-style:normal;font-weight:600;line-height:normal;text-transform:uppercase;margin:0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}.render-ecommerce-list .pb-ecommerce-body h4 a{color:#231f20;text-decoration:none}.render-ecommerce-list .pb-ecommerce-icon-content{width:100%;display:flex;gap:10px;align-items:center}.render-ecommerce-list .pb-ecommerce-icon{display:inline-flex;width:32px;height:32px;padding:6px;justify-content:center;align-items:center;border-radius:4px;background:#eff8ff}.render-ecommerce-list .pb-ecommerce-info{color:#231f20}.render-ecommerce-list .pb-ecommerce-desc{overflow: hidden;color:#231f20;margin:0;height:65px;word-break: break-word;}.pb-ecommerce-action{display:flex;padding:0;justify-content:center;align-items:flex-start;gap:10px;background:#eff8ff}.pb-ecommerce-action a{color:#3595f6;text-decoration:none;display:block;padding:20px;width:100%;text-align:center}.pb-ecommerce-action a:hover{color:#fff;background:#333}.pb-ecommerce-action a:hover svg path{fill:#fff}@media only screen and (max-width:991px){.render-ecommerce-list .pb-ecommerce{width:calc(50% - 10px)}.render-ecommerce-list .pb-ecommerce-body h4{font-size:18px}.render-ecommerce-list .pb-ecommerce-img-container a{height:200px}}@media only screen and (max-width:479px){.render-ecommerce-list .pb-ecommerce{width:100%}.render-ecommerce-list .pb-ecommerce-desc{height:auto}.pb-ecommerce-action a{padding:15px}}</style>`,
+    init: async function (node) {
+        const ecommerce_lists = jQuery(".render_ecommerce", node);
+      const init_status = ecommerce_lists.attr('init-data')
+      let default_category = ecommerce_lists.attr('data-category-slug');
+      let default_filter = ecommerce_lists.attr('data-filter');
+      let default_limit = ecommerce_lists.attr('data-limit');
+
+      //category dropdown
+      const category_result = await getCategory();
+      if(category_result.category_all.length > 0){
+          let category_option = ``;
+          category_result.category_all.map((ls,i)=>{
+              let selected = "";
+              if(default_category == 0){ default_category = ls.slug; selected = "selected"};
+              category_option += `<option value="${ls.slug}" ${selected}>${ls.name}</option>`;
+              selected = "";
+          });
+          $('[name="drp_category_lists"]').html(category_option)
+      }
+
+      let category_slug = $(".component-properties select[name=drp_category_lists]");
+      let ecommerce_filter = $(".component-properties select[name=drp_ecommerce_filter]");
+      let ecommerce_limit = $(".component-properties select[name=drp_ecommerce_limit]");
+
+      if(typeof init_status != "undefined"){
+          const initCall = async () => {
+              const ecommerce_result = await getEcommerce(default_category, default_filter, default_limit);
+              const params_node = {
+                  element : ecommerce_lists,
+                  ecommerce: ecommerce_result,
+                  category_slug :default_category,
+                  filter : default_filter,
+                  limit: default_limit
+              };
+              renderEcommerceHtml(params_node);
+              category_slug.val(default_category)
+              ecommerce_filter.val(default_filter)
+              ecommerce_limit.val(default_limit)
+          }
+          initCall();
+          ecommerce_lists.attr('init-data',true)
+      }else{
+
+          if(category_slug.val() != null){
+              default_category = category_slug.val();
+          }
+          if(ecommerce_filter.val() == null){
+              default_filter = "desc";
+              ecommerce_filter.val(default_filter)
+          }
+          if(ecommerce_limit.val() == null){
+              default_limit = "6";
+              ecommerce_limit.val(default_limit);
+          }
+
+          const initCall = async () => {
+              const ecommerce_result = await getEcommerce(default_category, default_filter, default_limit);
+              const params_node = {
+                  element : ecommerce_lists,
+                  ecommerce: ecommerce_result,
+                  category_slug :default_category,
+                  filter : default_filter,
+                  limit: default_limit
+              };
+              renderEcommerceHtml(params_node);
+              category_slug.val(default_category)
+              ecommerce_filter.val(default_filter)
+              ecommerce_limit.val(default_limit)
+          }
+          initCall();
+          ecommerce_lists.attr('init-data',true)
+      }
+    },
+    onChange:  function (node, property, value) {},
+    properties: [
+      {
+          name: "Filter eCommerce",
+          key: "drp_ecommerce_filter",
+          inputtype: SelectInput,
+          data: {
+              options: [
+                  {
+                      text: "Newest",
+                      value: "desc",
+                  },
+                  {
+                      text: "Oldest",
+                      value: "asc",
+                  }
+              ],
+          },
+          onChange: function (node, value, input, component) {
+              const category_slug = $(".component-properties select[name=drp_category_lists]").val();
+              const ecommerce_limit = $(".component-properties select[name=drp_ecommerce_limit]").val();
+              const ecommerce_lists = jQuery(".render_ecommerce", node);
+              const initCall = async () => {
+                  const ecommerce_result = await getEcommerce(category_slug, value, ecommerce_limit);
+                  const params_node = {
+                      element : ecommerce_lists,
+                      ecommerce: ecommerce_result,
+                      category_slug :category_slug,
+                      filter : value,
+                      limit: ecommerce_limit
+                  };
+                  renderEcommerceHtml(params_node);
+              }
+              initCall();
+              return node; 
+          },
+      },
+      {
+          name: "Category",
+          key: "drp_category_lists",
+          inputtype: SelectInput,
+          data: { options: [] },
+          onChange: async function (node, value, input, component) {
+              const ecommerce_filter = $(".component-properties select[name=drp_ecommerce_filter]").val();
+              const ecommerce_limit = $(".component-properties select[name=drp_ecommerce_limit]").val();
+              const ecommerce_lists = jQuery(".render_ecommerce", node);
+              const initCall = async () => {
+                  const ecommerce_result = await getEcommerce(value, ecommerce_filter, ecommerce_limit);
+                  const params_node = {
+                      element : ecommerce_lists,
+                      ecommerce: ecommerce_result,
+                      category_slug :value,
+                      filter : ecommerce_filter,
+                      limit: ecommerce_limit
+                  };
+                  renderEcommerceHtml(params_node);
+              }
+              initCall();
+              return node;   
+          },
+      },
+      {
+          name: "Show eCommerce",
+          key: "drp_ecommerce_limit",
+          inputtype: SelectInput,
+          data: {
+              options: [
+                  {
+                      text: "6",
+                      value: "6",
+                  },
+                  {
+                      text: "12",
+                      value: "12",
+                  },
+                  {
+                      text: "18",
+                      value: "18",
+                  },
+                  {
+                      text: "24",
+                      value: "24",
+                  }
+              ],
+          },
+          onChange: function (node, value, input, component) {
+              const category_slug = $(".component-properties select[name=drp_category_lists]").val();
+              const ecommerce_filter = $(".component-properties select[name=drp_ecommerce_filter]").val();
+              const ecommerce_lists = jQuery(".render_ecommerce", node);
+              const initCall = async () => {
+                  const ecommerce_result = await getEcommerce(category_slug, ecommerce_filter, value);
+                  const params_node = {
+                      element : ecommerce_lists,
+                      ecommerce: ecommerce_result,
+                      category_slug :category_slug,
+                      filter : ecommerce_filter,
+                      limit: value
+                  };
+                  renderEcommerceHtml(params_node);
+              }
+              initCall();
+              return node;   
+          },
+      }
+    ],
+});
+
+
 web.Components.extend("_base", "widgets/googlemaps", {
     name: "Google Maps",
     attributes: ["data-component-maps"],
