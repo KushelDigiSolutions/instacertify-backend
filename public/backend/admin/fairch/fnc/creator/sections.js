@@ -1735,6 +1735,28 @@ async function getEvents(slug,filter,limit) {
   return await events.json();
 }
 
+//Events Code start - 28-08-2023
+async function getEcomCategory() {
+  const customPath = window.location.origin;
+  var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+  };
+  const category = await fetch(customPath+"/api/categories/test", requestOptions);
+  console.clear();
+  return await category.json();
+}
+
+async function getEcomEvents(slug,filter,limit) {
+  const customPath = window.location.origin;
+  var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+  };
+  const events = await fetch(customPath+"/api/products/category/"+slug+"?filter="+filter+"&limit="+limit, requestOptions);
+  return await events.json();
+}
+
 /*function convertDateFormat(date){
   var today = new Date(date);
   var dd = String(today.getDate()).padStart(2, '0');
@@ -1884,7 +1906,7 @@ web.Sections.add("bootstrap4/embed-events", {
     <div class="render-event-list active-cursor---">
     <div class="spinner-border spinner-border-sm" style="color: #3595f6;height: 100px;margin: 50px auto;position: relative;width: 100px;">
     <span class="visually-hidden">Loading...</span>
-    </div>
+    </div>getCategory
     </div>
     <div class="event-scripts"></div></div></div>
     <style>.pb-event-action a,.render-event-list 
@@ -2103,12 +2125,12 @@ web.Sections.add("bootstrap4/embed-events", {
 
 web.Sections.add("bootstrap4/embed-ecommerce", {
   name: "Ecommerce",
-  attributes: ["data-component-events"],
+  attributes: ["data-component-ecomm"],
 dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
   image: "../backend/admin/media/snippets-events.png",
-  html: `<section data-component-events>
+  html: `<section data-component-ecomm>
   <div class="container">
-  <div class="render_events" data-category-slug="null" data-filter="null" data-limit="null">
+  <div class="render_ecomm" data-category-slug="null" data-filter="null" data-limit="null">
   <div class="render-event-list active-cursor---">
   <div class="spinner-border spinner-border-sm" style="color: #3595f6;height: 100px;margin: 50px auto;position: relative;width: 100px;">
   <span class="visually-hidden">Loading...</span>
@@ -2144,14 +2166,14 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
     .pb-event-desc{height:auto}.pb-event-action a{padding:15px}}
   </style></section>`,
   init: async function (node) {
-      const event_lists = jQuery(".render_events", node);
+      const event_lists = jQuery(".render_ecomm", node);
     const init_status = event_lists.attr('init-data')
     let default_category = event_lists.attr('data-category-slug');
     let default_filter = event_lists.attr('data-filter');
     let default_limit = event_lists.attr('data-limit');
 
     //catgeory dropdown
-    const category_reuslt = await getCategory();
+    const category_reuslt = await getEcomCategory();
     if(category_reuslt.category_all.length > 0){
         let category_option = ``;
         category_reuslt.category_all.map((ls,i)=>{
@@ -2170,7 +2192,7 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
     if(typeof init_status != "undefined"){
         //catgeory dropdown
         const initCall = async () => {
-            const event_reuslt = await getEvents(default_category, default_filter, default_limit);
+            const event_reuslt = await getEcomEvents(default_category, default_filter, default_limit);
             const params_node = {
                 element : event_lists,
                 events: event_reuslt,
@@ -2202,7 +2224,7 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
 
         //catgeory dropdown
         const initCall = async () => {
-            const event_reuslt = await getEvents(default_category, default_filter, default_limit);
+            const event_reuslt = await getEcomEvents(default_category, default_filter, default_limit);
             const params_node = {
                 element : event_lists,
                 events: event_reuslt,
@@ -2222,7 +2244,7 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
   onChange:  function (node, property, value) {},
   properties: [
     {
-        name: "Filter Events",
+        name: "Filter Ecommerce",
         key: "drp_event_filter",
         inputtype: SelectInput,
         data: {
@@ -2240,9 +2262,9 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
         onChange: function (node, value, input, component) {
             const category_slug = $(".component-properties select[name=drp_category_lists]").val();
             const event_limit = $(".component-properties select[name=drp_event_limit]").val();
-            const event_lists = jQuery(".render_events", node);
+            const event_lists = jQuery(".render_ecomm", node);
             const initCall = async () => {
-                const event_reuslt = await getEvents(category_slug, value, event_limit);
+                const event_reuslt = await getEcomEvents(category_slug, value, event_limit);
                 const params_node = {
                     element : event_lists,
                     events: event_reuslt,
@@ -2264,9 +2286,9 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
         onChange: async function (node, value, input, component) {
             const event_filter = $(".component-properties select[name=drp_event_filter]").val();
             const event_limit = $(".component-properties select[name=drp_event_limit]").val();
-            const event_lists = jQuery(".render_events", node);
+            const event_lists = jQuery(".render_ecomm", node);
             const initCall = async () => {
-                const event_reuslt = await getEvents(value, event_filter, event_limit);
+                const event_reuslt = await getEcomEvents(value, event_filter, event_limit);
                 const params_node = {
                     element : event_lists,
                     events: event_reuslt,
@@ -2307,9 +2329,9 @@ dragHtml: '<img src="../backend/admin/media/snippets-events.png">',
         onChange: function (node, value, input, component) {
             const category_slug = $(".component-properties select[name=drp_category_lists]").val();
             const event_filter = $(".component-properties select[name=drp_event_filter]").val();
-            const event_lists = jQuery(".render_events", node);
+            const event_lists = jQuery(".render_ecomm", node);
             const initCall = async () => {
-                const event_reuslt = await getEvents(category_slug, event_filter, value);
+                const event_reuslt = await getEcomEvents(category_slug, event_filter, value);
                 const params_node = {
                     element : event_lists,
                     events: event_reuslt,
