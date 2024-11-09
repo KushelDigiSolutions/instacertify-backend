@@ -2098,6 +2098,92 @@ web.SectionsGroup["STANDARD SECTIONS"] = ["Slider/Slider-3","hero/centered-secti
     ]
   });
   
+
+  async function renderEcommerceHtml(resultData) {
+    const { element, ecommerce, category_slug, filter, limit } = resultData;
+    const { products } = ecommerce;
+
+    // Generate a unique ID for this render instance
+    const ecommerce_id = Math.floor(Math.random() * 900000) + 1 + "" + Math.floor(Date.now() / 1000);
+
+    // Set attributes on the element
+    element.attr('data-id', ecommerce_id);
+    element.attr('data-category-slug', category_slug);
+    element.attr('data-filter', filter);
+    element.attr('data-limit', limit);
+
+    let ecommerceHtml = ''; // Initialize an empty string to hold the generated HTML
+
+    // Check if products is an array and has items
+    if (Array.isArray(products) && products.length > 0) {
+        // Loop through each product in the products array
+        products.forEach((product) => {
+            const productUrl = `/catalogdetail?id=${product.slug}`;
+            const productImage = product.image;
+            const productName = product.name;
+            const realPrice = `₹${product.sale_price ? product.sale_price : product.price}`;
+            const fakePrice = product.sale_price ? `₹${product.price}` : '';
+
+            // Generate star ratings based on rating_number
+            let ratingHtml = '';
+            const fullStars = Math.floor(product.rating_number);
+            const halfStar = product.rating_number % 1 >= 0.5 ? 1 : 0;
+            const emptyStars = 5 - fullStars - halfStar;
+
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                ratingHtml += `<img src="./images/star.svg" alt="star">`;
+            }
+
+            // Add half star if applicable
+            if (halfStar) {
+                ratingHtml += `<img src="./images/star_half.svg" alt="half star">`;
+            }
+
+            // Add empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                ratingHtml += `<img src="./images/unstar.svg" alt="unstar">`;
+            }
+
+            // Generate HTML for each product card
+            ecommerceHtml += `
+                <div class="catalog_box">
+                    <img class="catalog_img" src="${productImage}" alt="${productName}">
+                    <div class="catalog_content">
+                        <a href="${productUrl}" style="text-decoration: none;">
+                            <span class="tensile_content">${productName}</span>
+                        </a>
+                        <div class="tensile_price">
+                            <span class="real">${realPrice}</span>
+                            ${fakePrice ? `<span class="fake">${fakePrice}</span>` : ''}
+                        </div>
+                        <div class="reviews">
+                            ${ratingHtml}
+                        </div>
+                        <div class="add_cart_btn">
+                            <button>
+                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.33333 2.71512H13L11.5556 8.92688H2.88889V2.02492H0V0.644531H4.33333V2.71512ZM4.33333 4.09551V7.54649H10.4L11.1944 4.09551H4.33333ZM2.88889 12.3779V10.9975H5.56111V12.3779H2.88889ZM7.94444 12.3779V10.9975H10.6167V12.3779H7.94444Z" fill="white"></path>
+                                </svg>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+        });
+
+        // Insert the generated HTML into the DOM (assuming you have a container element with a specific id or class)
+        element.find(".render-ecommerce-list").html(ecommerceHtml);
+    } else {
+        // If no products are available, display a message and reset attributes to null
+        element.find(".render-ecommerce-list").html(`<h5 class="text-center py-5">There are no products available.</h5>`);
+        element.attr('data-category-slug', null);
+        element.attr('data-filter', null);
+        element.attr('data-limit', null);
+    }
+}
+
+
   
   // Add the new ecommerce section
   web.Sections.add("bootstrap4/embed-ecommerce", {
@@ -2332,23 +2418,23 @@ web.SectionsGroup["STANDARD SECTIONS"] = ["Slider/Slider-3","hero/centered-secti
 // Define AJAX functions for fetching e-commerce data
 async function getProductCategories() {
   // Simulated API call to fetch categories
-  const customPath = window.location.origin;
+  const customPath = $('meta[name="app-url"]').attr('content');
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
     };
-    const category = await fetch(customPath+"/api/categories", requestOptions);
+    const category = await fetch(customPath+"api/categories", requestOptions);
     console.clear();
     return await category.json();
 }
 
 async function getEcommerce(slug,filter,limit) {
-  const customPath = window.location.origin;
+  const customPath = $('meta[name="app-url"]').attr('content');
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
     };
-    const events = await fetch(customPath+"/api/products/"+slug+"?filter="+filter+"&limit="+limit, requestOptions);
+    const events = await fetch(customPath+"api/products/category/"+slug+"?filter="+filter+"&limit="+limit, requestOptions);
     return await events.json();
   // Simulated API call to fetch products based on category and filters
 }
@@ -2389,11 +2475,6 @@ async function renderProductsHtml(resultData) {
 }
 
 
-// Define AJAX functions for fetching e-commerce data
-async function getProductCategories() {
-  // Simulated API call to fetch categories
-  return await fetch("/api/get-ecommerce-categories").then(response => response.json());
-}
 
 async function getProducts(categorySlug, filter, limit) {
   // Simulated API call to fetch products based on category and filters

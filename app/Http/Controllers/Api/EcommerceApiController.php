@@ -108,7 +108,7 @@ class EcommerceApiController extends Controller
      */
     public function getAllCategories()
     {
-        $categories = Category::all(['id', 'name']);
+        $categories = Category::all(['id', 'name','slug']);
         return response()->json($categories);
     }
 

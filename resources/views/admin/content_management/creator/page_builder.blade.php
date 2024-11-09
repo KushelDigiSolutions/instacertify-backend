@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
+	<meta name="app-url" content="{{ env('APP_URL') }}" />
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<link rel="shortcut icon" href="{{ asset('fab_icon.png') }}" />
@@ -1567,7 +1568,7 @@
     });
 
     // Fetch CSS from the server and display it in the editor
-    $(document).ready(function() {
+/*     $(document).ready(function() {
         $.ajax({
             url: '../../../fetch_css.php', // PHP script to fetch CSS
             method: 'GET',
@@ -1578,7 +1579,7 @@
                 alert('Failed to fetch CSS');
             }
         });
-    });
+    }); */
 
     // Save CSS function
     $('#saveButton').click(function() {

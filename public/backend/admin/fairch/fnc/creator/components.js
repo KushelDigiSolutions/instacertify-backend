@@ -3412,15 +3412,16 @@ web.Components.extend("_base", "widgets/embed-ecommerce", {
       let default_limit = ecommerce_lists.attr('data-limit');
 
       //category dropdown
-      const category_result = await getCategory();
-      if(category_result.category_all.length > 0){
+      const category_result = await getProductCategories();
+      if(category_result.length > 0){
           let category_option = ``;
-          category_result.category_all.map((ls,i)=>{
+          category_result.map((ls,i)=>{
               let selected = "";
               if(default_category == 0){ default_category = ls.slug; selected = "selected"};
               category_option += `<option value="${ls.slug}" ${selected}>${ls.name}</option>`;
               selected = "";
           });
+          console.log(category_option);
           $('[name="drp_category_lists"]').html(category_option)
       }
 
