@@ -22,8 +22,8 @@ class CategoryController extends Controller
     }
 
      // Store a newly created category
-     public function store(Request $request)
-     {
+    public function store(Request $request)
+    {
         // Validate the incoming request
         $request->validate([
             'name' => 'required|string|max:255|unique:brands,name', // Ensure the name is unique in the brands table
@@ -57,18 +57,18 @@ class CategoryController extends Controller
         ]);
     
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
-     }
+    }
 
     public function show($id)
     {
-        $brand = Category::findOrFail($id);
-        return view('admin.ecommerce.categories.show', compact('brand'));
+        $category = Category::findOrFail($id);
+        return view('admin.ecommerce.categories.show', compact('category'));
     }
 
     public function edit($id)
     {
-        $brand = Category::findOrFail($id);
-        return view('admin.ecommerce.categories.edit', compact('brand'));
+        $category = Category::findOrFail($id);
+        return view('admin.ecommerce.categories.edit', compact('category'));
     }
 
     // Update the specified category

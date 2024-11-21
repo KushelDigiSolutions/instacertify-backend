@@ -137,4 +137,37 @@
     </div>
 </div>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all textarea elements
+        const textareas = document.querySelectorAll('textarea');
+
+        // Loop through each textarea and initialize CKEditor
+        textareas.forEach(textarea => {
+            ClassicEditor
+                .create(textarea, {
+                    removePlugins: [
+                        'CKFinderUploadAdapter', 
+                        'CKFinder', 
+                        'EasyImage', 
+                        'Image', 
+                        'ImageCaption', 
+                        'ImageStyle', 
+                        'ImageToolbar', 
+                        'ImageUpload', 
+                        'MediaEmbed'
+                    ],
+                })
+                .then(editor => {
+                    console.log(`CKEditor initialized for ${textarea.id}`);
+                })
+                .catch(error => {
+                    console.error(`Error initializing CKEditor for ${textarea.id}:`, error);
+                });
+        });
+    });
+</script>
+
+
 @endsection

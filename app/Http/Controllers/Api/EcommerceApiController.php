@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Review;
 use App\Models\OrderItem;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class EcommerceApiController extends Controller
@@ -91,7 +92,7 @@ class EcommerceApiController extends Controller
             $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
 
             return [
-                'name' => $product->product_name,
+                'name' =>  Str::limit($product->product_name, 45, '...'),
                 'slug' => $product->slug,
                 'rating_count' => $product->rating_count,
                 'rating_number' => $product->rating_number,
