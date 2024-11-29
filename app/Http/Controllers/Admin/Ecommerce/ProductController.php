@@ -154,6 +154,8 @@ class ProductController extends Controller
     $product->tags = $request->tags;
     $product->status = $request->status;
 
+    $imagesArr = $request->img;
+
     // Handle image upload
     if ($request->hasFile('images')) {
         // Retrieve existing images
@@ -166,13 +168,13 @@ class ProductController extends Controller
             // Move the image to the public path 'ecommerce/products'
             $image->move(public_path('ecommerce/products'), $imageName);
             // Add the image name to the existing array
-            $existingImages[] = $imageName;
+            $existingImages[] = $imagesArr[] = $imageName;
         }
-
         // Update the product's images with the newly uploaded and existing ones
         $product->images = $existingImages;
     }
-
+    $product->images = $imagesArr;
+   
     $product->save(); // Save the updated product
 
     return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');

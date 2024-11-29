@@ -68,14 +68,18 @@
                                 <input type="text" name="slug" id="slug" class="form-control" value="{{ $product->slug }}" required>
                             </div>
 
-                            <div class="mb-4">
+                            <div class="mb-4 ">
                                 <label for="images" class="form-label">Images (Upload New Images)</label>
                                 <input type="file" name="images[]" id="images" class="form-control" multiple>
                                 @if($product->images)
-                                    <div class="mt-2">
+                                    <div class="mt-2 image-list">
                                         <h5>Current Images:</h5>
-                                        @foreach($product->images as $image)
-                                            <img src="{{ asset('ecommerce/products/' . $image) }}" alt="Product Image" class="img-thumbnail" style="max-width: 100px;">
+                                        @foreach($product->images as $key=>$image)
+                                            <div class="imgBoxEdit" id="ikey-{{$key}}">
+                                                <span class="cross" onclick="removedImgEdit({{$key}})">x</span>
+                                                <input type="hidden" name="img[]" value="{{$image}}" />
+                                                <img src="{{ asset('ecommerce/products/' . $image) }}" alt="Product Image" class="img-thumbnail" style="max-width: 100px;">
+                                            </div>
                                         @endforeach
                                     </div>
                                 @endif
@@ -180,6 +184,10 @@
                 });
         });
     });
+
+    function removedImgEdit(id){
+        $("#ikey-"+id).remove();
+    }
 </script>
 
 @endsection

@@ -53226,3 +53226,32 @@ form#kt_sign_in_form img {
 .save-btn.btn{
 margin-top: 25px;
 }
+.image-list{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.image-list .imgBoxEdit{
+  float: left;
+  margin-right: 10px;
+  position: relative;
+  border: 1px solid #eee;
+}
+.image-list .imgBoxEdit .cross{
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  background: #df0000;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+.image-list .imgBoxEdit img{
+  width: 100px;
+    margin: 0;
+    padding: 0;
+    height: 100px;
+}
