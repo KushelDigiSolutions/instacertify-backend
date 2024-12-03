@@ -9,6 +9,8 @@ use App\Models\Review;
 use App\Models\OrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Auth;
+use Session;
 
 class EcommerceApiController extends Controller
 {
@@ -320,54 +322,60 @@ class EcommerceApiController extends Controller
      * Add product to cart.
      */
     public function productAddToCart(Request $request)
-    {
-        $productId = $request->input('product_id');
-        $quantity = $request->input('quantity', 1);
+{
+    $productId = $request->input('product_id');
+    $quantity = $request->input('quantity', 1);
 
-        if (Auth::check()) {
-            // User is logged in, store in the database
-            $userId = Auth::id();
+    if (Auth::check()) {
+        // User is logged in, store in the database
+        $userId = Auth::id();
 
-            // Check if the product already exists in the cart
-            $cartItem = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
+        // Check if the product already exists in the cart
+        $cartItem = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
 
-            if ($cartItem) {
-                // Update quantity if already in cart
-                $cartItem->quantity += $quantity;
-                $cartItem->save();
-            } else {
-                // Add new cart item
-                CartItem::create([
-                    'user_id' => $userId,
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                ]);
-            }
-
-            return response()->json(['message' => 'Product added to cart']);
+        if ($cartItem) {
+            // Update quantity if already in cart
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
         } else {
-            // Store in session for non-logged-in users
-            $cart = Session::get('cart', []);
-            if (isset($cart[$productId])) {
-                $cart[$productId]['quantity'] += $quantity;
-            } else {
-                $product = Product::find($productId);
-                if (!$product) {
-                    return response()->json(['error' => 'Product not found'], 404);
-                }
-                $cart[$productId] = [
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                    'name' => $product->name,
-                    'price' => $product->price,
-                    'image' => $this->baseUrl . '/ecommerce/products/' . json_decode($product->images)[0]
-                ];
-            }
-            Session::put('cart', $cart);
-
-            return response()->json(['message' => 'Product added to cart']);
+            // Add new cart item
+            CartItem::create([
+                'user_id' => $userId,
+                'product_id' => $productId,
+                'quantity' => $quantity,
+            ]);
         }
+
+        return response()->json(['message' => 'Product added to cart']);
+    } else {
+        // Store in session for non-logged-in users
+        $cart = Session::get('cart', []);
+
+        if (isset($cart[$productId])) {
+            // Update quantity if already in cart
+            $cart[$productId]['quantity'] += $quantity;
+        } else {
+            // Add new product to cart
+            $product = Product::find($productId);
+            if (!$product) {
+                return response()->json(['error' => 'Product not found'], 404);
+            }
+
+            $cart[$productId] = [
+                'product_id' => $productId,
+                'quantity' => $quantity,
+                'name' => $product->name,
+                'price' => $product->price,
+                'image' => url('/ecommerce/products/' . ($product->images[0] ?? 'default.jpg'))
+            ];
+        }
+
+        Session::put('cart', $cart);
+
+        return response()->json(['message' => 'Product added to cart', 'count' => count($cart)]);
     }
+}
+
 
     /**
      * Remove product from cart.
