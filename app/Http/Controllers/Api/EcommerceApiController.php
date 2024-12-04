@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Review;
+use App\Models\CartItem;
 use App\Models\OrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -293,8 +294,8 @@ class EcommerceApiController extends Controller
             ->where('status', 'active')
             ->where(function ($query) use ($product) {
                 $query->where('category_id', $product->category_id)
-                      ->orWhere('tags', 'LIKE', "%{$product->tags}%")
-                      ->orWhere('product_name', 'LIKE', "%{$product->name}%");
+                    ->orWhere('tags', 'LIKE', "%{$product->tags}%")
+                    ->orWhere('product_name', 'LIKE', "%{$product->name}%");
             })
             ->limit(5) // Limit to 5 related products
             ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
@@ -318,63 +319,63 @@ class EcommerceApiController extends Controller
         return response()->json(['related_products' => $relatedProducts]);
     }
 
-     /**
+    /**
      * Add product to cart.
      */
     public function productAddToCart(Request $request)
-{
-    $productId = $request->input('product_id');
-    $quantity = $request->input('quantity', 1);
+    {
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity', 1);
 
-    if (Auth::check()) {
-        // User is logged in, store in the database
-        $userId = Auth::id();
+        if (Auth::check()) {
+            // User is logged in, store in the database
+            $userId = Auth::id();
 
-        // Check if the product already exists in the cart
-        $cartItem = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
+            // Check if the product already exists in the cart
+            $cartItem = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
 
-        if ($cartItem) {
-            // Update quantity if already in cart
-            $cartItem->quantity += $quantity;
-            $cartItem->save();
+            if ($cartItem) {
+                // Update quantity if already in cart
+                $cartItem->quantity += $quantity;
+                $cartItem->save();
+            } else {
+                // Add new cart item
+                CartItem::create([
+                    'user_id' => $userId,
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                ]);
+            }
+            $cartItems = CartItem::where('user_id', $userId)->count();
+            return response()->json(['message' => 'Product added to cart', 'count' => $cartItems]);
         } else {
-            // Add new cart item
-            CartItem::create([
-                'user_id' => $userId,
-                'product_id' => $productId,
-                'quantity' => $quantity,
-            ]);
-        }
+            // Store in session for non-logged-in users
+            $cart = Session::get('cart', []);
 
-        return response()->json(['message' => 'Product added to cart']);
-    } else {
-        // Store in session for non-logged-in users
-        $cart = Session::get('cart', []);
+            if (isset($cart[$productId])) {
+                // Update quantity if already in cart
+                $cart[$productId]['quantity'] += $quantity;
+            } else {
+                // Add new product to cart
+                $product = Product::find($productId);
+                if (!$product) {
+                    return response()->json(['error' => 'Product not found'], 404);
+                }
 
-        if (isset($cart[$productId])) {
-            // Update quantity if already in cart
-            $cart[$productId]['quantity'] += $quantity;
-        } else {
-            // Add new product to cart
-            $product = Product::find($productId);
-            if (!$product) {
-                return response()->json(['error' => 'Product not found'], 404);
+                $cart[$productId] = [
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image' => url('/ecommerce/products/' . ($product->images[0] ?? 'default.jpg'))
+                ];
             }
 
-            $cart[$productId] = [
-                'product_id' => $productId,
-                'quantity' => $quantity,
-                'name' => $product->name,
-                'price' => $product->price,
-                'image' => url('/ecommerce/products/' . ($product->images[0] ?? 'default.jpg'))
-            ];
+            Session::put('cart', $cart);
+
+            return response()->json(['message' => 'Product added to cart', 'count' => count($cart)]);
         }
-
-        Session::put('cart', $cart);
-
-        return response()->json(['message' => 'Product added to cart', 'count' => count($cart)]);
     }
-}
 
 
     /**
@@ -383,53 +384,104 @@ class EcommerceApiController extends Controller
     public function productRemoveFromCart(Request $request)
     {
         $productId = $request->input('product_id');
+        $quantityToRemove = $request->input('quantity', 1); // Default to removing 1 if not specified
 
         if (Auth::check()) {
             // User is logged in, remove from database
             $userId = Auth::id();
-            CartItem::where('user_id', $userId)->where('product_id', $productId)->delete();
+            $cartItem = CartItem::where('user_id', $userId)->where('product_id', $productId)->first();
 
-            return response()->json(['message' => 'Product removed from cart']);
+            if ($cartItem) {
+                // Reduce the quantity
+                $cartItem->quantity -= $quantityToRemove;
+                
+                // If quantity is zero or less, remove the item
+                if ($cartItem->quantity <= 0) {
+                    $cartItem->delete();
+                } else {
+                    $cartItem->save();
+                }
+            }
+            $cartItems = CartItem::where('user_id', $userId)->count();
+            return response()->json(['message' => 'Product quantity updated','count'=> $cartItems]);
         } else {
             // Remove from session for non-logged-in users
             $cart = Session::get('cart', []);
+
             if (isset($cart[$productId])) {
-                unset($cart[$productId]);
+                // Reduce the quantity
+                $cart[$productId]['quantity'] -= $quantityToRemove;
+
+                // If quantity is zero or less, remove the item
+                if ($cart[$productId]['quantity'] <= 0) {
+                    unset($cart[$productId]);
+                }
+
                 Session::put('cart', $cart);
             }
 
-            return response()->json(['message' => 'Product removed from cart']);
+            return response()->json(['message' => 'Product quantity updated', 'count' => count($cart)]);
         }
     }
+
 
     /**
      * Get the user's cart.
      */
     public function getUserCart()
-    {
-        if (Auth::check()) {
-            // User is logged in, fetch from the database
-            $userId = Auth::id();
-            $cartItems = CartItem::where('user_id', $userId)->with('product')->get();
+{
+    $totalAmount = 0;
+    $shippingCost = 10; // Example flat shipping cost, adjust as needed
+    $cart = [];
 
-            $cart = $cartItems->map(function ($cartItem) {
-                return [
-                    'product_id' => $cartItem->product_id,
-                    'name' => $cartItem->product->name,
-                    'price' => $cartItem->product->price,
-                    'quantity' => $cartItem->quantity,
-                    'image' => $this->baseUrl . '/ecommerce/products/' . json_decode($cartItem->product->images)[0]
-                ];
-            });
+    if (Auth::check()) {
+        // User is logged in, fetch from the database
+        $userId = Auth::id();
+        $cartItems = CartItem::where('user_id', $userId)->with('product')->get();
 
-            return response()->json(['cart' => $cart]);
-        } else {
-            // Fetch from session for non-logged-in users
-            $cart = Session::get('cart', []);
+        $cart = $cartItems->map(function ($cartItem) use (&$totalAmount) {
+            $itemTotal = $cartItem->product->price * $cartItem->quantity;
+            $totalAmount += $itemTotal;
+            return [
+                'product_id' => $cartItem->product_id,
+                'name' => $cartItem->product->product_name,
+                'price' => $cartItem->product->price,
+                'quantity' => $cartItem->quantity,
+                'image' => $this->baseUrl . '/ecommerce/products/' . $cartItem->product->images[0],
+                'total' => $itemTotal
+            ];
+        })->toArray();
 
-            return response()->json(['cart' => $cart]);
+    } else {
+        // Fetch from session for non-logged-in users
+        $sessionCart = Session::get('cart', []);
+        
+        foreach ($sessionCart as $productId => $details) {
+            // Assuming details contain product name, price, quantity, and image URL
+            $itemTotal = $details['price'] * $details['quantity'];
+            $totalAmount += $itemTotal;
+            $cart[] = [
+                'product_id' => $productId,
+                'name' => $details['name'],
+                'price' => $details['price'],
+                'quantity' => $details['quantity'],
+                'image' => $details['image'],
+                'total' => $itemTotal
+            ];
         }
     }
+
+    // Calculate grand total
+    $grandTotal = $totalAmount + ($totalAmount > 0 ? $shippingCost : 0);
+
+    return response()->json([
+        'cart' => $cart,
+        'total_amount' => number_format($totalAmount, 2),
+        'shipping_cost' => number_format($shippingCost, 2),
+        'grand_total' => number_format($grandTotal, 2),
+    ]);
+}
+
 
     /**
      * Clear the user's cart.
