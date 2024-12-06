@@ -38,17 +38,18 @@ class EcommerceApiController extends Controller
             $products = Product::where('status', 'active')
                 ->limit($limit)
                 ->offset($offset)
-                ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+                ->get(['id','product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
         }else{
             $products = Product::where('category_id', $firstCategoryId)
                 ->where('status', 'active')
                 ->limit($limit)
                 ->offset($offset)
-                ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+                ->get(['id','product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
         }
         // Format the product images and data
         $products = $products->map(function ($product) {
             return [
+                'id' => $product->id,
                 'name' => $product->product_name,
                 'slug' => $product->slug,
                 'rating_count' => $product->rating_count,
@@ -87,7 +88,7 @@ class EcommerceApiController extends Controller
             ->where('status', 'active')
             ->limit($limit)
             ->offset($offset)
-            ->get(['product_name', 'slug','rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+            ->get(['id','product_name', 'slug','rating_count', 'rating_number', 'price', 'sale_price', 'images']);
 
         // Format the product images and data
         $products = $products->map(function ($product) {
@@ -95,6 +96,7 @@ class EcommerceApiController extends Controller
             $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
 
             return [
+                'id' =>  $product->id,
                 'name' =>  Str::limit($product->product_name, 45, '...'),
                 'slug' => $product->slug,
                 'rating_count' => $product->rating_count,
@@ -257,7 +259,7 @@ class EcommerceApiController extends Controller
             })
             ->limit($limit)
             ->offset($offset)
-            ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+            ->get(['id','product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
 
         // Format the product images and data
         $products = $products->map(function ($product) {
@@ -265,6 +267,7 @@ class EcommerceApiController extends Controller
             $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
 
             return [
+                'id' => $product->id,
                 'name' => $product->product_name,
                 'slug' => $product->slug,
                 'rating_count' => $product->rating_count,
@@ -298,7 +301,7 @@ class EcommerceApiController extends Controller
                     ->orWhere('product_name', 'LIKE', "%{$product->name}%");
             })
             ->limit(5) // Limit to 5 related products
-            ->get(['product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
+            ->get(['id','product_name','slug', 'rating_count', 'rating_number', 'price', 'sale_price', 'images']);
 
         // Format the product images and data
         $relatedProducts = $relatedProducts->map(function ($relatedProduct) {
@@ -306,6 +309,7 @@ class EcommerceApiController extends Controller
             $imagePath = is_array($images) && !empty($images) ? $this->baseUrl . '/ecommerce/products/' . $images[0] : null;
 
             return [
+                'id' => $relatedProduct->id,
                 'name' => $relatedProduct->product_name,
                 'slug' => $relatedProduct->slug,
                 'rating_count' => $relatedProduct->rating_count,
