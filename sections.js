@@ -1086,7 +1086,7 @@ image: window.mediaPath + "/sys/four-column-section.png",
 `,
 });
 
-web.SectionsGroup['AFB SECTIONS'] =[ "bootstrap4/embed-events","bootstrap4/header-banner"];
+web.SectionsGroup['AFB SECTIONS'] =[ "bootstrap4/embed-events","bootstrap4/embed-ecommerce","bootstrap4/header-banner"];
 
 
 //Events Code start - 28-08-2023
