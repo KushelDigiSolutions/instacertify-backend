@@ -2161,12 +2161,25 @@ web.SectionsGroup["STANDARD SECTIONS"] = ["Slider/Slider-3","hero/centered-secti
                             ${ratingHtml}
                         </div>
                         <div class="add_cart_btn">
-                            <button>
-                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4.33333 2.71512H13L11.5556 8.92688H2.88889V2.02492H0V0.644531H4.33333V2.71512ZM4.33333 4.09551V7.54649H10.4L11.1944 4.09551H4.33333ZM2.88889 12.3779V10.9975H5.56111V12.3779H2.88889ZM7.94444 12.3779V10.9975H10.6167V12.3779H7.94444Z" fill="white"></path>
-                                </svg>
-                                <span>Add to Cart</span>
-                            </button>
+                           <button
+                          onClick='{() => {
+                            JSON?.parse(localStorage.getItem("insta_Access")) ? addToCartApi(product?.id) : alert("Please login to continue")                            
+                          }}'
+                        >
+                          <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 13 13"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M4.33333 2.71512H13L11.5556 8.92688H2.88889V2.02492H0V0.644531H4.33333V2.71512ZM4.33333 4.09551V7.54649H10.4L11.1944 4.09551H4.33333ZM2.88889 12.3779V10.9975H5.56111V12.3779H2.88889ZM7.94444 12.3779V10.9975H10.6167V12.3779H7.94444Z"
+                              fill="white"
+                            />
+                          </svg>
+                          <span>Add to Cart</span>
+                        </button>
                         </div>
                     </div>
                 </div>`;
@@ -2174,6 +2187,10 @@ web.SectionsGroup["STANDARD SECTIONS"] = ["Slider/Slider-3","hero/centered-secti
 
         // Insert the generated HTML into the DOM (assuming you have a container element with a specific id or class)
         element.find(".render-ecommerce-list").html(ecommerceHtml);
+
+        const seeMoreElement = `<div class="seemore-btn"><a href="https://instacertify.com/catalog" class="btn btn-primary">See more</a></div>`;
+        element.find(".render-ecommerce-list").after(seeMoreElement);
+        
     } else {
         // If no products are available, display a message and reset attributes to null
         element.find(".render-ecommerce-list").html(`<h5 class="text-center py-5">There are no products available.</h5>`);

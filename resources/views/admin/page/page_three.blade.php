@@ -39,7 +39,7 @@
                 </div>
 
                 <button id="secta" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" style="background-color:rgb(236,105,31)"
-                                        data-bs-target="#kt_modal_new_target">+ Create New Pagsse</button>
+                                        data-bs-target="#kt_modal_new_target">+ Create New Page</button>
 
 
          

@@ -25,8 +25,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                     @can('menu-create')
-                    {{-- <a href="{{route('admin.navigations.create')}}" class="btn btn-sm fw-bold btn-primary">Add New Menu</a> --}}
-                    <a href="{{ route('admin.headers.create') }}" class="btn btn-sm fw-bold text-white" style="background-color: rgb(236, 105, 31);">Add New Header</a>
+                    <a href="{{ route('admin.navigations.create') }}" class="btn btn-sm fw-bold text-white" style="background-color: rgb(236, 105, 31);">Add New Menu</a>
                     @endcan
                 </div>
             </div>
