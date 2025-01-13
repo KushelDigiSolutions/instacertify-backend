@@ -2120,6 +2120,7 @@ web.SectionsGroup["STANDARD SECTIONS"] = ["Slider/Slider-3","hero/centered-secti
         products.forEach((product) => {
             const productUrl = `/catalogdetail?id=${product.slug}`;
             const productImage = product.image;
+            const productId = product.id;
             const productName = product.name;
             const realPrice = `₹${product.sale_price ? product.sale_price : product.price}`;
             const fakePrice = product.sale_price ? `₹${product.price}` : '';
@@ -2161,11 +2162,7 @@ web.SectionsGroup["STANDARD SECTIONS"] = ["Slider/Slider-3","hero/centered-secti
                             ${ratingHtml}
                         </div>
                         <div class="add_cart_btn">
-                           <button
-                          onClick='{() => {
-                            JSON?.parse(localStorage.getItem("insta_Access")) ? addToCartApi(product?.id) : alert("Please login to continue")                            
-                          }}'
-                        >
+                           <button onclick="addToCartApi(${productId})">
                           <svg
                             width="13"
                             height="13"
