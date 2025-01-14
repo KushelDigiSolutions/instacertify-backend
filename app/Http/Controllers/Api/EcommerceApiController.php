@@ -630,4 +630,73 @@ class EcommerceApiController extends Controller
             "order_id" => $order->id
         ]);
     }
+
+    public function createaddress(Request $request)
+    {
+        // Validate input data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address1' => 'required|string|max:255',
+            'address2' => 'nullable|string|max:255',
+            'landmark' => 'nullable|string|max:255',
+            'phone' => 'required|string|max:12',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'address_type' => 'required|integer|in:0,1', // 0 = Home, 1 = Office
+            'pincode' => 'required|string|max:10',
+            'status' => 'required|integer|in:0,1', // 0 = Inactive, 1 = Active
+        ]);
+
+        // Create address for authenticated user
+        $address = Address::create(array_merge($validated, ['user_id' => auth()->id()]));
+
+        return response()->json(['message' => 'Address created successfully', 'data' => $address], 201);
+    }
+
+    public function updateaddress(Request $request, $id)
+    {
+        // Fetch address and ensure it belongs to the authenticated user
+        $address = Address::where('user_id', auth()->id())->findOrFail($id);
+
+        // Validate input data
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'address1' => 'sometimes|required|string|max:255',
+            'address2' => 'nullable|string|max:255',
+            'landmark' => 'nullable|string|max:255',
+            'phone' => 'sometimes|required|string|max:12',
+            'city' => 'sometimes|required|string|max:255',
+            'state' => 'sometimes|required|string|max:255',
+            'address_type' => 'sometimes|required|integer|in:0,1', // 0 = Home, 1 = Office
+            'pincode' => 'sometimes|required|string|max:10',
+            'status' => 'sometimes|required|integer|in:0,1', // 0 = Inactive, 1 = Active
+        ]);
+
+        // Update address with validated data
+        $address->update($validated);
+
+        return response()->json(['message' => "Address updated successfully", "data" => $address]);
+    }
+
+    public function deleteaddress($id)
+    {
+        // Fetch address and ensure it belongs to the authenticated user
+        $address = Address::where('user_id', auth()->id())->findOrFail($id);
+
+        // Soft delete the address
+        $address->delete();
+
+        return response()->json(['message' => "Address deleted successfully"]);
+    }
+
+
+    public function listalladdress()
+    {
+        // Fetch all addresses for the authenticated user
+        $addresses = Address::where('user_id', auth()->id())->get();
+
+        return response()->json(['data' => $addresses]);
+    }
+
+
 }

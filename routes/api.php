@@ -33,6 +33,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('get-event-app',[EventController::class,'getEventApp']);
     Route::get('/qr-code', [OrderController::class, 'qrCode']);
 	Route::post('/order/create', [EcommerceApiController::class, 'createOrder']);
+
+	Route::post('/createaddress', [EcommerceApiController::class, 'createaddress']);       // Create an address
+    Route::put('/updateaddress/{id}', [EcommerceApiController::class, 'updateaddress']);   // Update an address
+    Route::delete('/deleteaddress/{id}', [EcommerceApiController::class, 'deleteaddress']); // Delete an address
+    Route::get('/listalladdress', [EcommerceApiController::class, 'listalladdress']); 
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
