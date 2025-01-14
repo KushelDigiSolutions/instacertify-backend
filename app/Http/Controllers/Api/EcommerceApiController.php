@@ -8,10 +8,13 @@ use App\Models\Category;
 use App\Models\Review;
 use App\Models\CartItem;
 use App\Models\OrderItem;
+use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Order;
 use Auth;
 use Session;
+use Carbon\Carbon;
 
 class EcommerceApiController extends Controller
 {
@@ -504,5 +507,127 @@ class EcommerceApiController extends Controller
 
             return response()->json(['message' => 'Cart cleared']);
         }
+    }
+
+    public function createOrder(Request $request)
+    {
+       
+        // Validate the incoming request
+        $validated = $request->validate([
+            'products' => 'required|array',
+            'products.*.id' => 'required|integer|exists:products,id',
+            'products.*.qty' => 'required|integer|min:1',
+            'address_id' => 'required|integer'
+        ]);
+        
+        $userId = auth()->id(); // Get authenticated user ID
+        // Check if the address belongs to the authenticated user
+        $addressId = $validated['address_id'];
+      
+        $address = Address::where('id', $addressId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$address) {
+            return response()->json([
+                'error' => 'The selected address does not belong to the authenticated user.'
+            ], 403); // HTTP 403 Forbidden
+        }
+        
+        // Check if an order was created within the last 15 minutes
+        $fifteenMinutesAgo = Carbon::now()->subMinutes(15);
+        $existingOrder = Order::where('user_id', $userId)
+            ->where('address_id', $addressId)
+            ->where('created_at', '>=', $fifteenMinutesAgo)
+            ->first();
+    
+        if ($existingOrder) {
+            return response()->json([
+                'error' => 'Order already exists within the last 15 minutes.',
+                'order_id' => $existingOrder->id
+            ], 409); // HTTP 409 Conflict
+        }
+    
+        // Initialize variables for calculations
+        $grandTotalPrice = 0;
+        $grandTotalTax = 0;
+        $grandSalePrice = 0;
+        $grandSaleTax = 0;
+    
+        // Create a new order
+        $order = Order::create([
+            'user_id' => $userId,
+            'total_price' => 0, // Will be updated later
+            'total_tax' => 0,   // Will be updated later
+            'sale_price' => 0,  // Will be updated later
+            'sale_tax' => 0,    // Will be updated later
+            'order_amount' => 0,
+            'order_status' => 0, // Created status
+            'address_id' => $addressId
+        ]);
+    
+        $responseProducts = [];
+    
+        foreach ($validated['products'] as $productData) {
+            $product = Product::find($productData['id']);
+            
+            // Calculate prices and taxes
+            $totalPrice = $product->price * $productData['qty'];
+            $totalPriceTax = $totalPrice * ($product->additional_tax / 100);
+            
+            $totalSalePrice = ($product->sale_price ?? $product->price) * $productData['qty'];
+            $salePriceTax = $totalSalePrice * ($product->additional_tax / 100);
+    
+            // Update grand totals
+            $grandTotalPrice += $totalPrice;
+            $grandTotalTax += $totalPriceTax;
+            $grandSalePrice += $totalSalePrice;
+            $grandSaleTax += $salePriceTax;
+    
+            // Create an order item
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'qty' => $productData['qty'],
+                'tax' => $product->additional_tax,
+                'total_price' => $totalPrice,
+                'sale_price' => ($product->sale_price ?? $product->price),
+                'delivery_status' => 1 // Default to delivered (adjust as per your logic)
+            ]);
+    
+            // Add product details to response array
+            $responseProducts[] = [
+                "id" => $product->id,
+                "qty" => $productData['qty'],
+                "price" => (float)$product->price,
+                "sale_price" => (float)($product->sale_price ?? $product->price),
+                "tax_per" => (float)$product->additional_tax,
+                "total_price" => (float)$totalPrice,
+                "total_price_tax" => (float)$totalPriceTax,
+                "total_sale_price" => (float)$totalSalePrice,
+                "sale_price_tax" => (float)$salePriceTax
+            ];
+        }
+    
+        // Update order totals
+        $orderAmount = $grandTotalPrice + $grandTotalTax + ($grandSalePrice + $grandSaleTax);
+        $order->update([
+            'total_price' => (float)$grandTotalPrice,
+            'total_tax' => (float)$grandTotalTax,
+            'sale_price' => (float)$grandSalePrice,
+            'sale_tax' => (float)$grandSaleTax,
+            'order_amount' => (float)$orderAmount
+        ]);
+    
+        // Return the response as JSON
+        return response()->json([
+            "products" => $responseProducts,
+            "grand_total_price" => (float)$grandTotalPrice,
+            "grand_total_tax" => (float)$grandTotalTax,
+            "grand_sale_price" => (float)$grandSalePrice,
+            "grand_sale_tax" => (float)$grandSaleTax,
+            "order_amount" => (float)$orderAmount,
+            "order_id" => $order->id
+        ]);
     }
 }

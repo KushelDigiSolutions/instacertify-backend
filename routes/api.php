@@ -32,6 +32,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/user-profile', [LoginController::class, 'userProfile']);
     Route::get('get-event-app',[EventController::class,'getEventApp']);
     Route::get('/qr-code', [OrderController::class, 'qrCode']);
+	Route::post('/order/create', [EcommerceApiController::class, 'createOrder']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -101,8 +102,6 @@ Route::middleware(['cors'])->group(function () {
 	Route::post('/cart/remove', [EcommerceApiController::class, 'productRemoveFromCart']);
 	Route::get('/cart', [EcommerceApiController::class, 'getUserCart']);
 	Route::post('/cart/clear', [EcommerceApiController::class, 'clearCart']);
-
-	
 });
 
 Route::get('pages',[EventController::class,'getPageBySlug']);
