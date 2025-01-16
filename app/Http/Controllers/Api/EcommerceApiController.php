@@ -15,6 +15,8 @@ use App\Models\Order;
 use Auth;
 use Session;
 use Carbon\Carbon;
+use Razorpay\Api\Api;
+use Illuminate\Support\Facades\DB;
 
 class EcommerceApiController extends Controller
 {
@@ -511,7 +513,6 @@ class EcommerceApiController extends Controller
 
     public function createOrder(Request $request)
     {
-       
         // Validate the incoming request
         $validated = $request->validate([
             'products' => 'required|array',
@@ -519,33 +520,33 @@ class EcommerceApiController extends Controller
             'products.*.qty' => 'required|integer|min:1',
             'address_id' => 'required|integer'
         ]);
-        
+    
         $userId = auth()->id(); // Get authenticated user ID
-        // Check if the address belongs to the authenticated user
         $addressId = $validated['address_id'];
-      
+    
+        // Check if the address belongs to the authenticated user
         $address = Address::where('id', $addressId)
             ->where('user_id', $userId)
             ->first();
-
+    
         if (!$address) {
             return response()->json([
                 'error' => 'The selected address does not belong to the authenticated user.'
-            ], 403); // HTTP 403 Forbidden
+            ], 403);
         }
-        
+    
         // Check if an order was created within the last 15 minutes
-        $fifteenMinutesAgo = Carbon::now()->subMinutes(15);
+        $tenSecondsAgo = Carbon::now()->subSeconds(10);
         $existingOrder = Order::where('user_id', $userId)
             ->where('address_id', $addressId)
-            ->where('created_at', '>=', $fifteenMinutesAgo)
+            ->where('created_at', '>=', $tenSecondsAgo)
             ->first();
     
         if ($existingOrder) {
             return response()->json([
                 'error' => 'Order already exists within the last 15 minutes.',
-                'order_id' => $existingOrder->id
-            ], 409); // HTTP 409 Conflict
+                'order_id' => $existingOrder->razor_order_id
+            ], 409);
         }
     
         // Initialize variables for calculations
@@ -554,82 +555,117 @@ class EcommerceApiController extends Controller
         $grandSalePrice = 0;
         $grandSaleTax = 0;
     
-        // Create a new order
-        $order = Order::create([
-            'user_id' => $userId,
-            'total_price' => 0, // Will be updated later
-            'total_tax' => 0,   // Will be updated later
-            'sale_price' => 0,  // Will be updated later
-            'sale_tax' => 0,    // Will be updated later
-            'order_amount' => 0,
-            'order_status' => 0, // Created status
-            'address_id' => $addressId
-        ]);
-    
-        $responseProducts = [];
-    
-        foreach ($validated['products'] as $productData) {
-            $product = Product::find($productData['id']);
-            
-            // Calculate prices and taxes
-            $totalPrice = $product->price * $productData['qty'];
-            $totalPriceTax = $totalPrice * ($product->additional_tax / 100);
-            
-            $totalSalePrice = ($product->sale_price ?? $product->price) * $productData['qty'];
-            $salePriceTax = $totalSalePrice * ($product->additional_tax / 100);
-    
-            // Update grand totals
-            $grandTotalPrice += $totalPrice;
-            $grandTotalTax += $totalPriceTax;
-            $grandSalePrice += $totalSalePrice;
-            $grandSaleTax += $salePriceTax;
-    
-            // Create an order item
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product->id,
-                'qty' => $productData['qty'],
-                'tax' => $product->additional_tax,
-                'total_price' => $totalPrice,
-                'sale_price' => ($product->sale_price ?? $product->price),
-                'delivery_status' => 1 // Default to delivered (adjust as per your logic)
+        // Create a new order (initially without razor_order_id)
+        DB::beginTransaction();
+        
+        try {
+            $order = Order::create([
+                'user_id' => $userId,
+                'total_price' => 0,
+                'total_tax' => 0,
+                'sale_price' => 0,
+                'sale_tax' => 0,
+                'order_amount' => 0,
+                'order_status' => 0,
+                'address_id' => $addressId,
+                'razor_order_id' => null // Placeholder for Razorpay order ID
             ]);
     
-            // Add product details to response array
-            $responseProducts[] = [
-                "id" => $product->id,
-                "qty" => $productData['qty'],
-                "price" => (float)$product->price,
-                "sale_price" => (float)($product->sale_price ?? $product->price),
-                "tax_per" => (float)$product->additional_tax,
-                "total_price" => (float)$totalPrice,
-                "total_price_tax" => (float)$totalPriceTax,
-                "total_sale_price" => (float)$totalSalePrice,
-                "sale_price_tax" => (float)$salePriceTax
+            $responseProducts = [];
+    
+            foreach ($validated['products'] as $productData) {
+                $product = Product::find($productData['id']);
+    
+                // Calculate prices and taxes
+                $totalPrice = $product->price * $productData['qty'];
+                $totalPriceTax = $totalPrice * ($product->additional_tax / 100);
+    
+                $totalSalePrice = ($product->sale_price ?? $product->price) * $productData['qty'];
+                $salePriceTax = $totalSalePrice * ($product->additional_tax / 100);
+    
+                // Update grand totals
+                $grandTotalPrice += $totalPrice;
+                $grandTotalTax += $totalPriceTax;
+                $grandSalePrice += $totalSalePrice;
+                $grandSaleTax += $salePriceTax;
+    
+                // Create an order item
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'qty' => $productData['qty'],
+                    'tax' => $product->additional_tax,
+                    'total_price' => $totalPrice,
+                    'sale_price' => ($product->sale_price ?? $product->price),
+                    'delivery_status' => 1 // Default to delivered (adjust as per your logic)
+                ]);
+    
+                // Add product details to response array
+                $responseProducts[] = [
+                    "id" => $product->id,
+                    "qty" => (int)$productData['qty'],
+                    "price" => (float)$product->price,
+                    "sale_price" => (float)($product->sale_price ?? $product->price),
+                    "tax_per" => (float)$product->additional_tax,
+                    "total_price" => (float)$totalPrice,
+                    "total_price_tax" => (float)$totalPriceTax,
+                    "total_sale_price" => (float)$totalSalePrice,
+                    "sale_price_tax" => (float)$salePriceTax
+                ];
+            }
+    
+            // Update order totals
+            $orderAmount = round($grandTotalPrice + $grandTotalTax + ($grandSalePrice + $grandSaleTax), 2);
+            $order->update([
+                'total_price' => (float)$grandTotalPrice,
+                'total_tax' => (float)$grandTotalTax,
+                'sale_price' => (float)$grandSalePrice,
+                'sale_tax' => (float)$grandSaleTax,
+                'order_amount' => (float)$orderAmount
+            ]);
+    
+            // Create Razorpay order
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+            
+            // Prepare Razorpay order data
+            $razorpayOrder = [
+                'receipt'         => strval($order->id),
+                'amount'          => intval($orderAmount * 100), // Amount in paise
+                'currency'        => "INR",
             ];
+    
+            // Create order in Razorpay and get ID
+            $razorpayOrderResponse = $api->order->create($razorpayOrder);
+            
+            if (!isset($razorpayOrderResponse['id'])) {
+                throw new \Exception("Failed to create Razorpay order");
+            }
+    
+            // Update razor_order_id in database
+            $order->update(['razor_order_id' => $razorpayOrderResponse['id']]);
+    
+            DB::commit();
+    
+            // Return the response as JSON with razor_order_id as order_id
+            return response()->json([
+                "products" => $responseProducts,
+                "grand_total_price" => (float)$grandTotalPrice,
+                "grand_total_tax" => (float)$grandTotalTax,
+                "grand_sale_price" => (float)$grandSalePrice,
+                "grand_sale_tax" => (float)$grandSaleTax,
+                "order_amount" => (float)$orderAmount,
+                "order_id" => (string)$razorpayOrderResponse['id']
+            ]);
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                "error" => "Failed to create order: " . $e->getMessage()
+            ], 500);
         }
-    
-        // Update order totals
-        $orderAmount = $grandTotalPrice + $grandTotalTax + ($grandSalePrice + $grandSaleTax);
-        $order->update([
-            'total_price' => (float)$grandTotalPrice,
-            'total_tax' => (float)$grandTotalTax,
-            'sale_price' => (float)$grandSalePrice,
-            'sale_tax' => (float)$grandSaleTax,
-            'order_amount' => (float)$orderAmount
-        ]);
-    
-        // Return the response as JSON
-        return response()->json([
-            "products" => $responseProducts,
-            "grand_total_price" => (float)$grandTotalPrice,
-            "grand_total_tax" => (float)$grandTotalTax,
-            "grand_sale_price" => (float)$grandSalePrice,
-            "grand_sale_tax" => (float)$grandSaleTax,
-            "order_amount" => (float)$orderAmount,
-            "order_id" => $order->id
-        ]);
     }
+    
 
     public function createaddress(Request $request)
     {
@@ -698,5 +734,63 @@ class EcommerceApiController extends Controller
         return response()->json(['data' => $addresses]);
     }
 
+    public function listOrders(Request $request)
+    {
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Retrieve all orders belonging to the user
+        $orders = Order::where('user_id', $userId)
+            ->select('id', 'razor_order_id', 'total_price', 'total_tax', 'sale_price', 'sale_tax', 'order_amount', 'order_status', 'created_at')
+            ->get();
+
+        // Return the orders as JSON
+        return response()->json([
+            'orders' => $orders
+        ]);
+    }
+
+    public function getOrderDetails(Request $request, $orderId)
+    {
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Find the order by ID and ensure it belongs to the authenticated user
+        $order = Order::where('id', $orderId)
+            ->where('user_id', $userId)
+            ->with(['orderItems.product']) // Eager load related order items and products
+            ->first();
+
+        if (!$order) {
+            return response()->json([
+                'error' => 'Order not found or does not belong to the authenticated user.'
+            ], 404); // HTTP 404 Not Found
+        }
+
+        // Return the order details as JSON
+        return response()->json([
+            'order' => [
+                'id' => $order->id,
+                'razor_order_id' => $order->razor_order_id,
+                'total_price' => (float)$order->total_price,
+                'total_tax' => (float)$order->total_tax,
+                'sale_price' => (float)$order->sale_price,
+                'sale_tax' => (float)$order->sale_tax,
+                'order_amount' => (float)$order->order_amount,
+                'order_status' => $order->order_status,
+                'created_at' => $order->created_at,
+                'products' => $order->orderItems->map(function ($item) {
+                    return [
+                        'product_id' => $item->product_id,
+                        'product_name' => $item->product->name ?? null, // Assuming Product has a `name` field
+                        'qty' => (int)$item->qty,
+                        'price' => (float)$item->total_price,
+                        'sale_price' => (float)$item->sale_price,
+                        'tax_per' => (float)$item->tax,
+                    ];
+                })
+            ]
+        ]);
+    }
 
 }

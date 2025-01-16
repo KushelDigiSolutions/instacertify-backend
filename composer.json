@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "razorpay/razorpay": "^2.9",
         "spatie/laravel-permission": "^5.10",
         "tymon/jwt-auth": "^2.1",
         "yoeunes/toastr": "^2.3"

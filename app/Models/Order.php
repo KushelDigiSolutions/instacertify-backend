@@ -18,6 +18,14 @@ class Order extends Model
         'order_amount',
         'order_status',
         'payment_id',
+        'razor_order_id',
         'address_id',
     ];
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id', 'id');
+    }
+    
+
 }

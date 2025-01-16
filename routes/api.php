@@ -38,6 +38,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('/updateaddress/{id}', [EcommerceApiController::class, 'updateaddress']);   // Update an address
     Route::delete('/deleteaddress/{id}', [EcommerceApiController::class, 'deleteaddress']); // Delete an address
     Route::get('/listalladdress', [EcommerceApiController::class, 'listalladdress']); 
+
+	Route::get('/orders', [EcommerceApiController::class, 'listOrders']); // List all orders
+		Route::get('/orders/{id}', [EcommerceApiController::class, 'getOrderDetails']); // Get order details by ID
+	
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
