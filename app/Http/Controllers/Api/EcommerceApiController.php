@@ -615,7 +615,7 @@ class EcommerceApiController extends Controller
             }
     
             // Update order totals
-            $orderAmount = round($grandTotalPrice + $grandTotalTax + ($grandSalePrice + $grandSaleTax), 2);
+            $orderAmount = round(($grandSalePrice + $grandSaleTax), 2);
             $order->update([
                 'total_price' => (float)$grandTotalPrice,
                 'total_tax' => (float)$grandTotalTax,
