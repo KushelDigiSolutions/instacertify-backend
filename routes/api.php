@@ -41,6 +41,7 @@ Route::middleware(['auth:api'])->group(function () {
 
 	Route::get('/orders', [EcommerceApiController::class, 'listOrders']); // List all orders
 		Route::get('/orders/{id}', [EcommerceApiController::class, 'getOrderDetails']); // Get order details by ID
+		Route::post('/ecommerce/transactions', [EcommerceApiController::class, 'storeTransaction']);
 	
 });
 
@@ -111,6 +112,7 @@ Route::middleware(['cors'])->group(function () {
 	Route::post('/cart/remove', [EcommerceApiController::class, 'productRemoveFromCart']);
 	Route::get('/cart', [EcommerceApiController::class, 'getUserCart']);
 	Route::post('/cart/clear', [EcommerceApiController::class, 'clearCart']);
+
 });
 
 Route::get('pages',[EventController::class,'getPageBySlug']);

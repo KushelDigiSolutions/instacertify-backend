@@ -12,11 +12,13 @@ use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Transactions;
 use Auth;
 use Session;
 use Carbon\Carbon;
 use Razorpay\Api\Api;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class EcommerceApiController extends Controller
 {
@@ -790,6 +792,70 @@ class EcommerceApiController extends Controller
                     ];
                 })
             ]
+        ]);
+    }
+
+    public function storeTransaction(Request $request)
+    {
+        // Validate incoming request data
+        $validated = $request->validate([
+            'razorpay_payment_id' => 'required|string|max:50',
+            'razorpay_order_id' => 'required|string|max:50',
+            'razorpay_signature' => 'required|string|max:200',
+        ]);
+
+        // Check if the transaction already exists in the transactions table
+        $existingTransaction = Transactions::where('razorpay_order_id', $validated['razorpay_order_id'])
+            ->where('razorpay_payment_id', $validated['razorpay_payment_id'])
+            ->first();
+
+        if ($existingTransaction) {
+            return response()->json([
+                'message' => "This order already exists.",
+                'transaction' => $existingTransaction,
+            ], 200);
+        }
+
+        // Check if razorpay_order_id exists in the orders table
+        $order = Order::where('razor_order_id', $validated['razorpay_order_id'])->first();
+
+        if (!$order) {
+            return response()->json([
+                'message' => "Invalid order. Order ID {$validated['razorpay_order_id']} not found."
+            ], 404);
+        }
+
+        // Hit Razorpay API to get payment status
+        $response = Http::withBasicAuth(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'))
+            ->get("https://api.razorpay.com/v1/payments/{$validated['razorpay_payment_id']}");
+
+        if ($response->failed()) {
+            return response()->json(['message' => 'Failed to fetch payment status'], 500);
+        }
+
+        $paymentData = $response->json();
+        $paymentStatus = $paymentData['status'] ?? null;
+
+        // Create a new entry in the transactions table
+        $transaction = Transactions::create([
+            'order_id' => $order->id,
+            'razorpay_payment_id' => $validated['razorpay_payment_id'],
+            'razorpay_order_id' => $validated['razorpay_order_id'],
+            'razorpay_signature' => $validated['razorpay_signature'],
+            'status' => $paymentStatus,
+        ]);
+
+        // Update orders table if payment is successful
+        if (in_array($paymentStatus, ['captured', 'authorized'])) {
+            $order->update([
+                'order_status' => 1,
+                'payment_id' => $validated['razorpay_payment_id'],
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Transaction stored successfully',
+            'transaction' => $transaction,
         ]);
     }
 
