@@ -240,6 +240,79 @@
                     @endcanany
                 @endcanany
 
+                @canany(['qco-categories-list', 'qco-categories-create', 'qco-categories-edit',
+                    'qco-categories-delete', 'qco-list', 'qco-create', 'qco-edit', 'qco-delete'])
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion @if (in_array(Route::currentRouteName(), [
+                                'admin.qcos.index',
+                                'admin.qcos.create',
+                                'admin.qcos.edit',
+                                'admin.qcos.show',
+                                'admin.qco-categories.index',
+                                'admin.qco-categories.create',
+                                'admin.qco-categories.edit',
+                                'admin.qco-categories.show',
+                            ])) {{ 'hover show' }} @endif">
+                        <span class="menu-link pro-hover @if (in_array(Route::currentRouteName(), [
+                                'admin.qcos.index',
+                                'admin.qcos.create',
+                                'admin.qcos.edit',
+                                'admin.qcos.show',
+                                'admin.qco-categories.index',
+                                'admin.qco-categories.create',
+                                'admin.qco-categories.edit',
+                                'admin.qco-categories.show',
+                            ])) {{ 'is-active' }} @endif ">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-calendar fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Manage Qco Orders</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        @canany(['qco-categories-list', 'qco-categories-create', 'qco-categories-edit',
+                            'qco-categories-delete'])
+                            <div class="menu-sub menu-sub-accordion ">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.event-categories.index',
+                                            'admin.event-categories.create',
+                                            'admin.event-categories.edit',
+                                            'admin.event-categories.show',
+                                        ])) {{ 'is-active' }} @endif ">
+                                    <a class="menu-link" href="{{ route('admin.event-categories.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Categories</span>
+                                    </a>
+                                </div>
+                            </div>
+                        @endcanany
+                        @canany(['qco-list', 'qco-create', 'qco-edit', 'qco-delete'])
+                            <div class="menu-sub menu-sub-accordion">
+                                <div
+                                    class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
+                                            'admin.qcos.index',
+                                            'admin.qcos.create',
+                                            'admin.qcos.edit',
+                                            'admin.qcos.show',
+                                        ])) {{ 'is-active' }} @endif ">
+                                    <a class="menu-link" href="{{ route('admin.events.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">Events</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endcanany
+                @endcanany
+
 
 
 
