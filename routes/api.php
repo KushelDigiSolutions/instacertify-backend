@@ -3,11 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\QcoController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\EventCategoryController;
+use App\Http\Controllers\Api\QcoCategoryController;
 use App\Http\Controllers\Api\NewsCategoryController;
 use App\Http\Controllers\Api\VclassController;
 use App\Http\Controllers\Api\LodgingRentalController;
@@ -59,6 +61,11 @@ Route::middleware(['cors'])->group(function () {
 	Route::get('get-event',[EventController::class,'getEvent']);
 	Route::get('get-event-by-category/{slug}',[EventController::class,'getEventByCategory'])->name('event-category');
 	Route::get('get-event-details/{slug}',[EventController::class,'getEventBySlug'])->name('event-details');
+
+	Route::get('get-qco-category',[qcoCategoryController::class,'getQcoCategory']);
+	Route::get('get-qco',[QcoController::class,'getQco']);
+	Route::get('get-qco-by-category/{slug}',[QcoController::class,'getQcoByCategory'])->name('qco-category');
+	Route::get('get-event-details/{slug}',[QcoController::class,'getQcoBySlug'])->name('qco-details');
 
 	Route::get('get-news-category',[NewsCategoryController::class,'getNewsCategory']);
 	Route::get('get-news',[NewsController::class,'getNews']);

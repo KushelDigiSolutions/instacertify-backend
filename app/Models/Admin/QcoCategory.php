@@ -5,7 +5,7 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QCoCategory extends Model
+class QcoCategory extends Model
 {
     use HasFactory;
 

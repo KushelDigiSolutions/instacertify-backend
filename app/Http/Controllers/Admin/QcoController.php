@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Admin\Qcos;
 use App\Models\Admin\QcoCategory;
 
-class qcoController extends Controller
+class QcoController extends Controller
 {
     function __construct()
     {

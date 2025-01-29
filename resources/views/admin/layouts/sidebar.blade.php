@@ -278,12 +278,12 @@
                             <div class="menu-sub menu-sub-accordion ">
                                 <div
                                     class="menu-item pro-hover @if (in_array(Route::currentRouteName(), [
-                                            'admin.event-categories.index',
-                                            'admin.event-categories.create',
-                                            'admin.event-categories.edit',
-                                            'admin.event-categories.show',
+                                            'admin.qco-categories.index',
+                                            'admin.qco-categories.create',
+                                            'admin.qco-categories.edit',
+                                            'admin.qco-categories.show',
                                         ])) {{ 'is-active' }} @endif ">
-                                    <a class="menu-link" href="{{ route('admin.event-categories.index') }}">
+                                    <a class="menu-link" href="{{ route('admin.qco-categories.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
@@ -301,7 +301,7 @@
                                             'admin.qcos.edit',
                                             'admin.qcos.show',
                                         ])) {{ 'is-active' }} @endif ">
-                                    <a class="menu-link" href="{{ route('admin.events.index') }}">
+                                    <a class="menu-link" href="{{ route('admin.qcos.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
