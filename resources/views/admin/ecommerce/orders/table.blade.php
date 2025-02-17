@@ -1,92 +1,208 @@
 <table class="table align-middle table-row-dashed fs-6 gy-5">
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-            <th class="w-10px pe-2">SN.</th>
-            <th class="min-w-125px">Image</th>
-            <th class="min-w-125px">Name</th>
-            <th class="min-w-125px">Status</th>
-            @canany(['orders-edit', 'orders-delete'])
-                <th class="text-center min-w-70px">Actions</th>
-            @endcanany
+            <th>#</th>
+            <th>User Name</th>
+            <th>Order Amount</th>
+            <th>Order Status</th>
+            <th>Razor Order ID</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach ($orders as $key => $order)
+    <tbody class="fw-semibold text-gray-600">
+        @foreach ($orders as $order)
             <tr>
-                <td>{{$key}}</td>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div class="symbol symbol-45px me-5">
-                            <img src="{{ asset('backend/admin/images/vclass_management/orders/'.$order->image) }}"
-                                style="width: 120px;height: 90px;object-fit: cover;">
-                        </div>
-                    </div>
-                </td>
-                <td>{{ $order->name }}</td>
-                <td>
-                    @if ($order->is_active == '1')
-                        <a href="{{ route('admin.orders.show', $order->id) }}?status=0">
-                            <div class="badge badge-light-success">Active</div>
-                        </a>
-                    @else
-                        <a href="{{ route('admin.orders.show', $order->id) }}?status=1">
-                            <div class="badge badge-light-danger">Deactive</div>
-                        </a>
-                    @endif
-                </td>
-                @canany(['orders-edit', 'orders-delete'])
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <svg id="self_car_{{ $key }}" class="dropdown-toggle outline-none cursor-pointer"
-                                width="30" height="30" viewBox="0 0 30 30" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" data-toggle="dropdown" aria-expanded="false"
-                                aria-haspopup="true">
-                                <circle cx="15" cy="15" r="14.5" fill="white" stroke="#E1E3EA" />
-                                <path
-                                    d="M10.9993 13.6667C10.266 13.6667 9.66602 14.2667 9.66602 15C9.66602 15.7333 10.266 16.3333 10.9993 16.3333C11.7327 16.3333 12.3327 15.7333 12.3327 15C12.3327 14.2667 11.7327 13.6667 10.9993 13.6667ZM18.9993 13.6667C18.266 13.6667 17.666 14.2667 17.666 15C17.666 15.7333 18.266 16.3333 18.9993 16.3333C19.7327 16.3333 20.3327 15.7333 20.3327 15C20.3327 14.2667 19.7327 13.6667 18.9993 13.6667ZM14.9993 13.6667C14.266 13.6667 13.666 14.2667 13.666 15C13.666 15.7333 14.266 16.3333 14.9993 16.3333C15.7327 16.3333 16.3327 15.7333 16.3327 15C16.3327 14.2667 15.7327 13.6667 14.9993 13.6667Z"
-                                    fill="#5E6278" />
-                            </svg>
+                <!-- Order ID -->
+                <td>#{{ $order->id }}</td>
 
-                            <div class="dropdown-more-details menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-200px py-4 mt-10 new-dp1 dropdown-menu"
-                                id="sey_{{ $key }}" aria-labelledby="self_car_{{ $key }}">
-                                <div class="menu-item px-3">
-                                    @can('vclasses-orders-edit')
-                                        <a href="{{ route('admin.vclasses-orders.edit', $order->id) }}"
-                                            class="menu-link px-3">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M11.7147 7.51667L12.4814 8.28333L4.93138 15.8333H4.16471V15.0667L11.7147 7.51667ZM14.7147 2.5C14.5064 2.5 14.2897 2.58333 14.1314 2.74167L12.6064 4.26667L15.7314 7.39167L17.2564 5.86667C17.5814 5.54167 17.5814 5.01667 17.2564 4.69167L15.3064 2.74167C15.1397 2.575 14.9314 2.5 14.7147 2.5ZM11.7147 5.15833L2.49805 14.375V17.5H5.62305L14.8397 8.28333L11.7147 5.15833Z"
-                                                    fill="#5E6278" />
-                                            </svg>
-                                            Edit
-                                        </a>
-                                    @endcan
-                                    @can('orders-delete')
-                                        <a class="menu-link px-3" onclick="confirmDelete({{ $order->id }})">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.3337 7.5V15.8333H6.66699V7.5H13.3337ZM12.0837 2.5H7.91699L7.08366 3.33333H4.16699V5H15.8337V3.33333H12.917L12.0837 2.5ZM15.0003 5.83333H5.00033V15.8333C5.00033 16.75 5.75033 17.5 6.66699 17.5H13.3337C14.2503 17.5 15.0003 16.75 15.0003 15.8333V5.83333Z"
-                                                    fill="#5E6278" />
-                                            </svg>
-                                            Delete
-                                        </a>
-                                        <form action="{{ route('admin.vclasses-orders.destroy', $order->id) }}"
-                                            id="delete_form_{{ $order->id }}" method="POST">
-                                            @method('DELETE')
-                                            @csrf
-                                        </form>
-                                    @endcan
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                @endcanany
+                <!-- User Name -->
+                <td>{{ $order->user->name ?? 'N/A' }}</td>
+
+                <!-- Order Amount -->
+                <td>{{ number_format($order->order_amount, 2) }}</td>
+
+                <!-- Order Status with Dropdown -->
+                <td>
+                    <select class="form-select form-select-sm" onchange="updateOrderStatus({{ $order->id }}, this.value)">
+                        @php
+                            $statuses = [
+                                0 => 'Created',
+                                1 => 'Payment Done',
+                                2 => 'Order Accept',
+                                3 => 'Order Preparing',
+                                4 => 'Order Shipped',
+                                5 => 'Order Delivered',
+                                6 => 'Order Completed',
+                                7 => 'Order Rejected',
+                                8 => 'Order Returned',
+                                9 => 'Order Cancelled'
+                            ];
+                        @endphp
+                        @foreach ($statuses as $key => $status)
+                            <option value="{{ $key }}" {{ $order->order_status == $key ? 'selected' : '' }}>
+                                {{ $status }}
+                            </option>
+                        @endforeach
+                    </select>
+                </td>
+
+                <!-- Razor Order ID -->
+                <td>{{ $order->razor_order_id }}</td>
+
+                <!-- Address City -->
+                <td>{{ $order->address->city ?? 'N/A' }}</td>
+
+                <!-- Address State -->
+                <td>{{ $order->address->state ?? 'N/A' }}</td>
+
+                <!-- Actions -->
+                <td>
+                    {{-- View Details Button --}}
+                    <button class="btn btn-sm btn-light-info" onclick="showOrderDetails({{ $order }})">
+                        View Details
+                    </button>
+                </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+
+@if ($orders->isEmpty())
+    <p class="text-center">No orders found.</p>
+@endif
+
+<!-- Modal for Order Details -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Order Information -->
+                <h6>Order Information</h6>
+                <table class="table table-bordered">
+                    <tbody id="order-info-content">
+                        {{-- Order information will be dynamically inserted here --}}
+                    </tbody>
+                </table>
+
+                <!-- User Address -->
+                <h6>User Address</h6>
+                <table class="table table-bordered">
+                    <tbody id="user-address-content">
+                        {{-- User address will be dynamically inserted here --}}
+                    </tbody>
+                </table>
+
+                <!-- Order Items -->
+                <h6>Order Items</h6>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Sale Price</th>
+                            <th>Total Price</th>
+                            <th>Tax</th>
+                            <th>Delivery Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-items-content">
+                        {{-- Order items will be dynamically inserted here --}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to show order details in the modal
+    function showOrderDetails(order) {
+        // Populate Order Information Content
+        let orderInfoContent = `
+            <tr><th>Order ID</th><td>#${order.id}</td></tr>
+            <tr><th>User Name</th><td>${order.user?.name || 'N/A'}</td></tr>
+            <tr><th>Total Price</th><td>${parseFloat(order.total_price).toFixed(2)}</td></tr>
+            <tr><th>Total Tax</th><td>${parseFloat(order.total_tax).toFixed(2)}</td></tr>
+            <tr><th>Sale Price</th><td>${parseFloat(order.sale_price).toFixed(2)}</td></tr>
+            <tr><th>Sale Tax</th><td>${parseFloat(order.sale_tax).toFixed(2)}</td></tr>
+            <tr><th>Order Amount</th><td>${parseFloat(order.order_amount).toFixed(2)}</td></tr>
+            <tr><th>Order Status</th><td>${getOrderStatusText(order.order_status)}</td></tr>
+            <tr><th>Razor Order ID</th><td>${order.razor_order_id || 'N/A'}</td></tr>
+            <tr><th>Payment ID</th><td>${order.payment_id || 'N/A'}</td></tr>`;
+        if (order.order_delevered_date) {
+            orderInfoContent += `<tr><th>Delivered Date</th><td>${new Date(order.order_delevered_date).toLocaleString()}</td></tr>`;
+        }
+        if (order.order_cancelled_date) {
+            orderInfoContent += `<tr><th>Cancelled Date</th><td>${new Date(order.order_cancelled_date).toLocaleString()}</td></tr>`;
+        }
+        document.getElementById('order-info-content').innerHTML = orderInfoContent;
+
+        // Populate User Address Content
+        let address = order.address;
+        let addressContent = `
+            <tr><th>Name</th><td>${address?.name || 'N/A'}</td></tr>
+            <tr><th>Phone</th><td>${address?.phone || 'N/A'}</td></tr>
+            <tr><th>Address Line 1</th><td>${address?.address1 || 'N/A'}</td></tr>
+            <tr><th>Address Line 2</th><td>${address?.address2 || 'N/A'}</td></tr>
+            <tr><th>Landmark</th><td>${address?.landmark || 'N/A'}</td></tr>
+            <tr><th>City</th><td>${address?.city || 'N/A'}</td></tr>
+            <tr><th>State</th><td>${address?.state || 'N/A'}</td></tr>
+            <tr><th>Pincode</th><td>${address?.pincode || 'N/A'}</td></tr>`;
+        document.getElementById('user-address-content').innerHTML = addressContent;
+
+        // Populate Order Items Content
+        let itemsContent = '';
+        order.order_items.forEach(item => {
+            itemsContent += `
+                <tr>
+                    <td>${item.product?.name || 'N/A'}</td>
+                    <td>${item.qty}</td>
+                    <td>${parseFloat(item.sale_price).toFixed(2)}</td>
+                    <td>${parseFloat(item.total_price).toFixed(2)}</td>
+                    <td>${parseFloat(item.tax).toFixed(2)}</td>
+                    <td>${getDeliveryStatusText(item.delivery_status)}</td>
+                </tr>`;
+        });
+        document.getElementById('order-items-content').innerHTML = itemsContent;
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+        modal.show();
+    }
+
+    // Function to get order status text from status code
+    function getOrderStatusText(status) {
+        const statuses = [
+            'Created',
+            'Payment Done',
+            'Order Accept',
+            'Order Preparing',
+            'Order Shipped',
+            'Order Delivered',
+            'Order Completed',
+            'Order Rejected',
+            'Order Returned',
+            'Order Cancelled'
+        ];
+        return statuses[status] || 'Unknown';
+    }
+
+    // Function to get delivery status text from status code
+    function getDeliveryStatusText(status) {
+        const statuses = {
+            0: 'Cancelled',
+            1: 'Delivered'
+        };
+        return statuses[status] || 'Unknown';
+    }
+</script>
+
 <hr>
 
 

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\QcoController;
@@ -111,9 +110,6 @@ Route::group(['middleware'=>'auth:admin','as'=>'admin.'],function () {
         //Role
         Route::resource('roles', RoleController::class);
 	
-	
-        //Menu
-        Route::resource('menues', MenuController::class);
 
         //Staff
         Route::resource('staff', StaffController::class);

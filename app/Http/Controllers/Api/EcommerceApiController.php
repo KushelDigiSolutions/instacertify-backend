@@ -859,4 +859,22 @@ class EcommerceApiController extends Controller
         ]);
     }
 
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'status' => 'required|integer|min:0|max:9'
+        ]);
+
+        $order = Order::find($request->order_id);
+        if ($order) {
+            $order->update(['order_status' => $request->status]);
+
+            return response()->json(['message' => 'Order status updated successfully.']);
+        }
+
+        return response()->json(['message' => 'Failed to update order status.'], 400);
+    }
+
+
 }

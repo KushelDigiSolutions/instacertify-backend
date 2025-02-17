@@ -10,10 +10,11 @@ class OrderController extends Controller
 {
     public function index()
     {
-        // Fetch all orders
-        $orders = Order::all();
+        $orders = Order::with(['user', 'address', 'orderItems.product'])->get();
         return view('admin.ecommerce.orders.index', compact('orders'));
     }
+    
+
 
     public function create()
     {
