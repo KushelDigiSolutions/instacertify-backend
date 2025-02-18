@@ -35079,6 +35079,10 @@ h6 {
   border-color: var(--bs-info);
   background-color: var(--bs-info);
 }
+.custom-hover:hover {
+  background-color:  rgb(236, 105, 31);
+  color: white !important;
+}
 .btn-check:active + .btn.btn-active-info,
 .btn-check:checked + .btn.btn-active-info,
 .btn.btn-active-info.active,

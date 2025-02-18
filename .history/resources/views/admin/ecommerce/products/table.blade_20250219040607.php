@@ -17,11 +17,11 @@
     <tbody>
         @foreach ($products as $key => $product)
             <tr>
-                <td>{{$product->id}}}</td>
+                <td>{{$product->id}}</td>
                 <td>
                     <div class="d-flex align-items-center">
                         <div class="symbol symbol-45px me-5">
- <img src="{{ asset('ecommerce/products/'.$product->images[0]) }}"
+                        <img src="{ asset('ecommerce/products/'.$product->images[0]) }}"
                         style="width: 120px; height: 90px; object-fit: cover;">
                         </div>
                     </div>

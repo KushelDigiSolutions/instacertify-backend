@@ -59,8 +59,10 @@
 
             <!-- Actions -->
             <td>
+                
+                
                 {{-- View Details Button --}}
-                <button class="btn btn-sm btn-light-info" onclick="showOrderDetails({{ $order }})">
+                <button class="btn btn-sm custom-hover  " onclick="showOrderDetails({{ $order }})">
                     View Details
                 </button>
             </td>
@@ -247,7 +249,9 @@
         "info": true,
         "lengthChange": true,
         "pageLength": 10,
- "order": [[0, 'desc']],
+        "order": [
+            [0, 'desc']
+        ],
         "pagingType": "simple_numbers", // or "full_numbers" depending on your preference
         "language": {
             "paginate": {
