@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Admin\Ecommerce;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with(['user', 'address', 'orderItems.product'])->get();
+        $orders = Order::with(['user', 'address', 'orderItems.product'])
+        ->orderBy('id',"DESC")
+        // ->latest('id') 
+        ->get();
+    
         return view('admin.ecommerce.orders.index', compact('orders'));
     }
     
@@ -29,7 +34,8 @@ class OrderController extends Controller
             // Other validation rules
         ]);
         
-        Product::create($request->all());
+        Product::create($request->all())
+        ->orderBy('id', 'desc');
         return redirect()->route('admin.ecommerce.orders.index');
     }
 
@@ -52,7 +58,6 @@ class OrderController extends Controller
             'name' => 'required|string|max:255',
             // Other validation rules
         ]);
-        
         $product = Product::findOrFail($id);
         $product->update($request->all());
         return redirect()->route('admin.ecommerce.orders.index');
