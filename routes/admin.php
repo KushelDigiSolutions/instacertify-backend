@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EventController;
-use App\Http\Controllers\Admin\QcoController;
+// use App\Http\Controllers\Admin\QcoController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\VclassController;
 use App\Http\Controllers\Admin\LodgingRentalController;
@@ -18,7 +18,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\NavigationController;
 use App\Http\Controllers\Admin\EventCategoryController;
-use App\Http\Controllers\Admin\QcoCategoryController;
+// use App\Http\Controllers\Admin\QcoCategoryController;
 use App\Http\Controllers\Admin\NewsCategoryController;
 use App\Http\Controllers\Admin\VclassCategoryController;
 use App\Http\Controllers\Admin\LodgingRentalCategoryController;
@@ -81,14 +81,14 @@ Route::group(['middleware'=>'auth:admin','as'=>'admin.'],function () {
         Route::post('validate-event',[EventController::class,'checkProductName'])->name('event.check');
         Route::resource('event-categories',EventCategoryController::class);
 
-        Route::post('validate-qco',[QcoController::class,'checkProductName'])->name('qco.check');
-        Route::resource('qco-categories',QcoCategoryController::class);
+        // Route::post('validate-qco',[QcoController::class,'checkProductName'])->name('qco.check');
+        // Route::resource('qco-categories',QcoCategoryController::class);
 
         Route::resource('news-categories',NewsCategoryController::class);
 
         //Event
         Route::resource('events',EventController::class);
-        Route::resource('qcos',QcoController::class);
+        // Route::resource('qcos',QcoController::class);
         Route::resource('news',NewsController::class);
        // Route::resource('eventnew',EventNewController::class);
 	
