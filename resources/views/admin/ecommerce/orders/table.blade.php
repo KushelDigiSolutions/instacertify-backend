@@ -1,4 +1,4 @@
-<table class="table align-middle table-row-dashed fs-6 gy-5">
+<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th>#</th>
@@ -13,64 +13,66 @@
     </thead>
     <tbody class="fw-semibold text-gray-600">
         @foreach ($orders as $order)
-            <tr>
-                <!-- Order ID -->
-                <td>#{{ $order->id }}</td>
+        <tr>
+            <!-- Order ID -->
+            <td>{{ $order->id }}</td>
 
-                <!-- User Name -->
-                <td>{{ $order->user->name ?? 'N/A' }}</td>
+            <!-- User Name -->
+            <td>{{ $order->user->name ?? 'N/A' }}</td>
 
-                <!-- Order Amount -->
-                <td>{{ number_format($order->order_amount, 2) }}</td>
+            <!-- Order Amount -->
+            <td>{{ number_format($order->order_amount, 2) }}</td>
 
-                <!-- Order Status with Dropdown -->
-                <td>
-                    <select class="form-select form-select-sm" onchange="updateOrderStatus({{ $order->id }}, this.value)">
-                        @php
-                            $statuses = [
-                                0 => 'Created',
-                                1 => 'Payment Done',
-                                2 => 'Order Accept',
-                                3 => 'Order Preparing',
-                                4 => 'Order Shipped',
-                                5 => 'Order Delivered',
-                                6 => 'Order Completed',
-                                7 => 'Order Rejected',
-                                8 => 'Order Returned',
-                                9 => 'Order Cancelled'
-                            ];
-                        @endphp
-                        @foreach ($statuses as $key => $status)
-                            <option value="{{ $key }}" {{ $order->order_status == $key ? 'selected' : '' }}>
-                                {{ $status }}
-                            </option>
-                        @endforeach
-                    </select>
-                </td>
+            <!-- Order Status with Dropdown -->
+            <td>
+                <select class="form-select form-select-sm" onchange="updateOrderStatus({{ $order->id }}, this.value)">
+                    @php
+                    $statuses = [
+                    0 => 'Created',
+                    1 => 'Payment Done',
+                    2 => 'Order Accept',
+                    3 => 'Order Preparing',
+                    4 => 'Order Shipped',
+                    5 => 'Order Delivered',
+                    6 => 'Order Completed',
+                    7 => 'Order Rejected',
+                    8 => 'Order Returned',
+                    9 => 'Order Cancelled'
+                    ];
+                    @endphp
+                    @foreach ($statuses as $key => $status)
+                    <option value="{{ $key }}" {{ $order->order_status == $key ? 'selected' : '' }}>
+                        {{ $status }}
+                    </option>
+                    @endforeach
+                </select>
+            </td>
 
-                <!-- Razor Order ID -->
-                <td>{{ $order->razor_order_id }}</td>
+            <!-- Razor Order ID -->
+            <td>{{ $order->razor_order_id }}</td>
 
-                <!-- Address City -->
-                <td>{{ $order->address->city ?? 'N/A' }}</td>
+            <!-- Address City -->
+            <td>{{ $order->address->city ?? 'N/A' }}</td>
 
-                <!-- Address State -->
-                <td>{{ $order->address->state ?? 'N/A' }}</td>
+            <!-- Address State -->
+            <td>{{ $order->address->state ?? 'N/A' }}</td>
 
-                <!-- Actions -->
-                <td>
-                    {{-- View Details Button --}}
-                    <button class="btn btn-sm btn-light-info" onclick="showOrderDetails({{ $order }})">
-                        View Details
-                    </button>
-                </td>
-            </tr>
+            <!-- Actions -->
+            <td>
+                
+                
+                {{-- View Details Button --}}
+                <button class="btn btn-sm custom-hover  " onclick="showOrderDetails({{ $order }})">
+                    View Details
+                </button>
+            </td>
+        </tr>
         @endforeach
     </tbody>
 </table>
 
 @if ($orders->isEmpty())
-    <p class="text-center">No orders found.</p>
+<p class="text-center">No orders found.</p>
 @endif
 
 <!-- Modal for Order Details -->
@@ -108,7 +110,6 @@
                             <th>Sale Price</th>
                             <th>Total Price</th>
                             <th>Tax</th>
-                            <th>Delivery Status</th>
                         </tr>
                     </thead>
                     <tbody id="order-items-content">
@@ -166,7 +167,6 @@
                     <td>${parseFloat(item.sale_price).toFixed(2)}</td>
                     <td>${parseFloat(item.total_price).toFixed(2)}</td>
                     <td>${parseFloat(item.tax).toFixed(2)}</td>
-                    <td>${getDeliveryStatusText(item.delivery_status)}</td>
                 </tr>`;
         });
         document.getElementById('order-items-content').innerHTML = itemsContent;
@@ -236,4 +236,28 @@
         })
         return false;
     }
+</script>
+<script>
+    $(".column-add, #popup-btn-cancel, .drawer-overlay-back, #crit").on('click', function() {
+        popup_open_close();
+    })
+</script>
+<script>
+    $("#kt_datatable_zero_configuration").DataTable({
+        "paging": true,
+        "searching": false,
+        "info": true,
+        "lengthChange": true,
+        "pageLength": 10,
+        "order": [
+            [0, 'desc']
+        ],
+        "pagingType": "simple_numbers", // or "full_numbers" depending on your preference
+        "language": {
+            "paginate": {
+                "previous": "Previous",
+                "next": "Next"
+            }
+        }
+    });
 </script>

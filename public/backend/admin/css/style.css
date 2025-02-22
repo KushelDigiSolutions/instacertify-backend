@@ -639,3 +639,7 @@
     margin: 0 auto;
     margin-bottom: 10px;
 }
+.custom-hover:hover {
+    background-color:  rgb(236, 105, 31);
+    color: white !important;
+  }

@@ -1,5 +1,8 @@
 @extends('admin.layouts.app')
 @section('content')
+ <link href="https://cdn.datatables.net/v/dt/dt-1.13.5/datatables.min.css" rel="stylesheet">
+
+    <script src="https://cdn.datatables.net/v/dt/dt-1.13.5/datatables.min.js"></script>
     <div class="d-flex flex-column flex-column-fluid">
         <div class="app-toolbar py-3 py-lg-6">
             <div class="app-container container-xxl d-flex flex-stack">
