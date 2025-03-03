@@ -18,10 +18,10 @@
         </div>
         <div class="right">
             @can('products-list')
-                <a href="{{ route('admin.products.index') }}" class="btn btn-sm fw-bold btn-primary">
-                    <i class="ki-duotone ki-arrow-back fs-1"><span class="path3"></span></i>
-                    Back to Product List
-                </a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-sm fw-bold btn-primary">
+                <i class="ki-duotone ki-arrow-back fs-1"><span class="path3"></span></i>
+                Back to Product List
+            </a>
             @endcan
         </div>
     </div>
@@ -36,13 +36,13 @@
                         @csrf
 
                         @if($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                         @endif
 
 
@@ -51,7 +51,7 @@
                             <select name="category_id" id="category_id" class="form-control">
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -97,7 +97,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="additional_tax" class="form-label">Additional Tax (%)</label>
+                            <label for="additional_tax" class="form-label ">Additional Tax (%)</label>
                             <input type="text" name="additional_tax" id="additional_tax" class="form-control" value="0.00">
                         </div>
 
@@ -107,13 +107,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="product_detail" class="form-label">Product Detail</label>
-                            <textarea name="product_detail" id="product_detail" class="form-control" rows="4"></textarea>
+                            <label for="product_detail" class="form-label ">Product Detail</label>
+                            <textarea name="product_detail" id="product_detail" class="form-control summernote" rows="4"></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label for="product_specification" class="form-label">Product Specification</label>
-                            <textarea name="product_specification" id="product_specification" class="form-control" rows="4"></textarea>
+                            <textarea name="product_specification" id="product_specification" class="form-control summernote" rows="4"></textarea>
                         </div>
 
                         <div class="mb-3">
@@ -136,10 +136,47 @@
         </div>
     </div>
 </div>
-
-<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function() {
+        $('.summernote').summernote({
+            height: 200, // Increase editor height
+            placeholder: 'Write your content here...',
+            tabsize: 2,
+            focus: true,
+
+            // Full toolbar with all functionalities
+            toolbar: [
+                ['style', ['style']], // Heading styles
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']], // Font styles
+                ['fontname', ['fontname']], // Font selection
+                ['fontsize', ['fontsize']], // Font size
+                ['color', ['color']], // Text color
+                ['para', ['ul', 'ol', 'paragraph']], // Lists & paragraph settings
+                ['height', ['height']], // Line height
+                ['table', ['table']], // Insert tables
+                ['insert', ['link', 'picture']], // Media: link, image, video
+                ['view', ['fullscreen', 'codeview', 'help']], // Fullscreen, HTML view, and help
+                ['history', ['undo', 'redo']] // Undo/Redo
+            ],
+
+            // Image upload restrictions (optional)
+            callbacks: {
+                onImageUpload: function(files) {
+                    if (files[0].size > 1024 * 1024) { // 1MB limit
+                        alert('Image size should be less than 1MB');
+                        return;
+                    }
+                    // You can implement an AJAX image upload function here
+                }
+            }
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
         // Select all textarea elements
         const textareas = document.querySelectorAll('textarea');
 
@@ -148,14 +185,14 @@
             ClassicEditor
                 .create(textarea, {
                     removePlugins: [
-                        'CKFinderUploadAdapter', 
-                        'CKFinder', 
-                        'EasyImage', 
-                        'Image', 
-                        'ImageCaption', 
-                        'ImageStyle', 
-                        'ImageToolbar', 
-                        'ImageUpload', 
+                        'CKFinderUploadAdapter',
+                        'CKFinder',
+                        'EasyImage',
+                        'Image',
+                        'ImageCaption',
+                        'ImageStyle',
+                        'ImageToolbar',
+                        'ImageUpload',
                         'MediaEmbed'
                     ],
                 })

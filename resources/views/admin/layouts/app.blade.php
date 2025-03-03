@@ -28,6 +28,7 @@
     <script src="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.min.css"></script>
 
    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.bootstrap5.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.1/dist/summernote.min.css" integrity="sha256-wxPsSfYElt0HPUyAf/IPv/i+pgccSji0HHoc17DAhVE=" crossorigin="anonymous">
     
 </head>
 
