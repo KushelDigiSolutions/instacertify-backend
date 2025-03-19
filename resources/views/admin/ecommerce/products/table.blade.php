@@ -1,4 +1,4 @@
-<table class="table align-middle table-row-dashed fs-6 gy-5">
+<table class="table align-middle table-row-dashed fs-6 gy-5" id="myTable">
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class="w-10px pe-2">SN.</th>
@@ -128,4 +128,21 @@
         })
         return false;
     }
+</script>
+<script>
+$(document).ready(function () {
+    var table = $('#myTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "lengthMenu": [5, 10, 25, 50],
+        "language": {
+            "search": "Search :" // Change the label
+        }
+    });
+
+    // Change the placeholder of the search input field
+    $('#myTable_filter input').attr('placeholder', 'Enter Name...').addClass('form-control');
+});
 </script>

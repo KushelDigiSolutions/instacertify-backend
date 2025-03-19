@@ -35,14 +35,7 @@
                             <div class="row">
                                 <div class="col-md-8"></div>
                                 <div class="col-md-4">
-                                    <div class="d-flex align-items-center position-relative mt-10 mb-10">
-                                        <input type="text" class="form-control form-control-solid w-250px ps-13"
-                                            name="search_key" placeholder="Search" onkeyup="fillter()">
-                                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </div>
+                                 
                                 </div>
                             </div>
                         </form>
