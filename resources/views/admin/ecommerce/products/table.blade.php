@@ -32,16 +32,16 @@
                 <td>₹{{ $product->sale_price }}</td>
                 <td>{{ $product->quantity }}</td>
                 <td>
-                    @if ($product->is_active == '1')
-                        <a href="{{ route('admin.products.show', $product->id) }}?status=0">
-                            <div class="badge badge-light-success">Active</div>
-                        </a>
-                    @else
-                        <a href="{{ route('admin.products.show', $product->id) }}?status=1">
-                            <div class="badge badge-light-danger">Deactive</div>
-                        </a>
-                    @endif
-                </td>
+                @if ($product->status == 'active')
+                <a href="{{ route('admin.products.show', $product->id) }}?status=inactive">
+                    <div class="badge badge-light-success">Active</div>
+                </a>
+                @else
+                <a href="{{ route('admin.products.show', $product->id) }}?status=active">
+                    <div class="badge badge-light-danger">Inactive</div>
+                </a>
+                @endif
+            </td>
                 @canany(['products-edit', 'products-delete'])
                     <td class="text-center">
                         <div class="dropdown">
