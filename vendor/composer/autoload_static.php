@@ -402,8 +402,8 @@ class ComposerStaticInit20e5bfcdc830d6eca6ddc8cdd4128e66
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -525,8 +525,8 @@ class ComposerStaticInit20e5bfcdc830d6eca6ddc8cdd4128e66
         ),
         'Fruitcake\\Cors\\' => 
         array (
-            0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
-            1 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
+            0 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
+            1 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
         ),
         'Flasher\\Prime\\' => 
         array (
@@ -631,8 +631,6 @@ class ComposerStaticInit20e5bfcdc830d6eca6ddc8cdd4128e66
         'App\\Http\\Controllers\\Admin\\NewsCategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/NewsCategoryController.php',
         'App\\Http\\Controllers\\Admin\\NewsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/NewsController.php',
         'App\\Http\\Controllers\\Admin\\PageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PageController.php',
-        'App\\Http\\Controllers\\Admin\\QcoCategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/QcoCategoryController.php',
-        'App\\Http\\Controllers\\Admin\\QcoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/QcoController.php',
         'App\\Http\\Controllers\\Admin\\RoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/RoleController.php',
         'App\\Http\\Controllers\\Admin\\StaffController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/StaffController.php',
         'App\\Http\\Controllers\\Admin\\StateController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/StateController.php',
@@ -649,8 +647,6 @@ class ComposerStaticInit20e5bfcdc830d6eca6ddc8cdd4128e66
         'App\\Http\\Controllers\\Api\\NewsCategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/NewsCategoryController.php',
         'App\\Http\\Controllers\\Api\\NewsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/NewsController.php',
         'App\\Http\\Controllers\\Api\\OrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/OrderController.php',
-        'App\\Http\\Controllers\\Api\\QcoCategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/QcoCategoryController.php',
-        'App\\Http\\Controllers\\Api\\QcoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/QcoController.php',
         'App\\Http\\Controllers\\Api\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/RegisterController.php',
         'App\\Http\\Controllers\\Api\\VclassController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/VclassController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
@@ -697,9 +693,6 @@ class ComposerStaticInit20e5bfcdc830d6eca6ddc8cdd4128e66
         'App\\Models\\Admin\\NewsCategory' => __DIR__ . '/../..' . '/app/Models/Admin/NewsCategory.php',
         'App\\Models\\Admin\\OldOrder' => __DIR__ . '/../..' . '/app/Models/Admin/OldOrder.php',
         'App\\Models\\Admin\\Page' => __DIR__ . '/../..' . '/app/Models/Admin/Page.php',
-        'App\\Models\\Admin\\Qco' => __DIR__ . '/../..' . '/app/Models/Admin/Qco.php',
-        'App\\Models\\Admin\\QcoCategory' => __DIR__ . '/../..' . '/app/Models/Admin/QcoCategory.php',
-        'App\\Models\\Admin\\QcoType' => __DIR__ . '/../..' . '/app/Models/Admin/QcoType.php',
         'App\\Models\\Admin\\RoomTypes' => __DIR__ . '/../..' . '/app/Models/Admin/RoomTypes.php',
         'App\\Models\\Admin\\States' => __DIR__ . '/../..' . '/app/Models/Admin/States.php',
         'App\\Models\\Admin\\Vclass' => __DIR__ . '/../..' . '/app/Models/Admin/Vclass.php',

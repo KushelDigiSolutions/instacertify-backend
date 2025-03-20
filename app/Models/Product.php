@@ -31,6 +31,7 @@ class Product extends Model
         'product_specification', 
         'tags', 
         'status', 
+        'faq', 
         'category_id',
         'created_at',
         'updated_at',

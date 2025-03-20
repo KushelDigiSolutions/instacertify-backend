@@ -115,6 +115,10 @@
                             <label for="product_specification" class="form-label">Product Specification</label>
                             <textarea name="product_specification" id="product_specification" class="form-control summernote" rows="4"></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="faq" class="form-label">Faq</label>
+                            <textarea name="faq" id="faq" class="form-control summernote" rows="3"></textarea>
+                        </div>
 
                         <div class="mb-3">
                             <label for="tags" class="form-label">Tags (comma-separated)</label>

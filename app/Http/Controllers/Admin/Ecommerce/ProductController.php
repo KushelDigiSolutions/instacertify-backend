@@ -50,6 +50,7 @@ class ProductController extends Controller
         'additional_tax' => 'nullable|numeric',
         'return_days' => 'nullable|integer|min:0',
         'product_detail' => 'nullable|string',
+        'faq' => 'string',
         'product_specification' => 'nullable|string',
         'tags' => 'nullable|string',
         'status' => 'required|in:active,inactive',
@@ -69,6 +70,7 @@ class ProductController extends Controller
     $product->return_days = $request->return_days;
     $product->product_detail = $request->product_detail;
     $product->product_specification = $request->product_specification;
+    $product->faq = $request->faq;
     $product->tags = $request->tags;
     $product->status = $request->status;
 
@@ -133,6 +135,7 @@ class ProductController extends Controller
         'return_days' => 'nullable|integer|min:0',
         'product_detail' => 'nullable|string',
         'product_specification' => 'nullable|string',
+        'faq' => 'nullable|string',
         'tags' => 'nullable|string',
         'status' => 'required|in:active,inactive',
     ]);
@@ -149,6 +152,7 @@ class ProductController extends Controller
     $product->sale_price = $request->sale_price;
     $product->additional_tax = $request->additional_tax;
     $product->return_days = $request->return_days;
+    $product->faq = $request->faq;
     $product->product_detail = $request->product_detail;
     $product->product_specification = $request->product_specification;
     $product->tags = $request->tags;
